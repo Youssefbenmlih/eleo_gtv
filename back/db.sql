@@ -3,8 +3,7 @@ CREATE TABLE [users] (
   [name] nvarchar(255),
   [email] nvarchar(255),
   [mot_de_passe] nvarchar(255),
-  [admin] boolean,
-  PRIMARY KEY ([id])
+  [admin] varchar(1)
 )
 GO
 
@@ -44,8 +43,8 @@ CREATE TABLE [det_chargement] (
   [id_chargement] int,
   [id_touret_type] int,
   [quantite_joues] int,
-  [cercle] boolean,
-  [ingelec] boolean,
+  [cercle] varchar(1),
+  [ingelec] varchar(1),
   [Tare] int,
   PRIMARY KEY ([id], [id_chargement])
 )
@@ -56,8 +55,8 @@ CREATE TABLE [det_demontage] (
   [id_demontage] int,
   [id_touret_type] int,
   [quantite_tourets] int,
-  [cercle] boolean,
-  [ingelec] boolean,
+  [cercle] varchar(1),
+  [ingelec] varchar(1),
   PRIMARY KEY ([id], [id_demontage])
 )
 GO
@@ -67,8 +66,8 @@ CREATE TABLE [det_reception] (
   [id_reception] int,
   [id_touret_type] int,
   [quantite_tourets] int,
-  [cercle] boolean,
-  [ingelec] boolean,
+  [cercle] varchar(1),
+  [ingelec] varchar(1),
   [numero_de_lot] nvarchar(255),
   PRIMARY KEY ([id], [id_reception])
 )
@@ -109,18 +108,6 @@ ALTER TABLE [det_chargement] ADD FOREIGN KEY ([id_touret_type]) REFERENCES [type
 GO
 
 ALTER TABLE [det_reception] ADD FOREIGN KEY ([id_touret_type]) REFERENCES [type_touret] ([id])
-GO
-
-ALTER TABLE [inventaire] ADD FOREIGN KEY ([nb_monte_cercle]) REFERENCES [type_touret] ([stock_monte_cercle])
-GO
-
-ALTER TABLE [inventaire] ADD FOREIGN KEY ([nb_demonte_cercle]) REFERENCES [type_touret] ([stock_demonte_cercle])
-GO
-
-ALTER TABLE [inventaire] ADD FOREIGN KEY ([nb_monte_non_cercle]) REFERENCES [type_touret] ([stock_monte_non_cercle])
-GO
-
-ALTER TABLE [inventaire] ADD FOREIGN KEY ([nb_demonte_non_cercle]) REFERENCES [type_touret] ([stock_demonte_non_cercle])
 GO
 
 ALTER TABLE [inventaire] ADD FOREIGN KEY ([id_user]) REFERENCES [users] ([id])
