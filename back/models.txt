@@ -1,0 +1,35 @@
+/api/activity/demontage:
+
+[ 
+  {
+    "date": "12/11/2022", 
+    "id_touret_type" : "0",
+    "quantite_tourets" : "22",
+    "cercle" : "o",
+    "ingelec": "o"
+  },
+  {
+    "date": "12/11/2022", 
+    "id_touret_type" : "1",
+    "quantite_tourets" : "12",
+    "cercle" : "o",
+    "ingelec": "o"
+  }
+]
+
+/api/users/connect:
+
+{
+  "email": "user@email.com", 
+  "mot_de_passe" : "mdp"
+}
+
+/api/users/add:
+
+{
+  "name": mr.name,
+  "email": "user@email.com", 
+  "mot_de_passe" : "mdp",
+  "admin" : "n"
+}
+
