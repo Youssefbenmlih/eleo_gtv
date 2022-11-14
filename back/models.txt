@@ -5,16 +5,39 @@
   "user_id" : "1",
   "list" : [ 
     {
-      "touret_type" : "g",
+      "touret_type" : "G",
       "quantite_tourets" : "22",
       "cercle" : "o",
       "ingelec": "o"
     },
     {
-      "touret_type" : "h",
+      "touret_type" : "H",
       "quantite_tourets" : "12",
       "cercle" : "o",
       "ingelec": "o"
+    }
+ ]
+}
+
+/api/activité/reception
+
+{
+  "date" : "10/31/2022 11:15:00",
+  "user_id" : "1",
+  "list" : [ 
+    {
+      "touret_type" : "G",
+      "quantite_tourets" : "22",
+      "cercle" : "o",
+      "ingelec": "o",
+      "numero_de_lot" : "GBM0003078" 
+    },
+    {
+      "touret_type" : "H",
+      "quantite_tourets" : "12",
+      "cercle" : "o",
+      "ingelec": "o",
+      "numero_de_lot" : "HBM0003077"
     }
  ]
 }
