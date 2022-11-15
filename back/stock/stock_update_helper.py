@@ -60,6 +60,7 @@ def update_stock_demontage(request_list):
     except Exception as e:
         print(e)
         return "400"
+    return "200"
 
 
 def update_stock_reception(request_list):
@@ -81,24 +82,30 @@ def update_stock_reception(request_list):
     except Exception as e:
         print(e)
         return "400"
+    return "200"
 
 
 def update_stock_chargement(request_list):
-     nb_tour_dem_cercle, nb_tour_dem_n_cercle, type_t = parse_request_list_chargement(request_list)
+    nb_tour_dem_cercle, nb_tour_dem_n_cercle, type_t = parse_request_list_chargement(request_list)
 
-    # req_select = """SELECT stock_demonte_cercle, stock_demonte_non_cercle\nFROM dbo.type_touret
-    # WHERE name = '{}'""".format(type_t)
+    req_select = """SELECT stock_demonte_cercle, stock_demonte_non_cercle\nFROM dbo.type_touret
+    WHERE name = '{}'""".format(type_t)
 
-    # curr_numbers = pd.read_sql_query(req_select, engine).to_dict('records')[0]
+    curr_numbers = pd.read_sql_query(req_select, engine).to_dict('records')[0]
 
-    # ndc, ndnc = curr_numbers['stock_demonte_cercle'] + nb_tour_dem_cercle, curr_numbers['stock_demonte_non_cercle'] + nb_tour_dem_n_cercle
+    ndc, ndnc = curr_numbers['stock_demonte_cercle'] - nb_tour_dem_cercle, curr_numbers['stock_demonte_non_cercle'] - nb_tour_dem_n_cercle
 
-    # req_update = """UPDATE dbo.type_touret\nSET stock_demonte_cercle = '{}',
-    # stock_demonte_non_cercle = '{}'\nWHERE name = '{}'""".format(ndc, ndnc, type_t)
+    if  ndc < 0 or ndnc < 0:
+        return "405"
+    
 
-    # try:
-    #     with con.begin():
-    #         con.execute(req_update)
-    # except Exception as e:
-    #     print(e)
-    #     return "400"
+    req_update = """UPDATE dbo.type_touret\nSET stock_demonte_cercle = '{}',
+    stock_demonte_non_cercle = '{}'\nWHERE name = '{}'""".format(ndc, ndnc, type_t)
+
+    try:
+        with con.begin():
+            con.execute(req_update)
+    except Exception as e:
+        print(e)
+        return "400"
+    return "200"
