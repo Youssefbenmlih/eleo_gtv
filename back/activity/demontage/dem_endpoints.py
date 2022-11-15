@@ -2,6 +2,7 @@ from flask import request, Blueprint
 
 from activity.demontage.ac_demontage import gen_transaction_request_dem
 from db_connection import con, engine
+from stock.stock_update import update_stock
 
 demontage = Blueprint('demontage', __name__, template_folder='templates')
 
@@ -23,7 +24,7 @@ demontage = Blueprint('demontage', __name__, template_folder='templates')
       "cercle" : "o",
       "ingelec": "o"
     }
-  ]
+ ]
 }
 """
 @demontage.route('/api/activity/demontage', methods=['POST'])
@@ -38,6 +39,7 @@ def demontage_activity_store():
     try:
         with con.begin():
             con.execute(sql_req)
+            update_stock(detail_list, "demontage")
     except Exception as e:
         print(e)
         return "400"

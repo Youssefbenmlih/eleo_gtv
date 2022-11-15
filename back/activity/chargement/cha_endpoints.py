@@ -2,6 +2,7 @@ from flask import request, Blueprint
 
 from activity.chargement.ac_chargement import gen_transaction_request_cha
 from db_connection import con, engine
+from stock.stock_update import update_stock
 
 chargement = Blueprint('chargement', __name__, template_folder='templates')
 
@@ -39,6 +40,7 @@ def chargement_activity_store():
     try:
         with con.begin():
             con.execute(sql_req)
+            update_stock(detail_list, "chargement")
     except Exception as e:
         print(e)
         return "400"

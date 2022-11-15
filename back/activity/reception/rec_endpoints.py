@@ -2,6 +2,7 @@ from flask import request, Blueprint
 
 from activity.reception.ac_reception import gen_transaction_request_rec
 from db_connection import con, engine
+from stock.stock_update import update_stock
 
 reception = Blueprint('reception', __name__, template_folder='templates')
 
@@ -39,6 +40,7 @@ def reception_activity_store():
     try:
         with con.begin():
             con.execute(sql_req)
+            update_stock(detail_list, "reception")
     except Exception as e:
         print(e)
         return "400"
