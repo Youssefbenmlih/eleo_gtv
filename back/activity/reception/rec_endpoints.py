@@ -13,14 +13,12 @@ reception = Blueprint('reception', __name__, template_folder='templates')
   "list" : [ 
     {
       "touret_type" : "G",
-      "quantite_tourets" : "22",
       "cercle" : "o",
       "ingelec": "o",
       "numero_de_lot" : "GBM0003078" 
     },
     {
       "touret_type" : "H",
-      "quantite_tourets" : "12",
       "cercle" : "o",
       "ingelec": "o",
       "numero_de_lot" : "HBM0003077"
@@ -39,10 +37,11 @@ def reception_activity_store():
     
     try:
         with con.begin():
+            if update_stock(detail_list, "reception") == "405":
+                return "Stock update failed", 405
             con.execute(sql_req)
-            update_stock(detail_list, "reception")
     except Exception as e:
         print(e)
-        return "400"
+        return "Reception insert failed", 400
 
     return "200"

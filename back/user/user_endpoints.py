@@ -36,6 +36,7 @@ def add_user():
     return "200"
 
 """
+JSON content
 {
   "email": "user@email.com", 
   "mot_de_passe" : "mdp"

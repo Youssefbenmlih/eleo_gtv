@@ -38,10 +38,11 @@ def demontage_activity_store():
     
     try:
         with con.begin():
+            if update_stock(detail_list, "demontage") == "405":
+                return "Stock update failed", 405
             con.execute(sql_req)
-            update_stock(detail_list, "demontage")
     except Exception as e:
         print(e)
-        return "400"
+        return "demontage insert failed", 405
 
     return "200"

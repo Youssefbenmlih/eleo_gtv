@@ -39,10 +39,11 @@ def chargement_activity_store():
 
     try:
         with con.begin():
+            if update_stock(detail_list, "chargement") == "405":
+                return "Stock update failed", 405
             con.execute(sql_req)
-            update_stock(detail_list, "chargement")
     except Exception as e:
         print(e)
-        return "400"
+        return "chargement failed", 400
 
     return "200"
