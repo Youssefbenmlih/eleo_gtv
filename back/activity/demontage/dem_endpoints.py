@@ -43,6 +43,6 @@ def demontage_activity_store():
             con.execute(sql_req)
     except Exception as e:
         print(e)
-        return "demontage insert failed", 405
+        return "demontage insert failed", 400
 
     return "200"
