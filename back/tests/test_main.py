@@ -57,4 +57,4 @@ if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-#LAUNCH WITH: python -m unittest -v .\tests.py
+#LAUNCH WITH: python -m unittest -v -f .\test_main.py
