@@ -35,7 +35,6 @@ class TestEleoGTV_Api_User_and_Stock(unittest.TestCase):
             "mot_de_passe" : "123mdp"
         }
         res = requests.post("http://127.0.0.1:5000/api/users/connect", json = fake_user)
-        print(res.content)
         self.assertEqual(res.status_code, 403)
     
     def test_add_user(self):
