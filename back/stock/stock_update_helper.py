@@ -6,7 +6,13 @@ from db_connection import con, engine
 #Helper functions to recover stock amounts from JSON request raw data
 
 def parse_request_list_dem(request_list):
-    tab = { 'G' : [0, 0], 'H' : [0, 0], 'I' : [0,0]}
+    get_all_types = "SELECT name FROM dbo.type_touret"
+    types = pd.read_sql_query(get_all_types, engine).to_dict('list')['name']
+
+    tab = {}
+    for type in types:
+        tab[type] = [0, 0]
+    
     for el in request_list:
         if el['cercle'] == "o":
             tab[el['touret_type']][0] += int(el['quantite_tourets'])
@@ -15,7 +21,12 @@ def parse_request_list_dem(request_list):
     return tab
 
 def parse_request_list_rec(request_list):
-    tab = { 'G' : [0, 0], 'H' : [0, 0], 'I' : [0,0]}
+    get_all_types = "SELECT name FROM dbo.type_touret"
+    types = pd.read_sql_query(get_all_types, engine).to_dict('list')['name']
+
+    tab = {}
+    for type in types:
+        tab[type] = [0, 0]
     for el in request_list:
         if el['cercle'] == "o":
             tab[el['touret_type']][0] += 1
@@ -24,7 +35,12 @@ def parse_request_list_rec(request_list):
     return tab
 
 def parse_request_list_chargement(request_list):
-    tab = { 'G' : [0, 0], 'H' : [0, 0], 'I' : [0,0]}
+    get_all_types = "SELECT name FROM dbo.type_touret"
+    types = pd.read_sql_query(get_all_types, engine).to_dict('list')['name']
+
+    tab = {}
+    for type in types:
+        tab[type] = [0, 0]
     for el in request_list:
         if el['cercle'] == "o":
             tab[el['touret_type']][0] += int(int(el['quantite_joues']) / 2)
@@ -56,7 +72,7 @@ def update_stock_demontage(request_list):
         tour_mont =  pd.read_sql_query(req_select_monte, engine).to_dict('records')[0]
         newd, newdn = tour_mont['stock_monte_cercle'] - nb_tour_dem_cercle, tour_mont['stock_monte_non_cercle'] - nb_tour_dem_n_cercle
         if newd < 0 or newdn < 0:
-            return "405", "Pas assez de tourets sont en stock pour que ce soit possible"
+            return "405"
         
         req_update_mont = """UPDATE dbo.type_touret\nSET stock_monte_cercle = '{}',
         stock_monte_non_cercle = '{}'\nWHERE name = '{}'""".format(newd, newdn, type_t)
