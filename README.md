@@ -7,7 +7,7 @@ Front_end en flutter.
 
 Pour lancer entrez successivement ces commandes :
 
- -   python3 back/server.py
+ -   python back/server_endpoints.py (puis ouvrez un second terminal, toujours à la racine du projet)
 
  -   cd front
 

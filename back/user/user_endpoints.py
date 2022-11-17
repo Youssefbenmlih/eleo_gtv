@@ -31,9 +31,9 @@ def add_user():
             con.execute(query)
     except Exception as e:
         print(e)
-        return "400"
+        return "user could not be added", 500
     
-    return "200"
+    return "user added!", 200
 
 """
 JSON content
@@ -45,7 +45,9 @@ JSON content
 @user.route('/api/users/connect', methods=['POST'])
 def connect_req():
     request_data = request.get_json()
+    print(request_data)
     res = check_connection(request_data, engine)
-    if (res[1]):
-        return res[0], "200"
-    return "403"
+    print(res[1])
+    if (res[1] == True):
+        return res[0], 200
+    return "error", 403
