@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_key_in_widget_constructors
 // CTRL + SPACE : check possible autocompletion
 // CTRL + SHIFT + R: Refactor
-import 'package:expenses_app/widgets/chart.dart';
-import 'package:expenses_app/widgets/new_transaction.dart';
+import 'package:front/widgets/chart.dart';
+import 'package:front/widgets/new_transaction.dart';
 import 'package:flutter/material.dart';
 import 'models/transaction.dart';
 import 'widgets/transaction_list.dart';

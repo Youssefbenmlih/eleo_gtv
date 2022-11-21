@@ -1,7 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:expenses_app/models/transaction.dart';
-import 'package:expenses_app/widgets/chart_bar.dart';
+import 'package:front/models/transaction.dart';
+import 'package:front/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
