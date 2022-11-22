@@ -3,8 +3,7 @@
 // CTRL + SHIFT + R: Refactor
 import 'package:flutter/material.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
-import 'widgets/gradient_elevated.dart';
-import 'pages/second_page.dart';
+import 'widgets/connection_page.dart';
 // import 'dart:developer';
 
 void main() {
@@ -69,32 +68,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final EmailController = TextEditingController();
-
-    final PasswordController = TextEditingController();
-
-    FocusNode myFocusNode = FocusNode();
-
-    @override
-    void dispose() {
-      // Clean up the focus node when the Form is disposed.
-      myFocusNode.dispose();
-
-      super.dispose();
-    }
-
-    void _submitUserInfo() {
-      if (EmailController.text.isNotEmpty &&
-          PasswordController.text.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return SecondPage(title: EmailController.text);
-          }),
-        ).then((_) => setState(() {}));
-      }
-    }
-
     final appbar = NewGradientAppBar(
       gradient: LinearGradient(
         colors: [
@@ -132,132 +105,11 @@ vous ont été fournis, en cas de problème, contactez la logistique."""),
         )
       ],
     );
-    return Scaffold(
-      appBar: appbar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
-              child: SizedBox(
-                  height: 150,
-                  width: 100,
-                  child: Image.asset(
-                    "assets/images/logo_eleo.png",
-                    fit: BoxFit.none,
-                  )),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
-              child: Text(
-                "Email - Nom d'utilisateur:",
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.blue,
-                  ),
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                child: TextField(
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 16,
-                  ),
-                  controller: EmailController,
-                  onSubmitted: (_) {
-                    _submitUserInfo();
-                    myFocusNode.requestFocus();
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(left: 10),
-                    hintText: "nom@email.com ou nom.prenom",
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
-              child: Text(
-                "Mot de passe:",
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.blue,
-                  ),
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                child: TextField(
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 18,
-                  ),
-                  focusNode: myFocusNode,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  controller: PasswordController,
-                  onSubmitted: (_) => {_submitUserInfo()},
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(left: 10),
-                    hintText: "mot de passe",
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: MyElevatedButton(
-                height: 100,
-                onPressed: () {
-                  if (EmailController.text.isNotEmpty &&
-                      PasswordController.text.isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return SecondPage(title: EmailController.text);
-                      }),
-                    ).then((_) => setState(() {}));
-                  }
-                },
-                borderRadius: BorderRadius.circular(40),
-                child: Text(
-                    style: Theme.of(context).textTheme.titleLarge, 'CONNEXION'),
-              ),
-            ),
-            SizedBox(
-              height: 60,
-            )
-          ],
-        ),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: appbar,
+        body: Connection_page(),
       ),
     );
   }
