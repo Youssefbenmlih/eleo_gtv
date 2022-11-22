@@ -1,12 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers
 // CTRL + SPACE : check possible autocompletion
 // CTRL + SHIFT + R: Refactor
-import 'package:front/widgets/chart.dart';
-import 'package:front/widgets/new_transaction.dart';
 import 'package:flutter/material.dart';
-import 'models/transaction.dart';
-import 'widgets/transaction_list.dart';
-import 'widgets/card_wrapper.dart';
+import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'widgets/gradient_elevated.dart';
+import 'pages/second_page.dart';
 // import 'dart:developer';
 
 void main() {
@@ -17,12 +15,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Eleo_GTV',
       theme: ThemeData(
         textTheme: ThemeData.light().textTheme.copyWith(
               titleLarge: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+              titleMedium: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              titleSmall: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 14,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
               labelMedium: TextStyle(
@@ -37,10 +47,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Colors.deepPurple,
+          primary: Colors.blue,
           secondary: Colors.teal, // Your accent color
         ),
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.blue,
         fontFamily: 'OpenSans',
         errorColor: Colors.teal[800],
       ),
@@ -50,71 +60,75 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int id = 0;
-  final List<Transaction> transactions = [];
-
-  List<Transaction> get _recentTransactions {
-    return transactions.where((el) {
-      return el.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
-    }).toList();
-  }
-
-  void _addNewTransaction(String title, double amount, DateTime datePicked) {
-    if (title.isNotEmpty && amount >= 0) {
-      setState(() {
-        transactions.add(
-          Transaction(
-            id: id,
-            amount: amount,
-            title: title,
-            date: datePicked,
-          ),
-        );
-        id += 1;
-      });
-    }
-  }
-
-  void _deleteTransaction(int id) {
-    setState(() {
-      transactions.removeWhere((element) {
-        return element.id == id;
-      });
-    });
-  }
-
-  void startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet(
-      context: ctx,
-      builder: (_) {
-        return GestureDetector(
-          onTap: () {},
-          behavior: HitTestBehavior.opaque,
-          child: NewTransaction(_addNewTransaction),
-        );
-      },
-    );
-  }
-
-  // late String TitleInput;
   @override
   Widget build(BuildContext context) {
-    final chartTitle = CardWrap(title: "Last 7 days expenses chart :");
-    final listTitle = CardWrap(title: "Previous expenses");
-    final appbar = AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      title: Text("Expenses Manager"),
+    final EmailController = TextEditingController();
+
+    final PasswordController = TextEditingController();
+
+    FocusNode myFocusNode = FocusNode();
+
+    @override
+    void dispose() {
+      // Clean up the focus node when the Form is disposed.
+      myFocusNode.dispose();
+
+      super.dispose();
+    }
+
+    void _submitUserInfo() {
+      if (EmailController.text.isNotEmpty &&
+          PasswordController.text.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return SecondPage(title: EmailController.text);
+          }),
+        ).then((_) => setState(() {}));
+      }
+    }
+
+    final appbar = NewGradientAppBar(
+      gradient: LinearGradient(
+        colors: [
+          Colors.cyan,
+          Colors.indigo,
+        ],
+      ),
+      title: Text(
+          style: Theme.of(context).textTheme.titleLarge,
+          "Gestion de tourets vides"),
       actions: [
         IconButton(
           onPressed: () {
-            startAddNewTransaction(context);
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      alignment: Alignment.topLeft,
+                      icon: Icon(Icons.info),
+                      title:
+                          Text(style: TextStyle(color: Colors.black), "Aide"),
+                      content: Text("""Veuillez entrer les identifiants qui 
+vous ont été fournis, en cas de problème, contactez la logistique."""),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, "OK"),
+                            child: const Text(
+                                style: TextStyle(fontSize: 20), "OK")),
+                      ],
+                      actionsAlignment: MainAxisAlignment.center,
+                      iconColor: Colors.blue,
+                    ));
           },
-          icon: Icon(Icons.add),
+          icon: Icon(Icons.info),
+          iconSize: 30,
         )
       ],
     );
@@ -124,35 +138,126 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            chartTitle,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
+              child: SizedBox(
+                  height: 150,
+                  width: 100,
+                  child: Image.asset(
+                    "assets/images/logo_eleo.png",
+                    fit: BoxFit.none,
+                  )),
+            ),
             SizedBox(
-                height: (MediaQuery.of(context).size.height -
-                        appbar.preferredSize.height -
-                        MediaQuery.of(context).padding.top -
-                        80) *
-                    0.25,
-                child: Chart(_recentTransactions)),
-            listTitle,
-            SizedBox(
-              height: (MediaQuery.of(context).size.height -
-                      appbar.preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      80) *
-                  0.75,
-              child: TransactionList(
-                transactions: transactions,
-                deleteTx: _deleteTransaction,
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
+              child: Text(
+                "Email - Nom d'utilisateur:",
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.blue,
+                  ),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: TextField(
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                  ),
+                  controller: EmailController,
+                  onSubmitted: (_) {
+                    _submitUserInfo();
+                    myFocusNode.requestFocus();
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 10),
+                    hintText: "nom@email.com ou nom.prenom",
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
+              child: Text(
+                "Mot de passe:",
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.blue,
+                  ),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: TextField(
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 18,
+                  ),
+                  focusNode: myFocusNode,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  controller: PasswordController,
+                  onSubmitted: (_) => {_submitUserInfo()},
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 10),
+                    hintText: "mot de passe",
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: MyElevatedButton(
+                height: 100,
+                onPressed: () {
+                  if (EmailController.text.isNotEmpty &&
+                      PasswordController.text.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return SecondPage(title: EmailController.text);
+                      }),
+                    ).then((_) => setState(() {}));
+                  }
+                },
+                borderRadius: BorderRadius.circular(40),
+                child: Text(
+                    style: Theme.of(context).textTheme.titleLarge, 'CONNEXION'),
+              ),
+            ),
+            SizedBox(
+              height: 60,
+            )
           ],
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          startAddNewTransaction(context);
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
