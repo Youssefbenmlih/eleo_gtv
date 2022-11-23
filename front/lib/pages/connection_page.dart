@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, camel_case_types, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
-import '../pages/second_page.dart';
-import 'gradient_elevated.dart';
+import '../widgets/gradient_elevated.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class Connection_page extends StatefulWidget {
   const Connection_page({super.key});
@@ -17,14 +17,17 @@ class Connection_page extends StatefulWidget {
 class _Connection_page extends State<Connection_page> {
   bool loginfail = false;
   bool loginsucces = false;
+  bool _passwordVisible = false;
+
+  final EmailController = TextEditingController();
+
+  final PasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final EmailController = TextEditingController();
-
-    final PasswordController = TextEditingController();
-
     FocusNode myFocusNode = FocusNode();
+
+    var userName = "";
 
     @override
     void dispose() {
@@ -46,6 +49,7 @@ class _Connection_page extends State<Connection_page> {
 
       if (resp.statusCode == 200) {
         setState(() {
+          userName = resp.body;
           loginsucces = true;
           loginfail = false;
         });
@@ -64,12 +68,8 @@ class _Connection_page extends State<Connection_page> {
         await VerifyUser(EmailController.text, PasswordController.text);
         if (loginsucces) {
           // ignore: use_build_context_synchronously
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return SecondPage(title: EmailController.text);
-            }),
-          ).then((_) => setState(() {}));
+          Navigator.pushNamed(context, "accueil", arguments: userName)
+              .then((_) => setState(() {}));
         }
       }
     }
@@ -124,6 +124,7 @@ class _Connection_page extends State<Connection_page> {
                     myFocusNode.requestFocus();
                   } else {
                     submit_data();
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
                   }
                 },
                 decoration: InputDecoration(
@@ -173,16 +174,32 @@ class _Connection_page extends State<Connection_page> {
                   fontSize: 16,
                 ),
                 focusNode: myFocusNode,
-                obscureText: true,
+                obscureText: !_passwordVisible,
                 enableSuggestions: false,
                 autocorrect: false,
                 controller: PasswordController,
-                onSubmitted: (_) => {submit_data()},
+                onSubmitted: (_) {
+                  submit_data();
+                  SystemChannels.textInput.invokeMethod('TextInput.hide');
+                },
                 decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 10),
-                  hintText: "mot de passe",
-                ),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.fromLTRB(10, 11, 0, 0),
+                    hintText: "mot de passe",
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        })),
               ),
             ),
           ),

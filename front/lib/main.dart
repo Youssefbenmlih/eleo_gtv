@@ -2,8 +2,9 @@
 // CTRL + SPACE : check possible autocompletion
 // CTRL + SHIFT + R: Refactor
 import 'package:flutter/material.dart';
+import 'package:front/pages/home_page.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
-import 'widgets/connection_page.dart';
+import 'pages/connection_page.dart';
 // import 'dart:developer';
 
 void main() {
@@ -53,7 +54,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'OpenSans',
         errorColor: Colors.teal[800],
       ),
-      home: MyHomePage(),
+      initialRoute: "connection",
+      routes: {
+        "accueil": ((context) => HomePage()),
+        "connection": ((context) => MyHomePage()),
+      },
     );
   }
 }
