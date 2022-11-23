@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import '../widgets/my_app_bar.dart';
 
-class Demontage extends StatefulWidget {
-  const Demontage({super.key});
+class Chargement extends StatefulWidget {
+  const Chargement({super.key});
 
   @override
-  State<Demontage> createState() => _DemontageState();
+  State<Chargement> createState() => _ChargementState();
 }
 
-class _DemontageState extends State<Demontage> {
+class _ChargementState extends State<Chargement> {
   void wipeClean() {
     setState(() {});
   }
@@ -18,7 +18,7 @@ class _DemontageState extends State<Demontage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(wipeClean, "Démontage"),
+      appBar: MyAppBar(wipeClean, "Chargement"),
     );
   }
 }

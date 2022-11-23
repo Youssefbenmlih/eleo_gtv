@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../widgets/gradient_elevated.dart';
 import '../widgets/navigation_drawer.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
@@ -12,7 +13,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
-    print(args);
+
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
 
     final appbar = NewGradientAppBar(
       gradient: LinearGradient(
@@ -23,6 +25,45 @@ class HomePage extends StatelessWidget {
       ),
       centerTitle: true,
       title: Text(style: Theme.of(context).textTheme.titleLarge, "ACCUEIL"),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.logout,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                alignment: Alignment.topLeft,
+                icon: Icon(Icons.logout),
+                title:
+                    Text(style: TextStyle(color: Colors.black), "Déconnexion"),
+                content:
+                    Text("""Êtes-vous sûr de vouloir vous déconnecter ?"""),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, "ANNULER"),
+                    child:
+                        const Text(style: TextStyle(fontSize: 20), "ANNULER"),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red.shade800, // Text Color
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "connexion");
+                    },
+                    child: const Text(style: TextStyle(fontSize: 20), "OUI"),
+                  ),
+                ],
+                actionsAlignment: MainAxisAlignment.spaceBetween,
+                iconColor: Colors.red.shade800,
+              ),
+            );
+          },
+        ),
+      ],
     );
 
     return Scaffold(
@@ -39,7 +80,7 @@ class HomePage extends StatelessWidget {
                     width: 350,
                     child: Image.asset(
                       "assets/images/logo_eleo.png",
-                      fit: BoxFit.none,
+                      fit: BoxFit.contain,
                     )),
               ),
               SizedBox(
@@ -61,7 +102,9 @@ class HomePage extends StatelessWidget {
                 child: MyElevatedButton(
                   height: 80,
                   width: 350,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "reception");
+                  },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
                       style: Theme.of(context).textTheme.titleLarge,
@@ -76,7 +119,9 @@ class HomePage extends StatelessWidget {
                 child: MyElevatedButton(
                   height: 80,
                   width: 350,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "chargement");
+                  },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
                       style: Theme.of(context).textTheme.titleLarge,
@@ -91,7 +136,9 @@ class HomePage extends StatelessWidget {
                 child: MyElevatedButton(
                   height: 80,
                   width: 350,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "demontage");
+                  },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
                       style: Theme.of(context).textTheme.titleLarge,
@@ -106,7 +153,9 @@ class HomePage extends StatelessWidget {
                 child: MyElevatedButton(
                   height: 80,
                   width: 350,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "inventaire");
+                  },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
                       style: Theme.of(context).textTheme.titleLarge,

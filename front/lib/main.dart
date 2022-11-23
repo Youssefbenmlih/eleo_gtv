@@ -2,7 +2,11 @@
 // CTRL + SPACE : check possible autocompletion
 // CTRL + SHIFT + R: Refactor
 import 'package:flutter/material.dart';
+import 'package:front/pages/chargement_tourets.dart';
+import 'package:front/pages/demontage_page.dart';
 import 'package:front/pages/home_page.dart';
+import 'package:front/pages/inventaire.dart';
+import 'package:front/pages/scan_reception.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'pages/connection_page.dart';
 // import 'dart:developer';
@@ -54,10 +58,14 @@ class MyApp extends StatelessWidget {
         fontFamily: 'OpenSans',
         errorColor: Colors.teal[800],
       ),
-      initialRoute: "connection",
+      initialRoute: "connexion",
       routes: {
         "accueil": ((context) => HomePage()),
-        "connection": ((context) => MyHomePage()),
+        "connexion": ((context) => MyHomePage()),
+        "demontage": ((context) => Demontage()),
+        "reception": ((context) => Reception()),
+        "chargement": ((context) => Chargement()),
+        "inventaire": ((context) => Inventaire()),
       },
     );
   }
@@ -74,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final appbar = NewGradientAppBar(
+      automaticallyImplyLeading: false,
       gradient: LinearGradient(
         colors: [
           Colors.cyan,

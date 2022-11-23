@@ -85,7 +85,7 @@ class _Connection_page extends State<Connection_page> {
                 width: 100,
                 child: Image.asset(
                   "assets/images/logo_eleo.png",
-                  fit: BoxFit.none,
+                  fit: BoxFit.contain,
                 )),
           ),
           SizedBox(
@@ -184,7 +184,7 @@ class _Connection_page extends State<Connection_page> {
                 },
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.fromLTRB(10, 11, 0, 0),
+                    contentPadding: EdgeInsets.fromLTRB(10, 13, 0, 0),
                     hintText: "mot de passe",
                     suffixIcon: IconButton(
                         icon: Icon(
