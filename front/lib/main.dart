@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
         fontFamily: 'OpenSans',
-        errorColor: Colors.teal[800],
+        errorColor: Color.fromARGB(255, 173, 40, 10),
       ),
       initialRoute: "connexion",
       routes: {
@@ -102,23 +102,22 @@ class _MyHomePageState extends State<MyHomePage> {
         IconButton(
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      alignment: Alignment.topLeft,
-                      icon: Icon(Icons.info),
-                      title:
-                          Text(style: TextStyle(color: Colors.black), "Aide"),
-                      content: Text("""Veuillez entrer les identifiants qui 
+              context: context,
+              builder: (context) => AlertDialog(
+                alignment: Alignment.topLeft,
+                icon: Icon(Icons.info),
+                title: Text(style: TextStyle(color: Colors.black), "Aide"),
+                content: Text("""Veuillez entrer les identifiants qui 
 vous ont été fournis, en cas de problème, contactez la logistique."""),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, "OK"),
-                            child: const Text(
-                                style: TextStyle(fontSize: 20), "OK")),
-                      ],
-                      actionsAlignment: MainAxisAlignment.center,
-                      iconColor: Colors.blue,
-                    ));
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context, "OK"),
+                      child: const Text(style: TextStyle(fontSize: 20), "OK")),
+                ],
+                actionsAlignment: MainAxisAlignment.center,
+                iconColor: Colors.blue,
+              ),
+            );
           },
           icon: Icon(Icons.info),
           iconSize: 30,
