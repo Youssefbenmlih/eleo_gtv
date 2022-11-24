@@ -27,7 +27,8 @@ class _Connection_page extends State<Connection_page> {
   Widget build(BuildContext context) {
     FocusNode myFocusNode = FocusNode();
 
-    var userName = "";
+    late String userName;
+    late int id;
 
     @override
     void dispose() {
@@ -49,7 +50,9 @@ class _Connection_page extends State<Connection_page> {
 
       if (resp.statusCode == 200) {
         setState(() {
-          userName = resp.body;
+          var j = jsonDecode(resp.body);
+          userName = j['name'];
+          id = j['id'];
           loginsucces = true;
           loginfail = false;
         });
@@ -68,7 +71,8 @@ class _Connection_page extends State<Connection_page> {
         await VerifyUser(EmailController.text, PasswordController.text);
         if (loginsucces) {
           // ignore: use_build_context_synchronously
-          Navigator.pushNamed(context, "accueil", arguments: userName)
+          Navigator.pushNamed(context, "accueil",
+                  arguments: {'name': userName, 'id': id})
               .then((_) => setState(() {}));
         }
       }

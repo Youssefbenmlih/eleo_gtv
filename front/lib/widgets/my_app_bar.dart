@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
-  const MyAppBar(this.refreshPage, this.title, {super.key});
+  const MyAppBar(this.refreshPage, this.title, this.args, {super.key});
 
   final String title;
-
+  final Object args;
   final Function refreshPage;
 
   @override
@@ -42,7 +42,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
                     foregroundColor: Colors.red.shade800, // Text Color
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, "accueil");
+                    Navigator.pushNamed(context, "accueil", arguments: args);
                   },
                   child: const Text(style: TextStyle(fontSize: 20), "OUI"),
                 ),

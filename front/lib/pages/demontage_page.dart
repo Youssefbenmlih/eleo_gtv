@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
+import 'package:intl/intl.dart';
 import '../widgets/my_app_bar.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import '../models/demontage_model.dart';
 import '../widgets/demontage_list.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Demontage extends StatefulWidget {
   const Demontage({super.key});
@@ -36,8 +39,33 @@ class _DemontageState extends State<Demontage> {
   bool isSwitchedCercle = false;
   bool isSwitchedIngelec = false;
 
+  Future<int> SendDemontage(String demontageJson) async {
+    final resp = await http.post(
+      Uri.parse('http://10.0.2.2:5000/api/activity/demontage'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: demontageJson,
+    );
+
+    if (resp.statusCode == 200) {
+      setState(() {
+        var j = jsonDecode(resp.body);
+      });
+    } else {
+      setState(() {});
+    }
+    return resp.statusCode;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    final mapArgs = args as Map;
+
+    var userName = mapArgs['name'];
+    var id = mapArgs['id'];
+
     return Scaffold(
       // floatingActionButton: DraggableFab(
       //   child: FloatingActionButton.extended(
@@ -50,7 +78,7 @@ class _DemontageState extends State<Demontage> {
       //     backgroundColor: Colors.green,
       //   ),
       // ),
-      appBar: MyAppBar(wipeClean, "Démontage"),
+      appBar: MyAppBar(wipeClean, "Démontage", args),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -242,7 +270,14 @@ class _DemontageState extends State<Demontage> {
               height: 20,
             ),
             FloatingActionButton.extended(
-              onPressed: (() {}),
+              onPressed: (() {
+                DateTime now = DateTime.now();
+                String date = DateFormat('MM/dd/yyyy HH:mm:ss').format(now);
+                var mod =
+                    DemontageModel(user_id: id, date: date, list: currentList);
+                String json = jsonEncode(mod);
+                SendDemontage(json);
+              }),
               label: Text(
                 style: Theme.of(context).textTheme.titleLarge,
                 "Confirmer",

@@ -17,8 +17,13 @@ class _ReceptionState extends State<Reception> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    final mapArgs = args as Map;
+
+    var userName = mapArgs['name'];
+    var id = mapArgs['id'];
     return Scaffold(
-      appBar: MyAppBar(wipeClean, "Réception"),
+      appBar: MyAppBar(wipeClean, "Réception", args),
     );
   }
 }

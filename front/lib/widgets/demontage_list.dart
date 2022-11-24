@@ -35,8 +35,8 @@ class DemontageList extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                        width: 280,
-                        padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                        width: 300,
+                        padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
                           gradient: LinearGradient(colors: [
@@ -49,7 +49,7 @@ class DemontageList extends StatelessWidget {
                             width: 2,
                           ),
                         ),
-                        margin: EdgeInsets.fromLTRB(40, 10, 10, 10),
+                        margin: EdgeInsets.fromLTRB(30, 10, 0, 10),
                         child: Text(
                           "    Tourets  ${elements[index].touret_type} ${elements[index].cercle == "o" ? "Cerclé(s)" : "Non Cerclé(s)"} : ${elements[index].quantite_tourets}",
                           style: TextStyle(
@@ -57,18 +57,16 @@ class DemontageList extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 0),
-                        child: IconButton(
-                          icon: Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
-                          onPressed: () {
-                            deleteTx(index);
-                          },
-                        ),
-                      )
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Theme.of(context).errorColor,
+                        onPressed: () {
+                          deleteTx(index);
+                        },
+                      ),
                     ],
                   ),
                 );

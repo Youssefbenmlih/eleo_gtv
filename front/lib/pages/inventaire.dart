@@ -17,8 +17,13 @@ class _InventaireState extends State<Inventaire> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    final mapArgs = args as Map;
+
+    var userName = mapArgs['name'];
+    var id = mapArgs['id'];
     return Scaffold(
-      appBar: MyAppBar(wipeClean, "Inventaire"),
+      appBar: MyAppBar(wipeClean, "Inventaire", args),
     );
   }
 }

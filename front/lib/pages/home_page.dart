@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import '../widgets/gradient_elevated.dart';
@@ -8,11 +8,16 @@ import 'package:flutter/services.dart';
 
 class HomePage extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
-  const HomePage();
+  HomePage();
+
+  late Object perma_args;
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
+    var args = ModalRoute.of(context)!.settings.arguments;
+    if (args != null) {
+      perma_args = args;
+    }
 
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
@@ -103,7 +108,11 @@ class HomePage extends StatelessWidget {
                   height: 80,
                   width: 350,
                   onPressed: () {
-                    Navigator.pushNamed(context, "reception");
+                    Navigator.pushNamed(
+                      context,
+                      "reception",
+                      arguments: perma_args,
+                    );
                   },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
@@ -120,7 +129,11 @@ class HomePage extends StatelessWidget {
                   height: 80,
                   width: 350,
                   onPressed: () {
-                    Navigator.pushNamed(context, "chargement");
+                    Navigator.pushNamed(
+                      context,
+                      "chargement",
+                      arguments: perma_args,
+                    );
                   },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
@@ -137,7 +150,11 @@ class HomePage extends StatelessWidget {
                   height: 80,
                   width: 350,
                   onPressed: () {
-                    Navigator.pushNamed(context, "demontage");
+                    Navigator.pushNamed(
+                      context,
+                      "demontage",
+                      arguments: perma_args,
+                    );
                   },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(
@@ -154,7 +171,11 @@ class HomePage extends StatelessWidget {
                   height: 80,
                   width: 350,
                   onPressed: () {
-                    Navigator.pushNamed(context, "inventaire");
+                    Navigator.pushNamed(
+                      context,
+                      "inventaire",
+                      arguments: perma_args,
+                    );
                   },
                   borderRadius: BorderRadius.circular(40),
                   child: Text(

@@ -2,7 +2,7 @@
 
 class DemontageModel {
   late int user_id;
-  late DateTime date;
+  late String date;
   late List<DemontageListElement> list;
 
   DemontageModel({
@@ -10,6 +10,14 @@ class DemontageModel {
     required this.date,
     required this.list,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': user_id,
+      'date': date,
+      'list': list,
+    };
+  }
 }
 
 class DemontageListElement {
@@ -24,4 +32,13 @@ class DemontageListElement {
     required this.cercle,
     required this.ingelec,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'touret_type': touret_type,
+      'quantite_tourets': quantite_tourets,
+      'cercle': cercle,
+      'ingelec': ingelec,
+    };
+  }
 }

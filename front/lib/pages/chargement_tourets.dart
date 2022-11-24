@@ -17,8 +17,14 @@ class _ChargementState extends State<Chargement> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    final mapArgs = args as Map;
+
+    var userName = mapArgs['name'];
+    var id = mapArgs['id'];
+
     return Scaffold(
-      appBar: MyAppBar(wipeClean, "Chargement"),
+      appBar: MyAppBar(wipeClean, "Chargement", args),
     );
   }
 }
