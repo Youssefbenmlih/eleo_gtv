@@ -39,6 +39,8 @@ dependencies:
   intl: ^0.17.0
   new_gradient_app_bar: ^0.2.0
   http: ^0.13.5
+  number_inc_dec: ^0.8.0
+  draggable_fab: ^0.1.4
 
 dev_dependencies:
   flutter_test:
