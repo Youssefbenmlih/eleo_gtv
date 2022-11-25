@@ -272,11 +272,12 @@ class _DemontageState extends State<Demontage> {
             FloatingActionButton.extended(
               onPressed: (() {
                 DateTime now = DateTime.now();
-                String date = DateFormat('MM/dd/yyyy HH:mm:ss').format(now);
+                String date = DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
                 var mod =
                     DemontageModel(user_id: id, date: date, list: currentList);
                 String json = jsonEncode(mod);
                 SendDemontage(json);
+                Navigator.pushNamed(context, "accueil", arguments: args);
               }),
               label: Text(
                 style: Theme.of(context).textTheme.titleLarge,

@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                alignment: Alignment.topLeft,
+                alignment: Alignment.topRight,
                 icon: Icon(Icons.logout),
                 title:
                     Text(style: TextStyle(color: Colors.black), "Déconnexion"),
