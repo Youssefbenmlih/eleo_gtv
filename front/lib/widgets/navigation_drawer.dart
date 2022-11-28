@@ -71,8 +71,11 @@ class NavigationDrawerWidget extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                     'Stock'),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  // Navigator.pushNamed(
+                  //     context,
+                  //     "stock",
+                  //     arguments: args,
+                  //   );
                 },
               ),
             ),

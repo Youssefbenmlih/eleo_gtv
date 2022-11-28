@@ -9,6 +9,7 @@ import 'package:front/pages/inventaire.dart';
 import 'package:front/pages/scan_reception.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'pages/connection_page.dart';
+import 'package:front/pages/stock.dart';
 // import 'dart:developer';
 
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Eleo_GTV',
       theme: ThemeData(
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -72,6 +74,7 @@ class MyApp extends StatelessWidget {
         "reception": ((context) => Reception()),
         "chargement": ((context) => Chargement()),
         "inventaire": ((context) => Inventaire()),
+        "stock": ((context) => Stock()),
       },
     );
   }

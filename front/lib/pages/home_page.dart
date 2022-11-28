@@ -132,6 +132,28 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
+                      "demontage",
+                      arguments: perma_args,
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(40),
+                  child: Text(
+                      style: Theme.of(context).textTheme.titleLarge,
+                      'Démontage Tourets'),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: MyElevatedButton(
+                  height: 80,
+                  width: 350,
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
                       "chargement",
                       arguments: perma_args,
                     );
@@ -145,24 +167,7 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MyElevatedButton(
-                  height: 80,
-                  width: 350,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "demontage",
-                      arguments: perma_args,
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(40),
-                  child: Text(
-                      style: Theme.of(context).textTheme.titleLarge,
-                      'Démontage Tourets'),
-                ),
-              ),
+
               // SizedBox(
               //   height: 15,
               // ),
@@ -184,9 +189,6 @@ class HomePage extends StatelessWidget {
               //         'Inventaire'),
               //   ),
               // ),
-              SizedBox(
-                height: 15,
-              ),
             ],
           ),
         ),
