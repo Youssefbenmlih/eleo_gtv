@@ -45,7 +45,7 @@ class _DemontageState extends State<Demontage> {
 
   Future<int> SendDemontage() async {
     final resp = await http.post(
-      Uri.parse('http://10.0.2.2:5000/api/activity/demontage'),
+      Uri.parse('http://10.0.2.2:5000/api/activity/chargement'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -282,7 +282,6 @@ class _DemontageState extends State<Demontage> {
                   String json = jsonEncode(mod);
                   demontageJson = json;
                   int statusCode = await SendDemontage();
-                  print(statusCode);
                   if (statusCode == 200) {
                     Navigator.pushNamed(context, "accueil", arguments: args);
                   } else {

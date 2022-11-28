@@ -163,27 +163,27 @@ class HomePage extends StatelessWidget {
                       'Démontage Tourets'),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MyElevatedButton(
-                  height: 80,
-                  width: 350,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "inventaire",
-                      arguments: perma_args,
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(40),
-                  child: Text(
-                      style: Theme.of(context).textTheme.titleLarge,
-                      'Inventaire'),
-                ),
-              ),
+              // SizedBox(
+              //   height: 15,
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.all(12.0),
+              //   child: MyElevatedButton(
+              //     height: 80,
+              //     width: 350,
+              //     onPressed: () {
+              //       Navigator.pushNamed(
+              //         context,
+              //         "inventaire",
+              //         arguments: perma_args,
+              //       );
+              //     },
+              //     borderRadius: BorderRadius.circular(40),
+              //     child: Text(
+              //         style: Theme.of(context).textTheme.titleLarge,
+              //         'Inventaire'),
+              //   ),
+              // ),
               SizedBox(
                 height: 15,
               ),

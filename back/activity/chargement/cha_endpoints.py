@@ -10,6 +10,7 @@ chargement = Blueprint('chargement', __name__, template_folder='templates')
 {
   "date" : "10/31/2022 14:15:00",
   "user_id" : "1",
+  "tare_total" : "23000",
   "list" : [ 
     {
       "touret_type" : "G",
@@ -28,14 +29,17 @@ chargement = Blueprint('chargement', __name__, template_folder='templates')
  ]
 }
 """
+
+
 @chargement.route('/api/activity/chargement', methods=['POST'])
 def chargement_activity_store():
     request_data = request.get_json()
     detail_list = request_data['list']
     user_id = request_data['user_id']
     date = request_data['date']
+    tare = request_data['tare_total']
 
-    sql_req = gen_transaction_request_cha(detail_list, date, user_id)
+    sql_req = gen_transaction_request_cha(detail_list, date, user_id, tare)
 
     try:
         with con.begin():

@@ -2,14 +2,25 @@
 
 class ChargementModel {
   late int user_id;
-  late DateTime date;
+  late String date;
   late List<ChargementListElement> list;
+  late int tare_total;
 
   ChargementModel({
     required this.user_id,
     required this.date,
     required this.list,
+    required this.tare_total,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': user_id,
+      'date': date,
+      'list': list,
+      'tare_total': tare_total,
+    };
+  }
 }
 
 class ChargementListElement {
@@ -26,4 +37,14 @@ class ChargementListElement {
     required this.ingelec,
     required this.Tare,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'touret_type': touret_type,
+      'quantite_joues': quantite_joues,
+      'cercle': cercle,
+      'ingelec': ingelec,
+      'Tare': Tare,
+    };
+  }
 }

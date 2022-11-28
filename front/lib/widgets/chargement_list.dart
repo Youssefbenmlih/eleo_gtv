@@ -1,14 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types
 
 import 'package:flutter/material.dart';
-import '../models/reception_model.dart';
+import 'package:front/models/chargement_model.dart';
 
-class receptionList extends StatelessWidget {
-  final List<ReceptionListElement> elements;
+class chargementList extends StatelessWidget {
+  final List<ChargementListElement> elements;
 
   final Function deleteTx;
 
-  const receptionList({
+  const chargementList({
     super.key,
     required this.elements,
     required this.deleteTx,
@@ -21,7 +21,7 @@ class receptionList extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Text("Aucune Réception n'est renseignée !",
+                child: Text("Aucun chargement n'est renseigné !",
                     style: Theme.of(context).textTheme.headlineMedium),
               ),
             ],
@@ -30,10 +30,7 @@ class receptionList extends StatelessWidget {
             height: 200,
             child: ListView.builder(
               itemCount: elements.length,
-              itemBuilder: (
-                context,
-                index,
-              ) {
+              itemBuilder: (context, index) {
                 return Card(
                   child: Row(
                     children: [
@@ -42,26 +39,19 @@ class receptionList extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.cyan.shade700,
-                              Colors.indigo,
-                              Colors.cyan.shade700,
-                            ],
-                          ),
+                          gradient: LinearGradient(colors: [
+                            Colors.cyan.shade700,
+                            Colors.indigo,
+                            Colors.cyan.shade700
+                          ]),
                           border: Border.all(
                             color: Theme.of(context).primaryColor,
                             width: 2,
                           ),
                         ),
-                        margin: EdgeInsets.fromLTRB(
-                          30,
-                          10,
-                          0,
-                          10,
-                        ),
+                        margin: EdgeInsets.fromLTRB(30, 10, 0, 10),
                         child: Text(
-                          "Lot ${elements.length - index} : ${elements[index].numero_de_lot}",
+                          "    Joues Touret ${elements[index].touret_type} ${elements[index].cercle == "o" ? "Cerclé(s)" : "Non Cerclé(s)"} : ${elements[index].quantite_joues}",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
