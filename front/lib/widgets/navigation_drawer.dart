@@ -97,6 +97,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                             title: Text(
                                 style: TextStyle(color: Colors.black), "Aide"),
                             content: Text(
+                                textAlign: TextAlign.center,
                                 """Naviguez ici dans les differentes activités, infos et stock reliés
 aux tourets vides. Pour plus d'informations contactez la logistique."""),
                             actions: [

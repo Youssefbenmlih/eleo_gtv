@@ -2,7 +2,7 @@
 
 class ReceptionModel {
   late int user_id;
-  late DateTime date;
+  late String date;
   late List<ReceptionListElement> list;
 
   ReceptionModel({
@@ -10,6 +10,14 @@ class ReceptionModel {
     required this.date,
     required this.list,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': user_id,
+      'date': date,
+      'list': list,
+    };
+  }
 }
 
 class ReceptionListElement {
@@ -24,4 +32,13 @@ class ReceptionListElement {
     required this.cercle,
     required this.ingelec,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'touret_type': touret_type,
+      'numero_de_lot': numero_de_lot,
+      'cercle': cercle,
+      'ingelec': ingelec,
+    };
+  }
 }

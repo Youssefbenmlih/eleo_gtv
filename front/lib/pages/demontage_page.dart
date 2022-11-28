@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
@@ -24,7 +24,7 @@ class _DemontageState extends State<Demontage> {
 
   void _deleteElement(int id) {
     setState(() {
-      currentList.removeAt(id);
+      currentList.removeAt(currentList.length - id - 1);
     });
   }
 
@@ -36,10 +36,14 @@ class _DemontageState extends State<Demontage> {
 
   final numberTouretsText = TextEditingController();
 
+  late int statusCode;
+
   bool isSwitchedCercle = false;
   bool isSwitchedIngelec = false;
 
-  Future<int> SendDemontage(String demontageJson) async {
+  late String demontageJson;
+
+  Future<int> SendDemontage() async {
     final resp = await http.post(
       Uri.parse('http://10.0.2.2:5000/api/activity/demontage'),
       headers: <String, String>{
@@ -62,8 +66,6 @@ class _DemontageState extends State<Demontage> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
     final mapArgs = args as Map;
-
-    var userName = mapArgs['name'];
     var id = mapArgs['id'];
 
     return Scaffold(
@@ -226,6 +228,7 @@ class _DemontageState extends State<Demontage> {
                       title: Text(
                           style: TextStyle(color: Colors.black), "Attention"),
                       content: Text(
+                          textAlign: TextAlign.center,
                           """Veuillez emplir tous les champs avant d'ajouter l'élément."""),
                       actions: [
                         TextButton(
@@ -270,14 +273,60 @@ class _DemontageState extends State<Demontage> {
               height: 20,
             ),
             FloatingActionButton.extended(
-              onPressed: (() {
-                DateTime now = DateTime.now();
-                String date = DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
-                var mod =
-                    DemontageModel(user_id: id, date: date, list: currentList);
-                String json = jsonEncode(mod);
-                SendDemontage(json);
-                Navigator.pushNamed(context, "accueil", arguments: args);
+              onPressed: (() async {
+                if (currentList.isNotEmpty) {
+                  DateTime now = DateTime.now();
+                  String date = DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
+                  var mod = DemontageModel(
+                      user_id: id, date: date, list: currentList);
+                  String json = jsonEncode(mod);
+                  demontageJson = json;
+                  int statusCode = await SendDemontage();
+                  print(statusCode);
+                  if (statusCode == 200) {
+                    Navigator.pushNamed(context, "accueil", arguments: args);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        alignment: Alignment.center,
+                        icon: Icon(color: Colors.red.shade800, Icons.warning),
+                        title: Text(
+                            style: TextStyle(color: Colors.black), "Attention"),
+                        content: Text(
+                            textAlign: TextAlign.center,
+                            """Une erreur est survenu vérifiez que votre liste de démontage est correcte."""),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(context, "OK"),
+                              child: const Text(
+                                  style: TextStyle(fontSize: 20), "OK")),
+                        ],
+                        actionsAlignment: MainAxisAlignment.center,
+                        iconColor: Colors.blue,
+                      ),
+                    );
+                  }
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      alignment: Alignment.center,
+                      icon: Icon(color: Colors.red.shade800, Icons.warning),
+                      title: Text(
+                          style: TextStyle(color: Colors.black), "Attention"),
+                      content: Text("""Aucun démontage n'a été renseigné."""),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, "OK"),
+                            child: const Text(
+                                style: TextStyle(fontSize: 20), "OK")),
+                      ],
+                      actionsAlignment: MainAxisAlignment.center,
+                      iconColor: Colors.blue,
+                    ),
+                  );
+                }
               }),
               label: Text(
                 style: Theme.of(context).textTheme.titleLarge,

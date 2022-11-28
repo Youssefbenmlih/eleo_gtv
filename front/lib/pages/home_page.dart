@@ -44,8 +44,9 @@ class HomePage extends StatelessWidget {
                 icon: Icon(Icons.logout),
                 title:
                     Text(style: TextStyle(color: Colors.black), "Déconnexion"),
-                content:
-                    Text("""Êtes-vous sûr de vouloir vous déconnecter ?"""),
+                content: Text(
+                    textAlign: TextAlign.center,
+                    """Êtes-vous sûr de vouloir vous déconnecter ?"""),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, "ANNULER"),
