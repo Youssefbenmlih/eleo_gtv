@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import '../widgets/my_app_bar.dart';
@@ -25,7 +25,8 @@ class _ChargementState extends State<Chargement> {
   void _deleteElement(int id) {
     setState(() {
       var i = currentList.length - id - 1;
-      var t = (currentList[i].quantite_joues / 2) * type_poids[dropdownValue]!;
+      var t = (currentList[i].quantite_joues / 2) *
+          type_poids[currentList[i].touret_type]!;
       setState(() {
         tare -= t.toInt();
       });
@@ -33,8 +34,15 @@ class _ChargementState extends State<Chargement> {
     });
   }
 
-  List<ChargementListElement> currentList = [];
+  void reset_after_add() {
+    dropdownValue = list[0];
+    numberTouretsText.text = "0";
+    isSwitchedCercle = false;
+    isSwitchedIngelec = false;
+  }
 
+  List<ChargementListElement> currentList = [];
+  //REMOVE HARDCODING
   var type_poids = {'G': 220, 'H': 320, 'I': 420};
 
   List<String> list = <String>['Non Renseigné', 'I', 'G', 'H'];
@@ -63,7 +71,7 @@ class _ChargementState extends State<Chargement> {
 
     if (resp.statusCode == 200) {
       setState(() {
-        var j = jsonDecode(resp.body);
+        // var j = jsonDecode(resp.body);
       });
     } else {
       setState(() {});
@@ -78,7 +86,7 @@ class _ChargementState extends State<Chargement> {
     var id = mapArgs['id'];
 
     return Scaffold(
-      appBar: MyAppBar(wipeClean, "Chargement", args),
+      appBar: MyAppBar(wipeClean, "Chargement", args, true),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -138,71 +146,72 @@ class _ChargementState extends State<Chargement> {
                 max: 2000,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      "Cerclé : "),
-                  Spacer(
-                    flex: 2,
-                  ),
-                  Transform.scale(
-                    scale: 2.0,
-                    child: Switch(
-                      value: isSwitchedCercle,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitchedCercle = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(
-                    flex: 5,
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: 20,
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
+            Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                TableRow(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          "Cerclé : "),
+                      Spacer(
+                        flex: 2,
+                      ),
+                      Transform.scale(
+                        scale: 2.0,
+                        child: Switch(
+                          value: isSwitchedCercle,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitchedCercle = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(
+                        flex: 5,
+                      ),
+                    ],
                   ),
-                  Text(
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    "Ingelec : ",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        "Ingelec : ",
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      Transform.scale(
+                        scale: 2.0,
+                        child: Switch(
+                          value: isSwitchedIngelec,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitchedIngelec = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(
+                        flex: 3,
+                      ),
+                    ],
                   ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  Transform.scale(
-                    scale: 2.0,
-                    child: Switch(
-                      value: isSwitchedIngelec,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitchedIngelec = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(
-                    flex: 3,
-                  ),
-                ],
-              ),
+                ]),
+              ],
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
@@ -224,6 +233,7 @@ class _ChargementState extends State<Chargement> {
                   );
                   setState(() {
                     currentList.add(el);
+                    reset_after_add();
                   });
                 } else {
                   showDialog(

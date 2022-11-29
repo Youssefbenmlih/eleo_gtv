@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_build_context_synchronously, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
@@ -24,7 +24,9 @@ class _DemontageState extends State<Demontage> {
 
   void _deleteElement(int id) {
     setState(() {
-      currentList.removeAt(currentList.length - id - 1);
+      int i = currentList.length - id - 1;
+      nb_total -= currentList[i].quantite_tourets;
+      currentList.removeAt(i);
     });
   }
 
@@ -36,7 +38,15 @@ class _DemontageState extends State<Demontage> {
 
   final numberTouretsText = TextEditingController();
 
+  void reset_after_add() {
+    dropdownValue = list[0];
+    numberTouretsText.text = "0";
+    isSwitchedCercle = false;
+    isSwitchedIngelec = false;
+  }
+
   late int statusCode;
+  int nb_total = 0;
 
   bool isSwitchedCercle = false;
   bool isSwitchedIngelec = false;
@@ -54,7 +64,7 @@ class _DemontageState extends State<Demontage> {
 
     if (resp.statusCode == 200) {
       setState(() {
-        var j = jsonDecode(resp.body);
+        // var j = jsonDecode(resp.body);
       });
     } else {
       setState(() {});
@@ -69,18 +79,16 @@ class _DemontageState extends State<Demontage> {
     var id = mapArgs['id'];
 
     return Scaffold(
-      // floatingActionButton: DraggableFab(
-      //   child: FloatingActionButton.extended(
-      //     onPressed: (() {}),
-      //     label: Text(
-      //       style: Theme.of(context).textTheme.titleLarge,
-      //       "Confirmer",
-      //     ),
-      //     icon: Icon(Icons.arrow_circle_right),
-      //     backgroundColor: Colors.green,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: (() {}),
+      //   label: Text(
+      //     style: Theme.of(context).textTheme.titleLarge,
+      //     "Confirmer",
       //   ),
+      //   icon: Icon(Icons.arrow_circle_right),
+      //   backgroundColor: Colors.green,
       // ),
-      appBar: MyAppBar(wipeClean, "Démontage", args),
+      appBar: MyAppBar(wipeClean, "Démontage", args, true),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -140,71 +148,72 @@ class _DemontageState extends State<Demontage> {
                 max: 2000,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      "Cerclé : "),
-                  Spacer(
-                    flex: 2,
-                  ),
-                  Transform.scale(
-                    scale: 2.0,
-                    child: Switch(
-                      value: isSwitchedCercle,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitchedCercle = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(
-                    flex: 5,
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: 20,
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
+            Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                TableRow(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          "Cerclé : "),
+                      Spacer(
+                        flex: 2,
+                      ),
+                      Transform.scale(
+                        scale: 2.0,
+                        child: Switch(
+                          value: isSwitchedCercle,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitchedCercle = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(
+                        flex: 5,
+                      ),
+                    ],
                   ),
-                  Text(
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    "Ingelec : ",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        "Ingelec : ",
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      Transform.scale(
+                        scale: 2.0,
+                        child: Switch(
+                          value: isSwitchedIngelec,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitchedIngelec = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(
+                        flex: 3,
+                      ),
+                    ],
                   ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  Transform.scale(
-                    scale: 2.0,
-                    child: Switch(
-                      value: isSwitchedIngelec,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitchedIngelec = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(
-                    flex: 3,
-                  ),
-                ],
-              ),
+                ]),
+              ],
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
@@ -218,6 +227,8 @@ class _DemontageState extends State<Demontage> {
                       ingelec: isSwitchedIngelec ? "o" : "n");
                   setState(() {
                     currentList.add(el);
+                    nb_total += int.parse(numberTouretsText.text);
+                    reset_after_add();
                   });
                 } else {
                   showDialog(
@@ -254,7 +265,7 @@ class _DemontageState extends State<Demontage> {
               child: Text(
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.headlineMedium,
-                "Derniers Ajouts : ",
+                "Nombre total de tourets : $nb_total",
               ),
             ),
             Divider(

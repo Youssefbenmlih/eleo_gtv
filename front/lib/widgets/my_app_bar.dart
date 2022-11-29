@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
-  const MyAppBar(this.refreshPage, this.title, this.args, {super.key});
+  const MyAppBar(this.refreshPage, this.title, this.args, this.show, {super.key});
 
   final String title;
   final Object args;
   final Function refreshPage;
+  final bool show;
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -24,6 +25,11 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       leading: BackButton(
         onPressed: () {
+          if (!show)
+          {
+            Navigator.pushNamed(context, "accueil", arguments: args);
+            return;
+          }
           showDialog(
             context: context,
             builder: (context) => AlertDialog(

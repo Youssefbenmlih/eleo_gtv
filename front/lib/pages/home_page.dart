@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/material.dart';
 import '../widgets/gradient_elevated.dart';
@@ -73,7 +73,9 @@ class HomePage extends StatelessWidget {
     );
 
     return Scaffold(
-      drawer: NavigationDrawerWidget(),
+      drawer: NavigationDrawerWidget(
+        args: args,
+      ),
       appBar: appbar,
       body: SingleChildScrollView(
         child: Center(
@@ -116,9 +118,19 @@ class HomePage extends StatelessWidget {
                     );
                   },
                   borderRadius: BorderRadius.circular(40),
-                  child: Text(
-                      style: Theme.of(context).textTheme.titleLarge,
-                      'Scan réception Tourets Vides'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.document_scanner_outlined,
+                        size: 40,
+                      ),
+                      Text(
+                        style: Theme.of(context).textTheme.titleLarge,
+                        'Réception Tourets Vides',
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -137,9 +149,22 @@ class HomePage extends StatelessWidget {
                     );
                   },
                   borderRadius: BorderRadius.circular(40),
-                  child: Text(
-                      style: Theme.of(context).textTheme.titleLarge,
-                      'Démontage Tourets'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.handyman_outlined,
+                        size: 40,
+                      ),
+                      Text(
+                        style: Theme.of(context).textTheme.titleLarge,
+                        'Démontage Tourets',
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -159,9 +184,22 @@ class HomePage extends StatelessWidget {
                     );
                   },
                   borderRadius: BorderRadius.circular(40),
-                  child: Text(
-                      style: Theme.of(context).textTheme.titleLarge,
-                      'Chargement Tourets Démontés'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.fire_truck,
+                        size: 40,
+                      ),
+                      Text(
+                        style: Theme.of(context).textTheme.titleLarge,
+                        'Chargement Joues',
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(

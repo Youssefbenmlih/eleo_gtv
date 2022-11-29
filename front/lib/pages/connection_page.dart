@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, camel_case_types, no_leading_underscores_for_local_identifiers
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, camel_case_types, no_leading_underscores_for_local_identifiers, unused_element
 
 import 'package:flutter/material.dart';
 import '../widgets/gradient_elevated.dart';

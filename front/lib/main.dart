@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers, unused_import
 // CTRL + SPACE : check possible autocompletion
 // CTRL + SHIFT + R: Refactor
 import 'package:flutter/material.dart';
 import 'package:front/pages/chargement_tourets.dart';
 import 'package:front/pages/demontage_page.dart';
+import 'package:front/pages/historique.dart';
 import 'package:front/pages/home_page.dart';
 import 'package:front/pages/inventaire.dart';
 import 'package:front/pages/scan_reception.dart';
@@ -50,6 +51,13 @@ class MyApp extends StatelessWidget {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
+              headlineSmall: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+              ),
             ),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
@@ -73,8 +81,8 @@ class MyApp extends StatelessWidget {
         "demontage": ((context) => Demontage()),
         "reception": ((context) => Reception()),
         "chargement": ((context) => Chargement()),
-        "inventaire": ((context) => Inventaire()),
         "stock": ((context) => Stock()),
+        "historique": ((context) => Historique()),
       },
     );
   }

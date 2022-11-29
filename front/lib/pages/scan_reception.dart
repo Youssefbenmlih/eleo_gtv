@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../widgets/my_app_bar.dart';
-import 'package:draggable_fab/draggable_fab.dart';
 import 'package:intl/intl.dart';
-import 'package:number_inc_dec/number_inc_dec.dart';
 import '../models/reception_model.dart';
 import '../widgets/reception_list.dart';
 import 'dart:convert';
@@ -24,8 +22,15 @@ class _ReceptionState extends State<Reception> {
 
   void _deleteElement(int id) {
     setState(() {
+      nb_lot -= 1;
       currentList.removeAt(currentList.length - id - 1);
     });
+  }
+
+  void reset_after_add() {
+    numeroLotText.text = "";
+    isSwitchedCercle = false;
+    isSwitchedIngelec = false;
   }
 
   List<ReceptionListElement> currentList = [];
@@ -33,6 +38,7 @@ class _ReceptionState extends State<Reception> {
   final numeroLotText = TextEditingController();
 
   late int statusCode;
+  int nb_lot = 0;
 
   bool isSwitchedCercle = false;
   bool isSwitchedIngelec = false;
@@ -50,7 +56,7 @@ class _ReceptionState extends State<Reception> {
 
     if (resp.statusCode == 200) {
       setState(() {
-        var j = jsonDecode(resp.body);
+        // var j = jsonDecode(resp.body);
       });
     } else {
       setState(() {});
@@ -63,10 +69,11 @@ class _ReceptionState extends State<Reception> {
     final args = ModalRoute.of(context)!.settings.arguments;
     final mapArgs = args as Map;
 
+    // ignore: unused_local_variable
     var userName = mapArgs['name'];
     var id = mapArgs['id'];
     return Scaffold(
-      appBar: MyAppBar(wipeClean, "Réception", args),
+      appBar: MyAppBar(wipeClean, "Réception", args, true),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -78,78 +85,80 @@ class _ReceptionState extends State<Reception> {
                   "Numéro de lot:"),
             ),
             Container(
-                width: 350,
-                height: 70,
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                alignment: Alignment.center,
-                child: TextField(
-                  controller: numeroLotText,
-                )),
-            Container(
-              margin: EdgeInsets.only(top: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      "Cerclé : "),
-                  Spacer(
-                    flex: 2,
-                  ),
-                  Transform.scale(
-                    scale: 2.0,
-                    child: Switch(
-                      value: isSwitchedCercle,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitchedCercle = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(
-                    flex: 5,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    "Ingelec : ",
-                  ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  Transform.scale(
-                    scale: 2.0,
-                    child: Switch(
-                      value: isSwitchedIngelec,
-                      onChanged: (value) {
-                        setState(() {
-                          isSwitchedIngelec = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Spacer(
-                    flex: 3,
-                  ),
-                ],
+              width: 350,
+              height: 70,
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              alignment: Alignment.center,
+              child: TextField(
+                controller: numeroLotText,
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 10,
+            ),
+            Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: [
+                TableRow(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          "Cerclé : "),
+                      Spacer(
+                        flex: 2,
+                      ),
+                      Transform.scale(
+                        scale: 2.0,
+                        child: Switch(
+                          value: isSwitchedCercle,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitchedCercle = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(
+                        flex: 5,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        "Ingelec : ",
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      Transform.scale(
+                        scale: 2.0,
+                        child: Switch(
+                          value: isSwitchedIngelec,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitchedIngelec = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Spacer(
+                        flex: 3,
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+            SizedBox(
+              height: 20,
             ),
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
@@ -163,6 +172,8 @@ class _ReceptionState extends State<Reception> {
                       ingelec: isSwitchedIngelec ? "o" : "n");
                   setState(() {
                     currentList.add(el);
+                    reset_after_add();
+                    nb_lot += 1;
                   });
                 } else {
                   showDialog(
@@ -198,7 +209,7 @@ class _ReceptionState extends State<Reception> {
               child: Text(
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.headlineMedium,
-                "Derniers Ajouts : ",
+                "Nombre de lots : $nb_lot",
               ),
             ),
             Divider(

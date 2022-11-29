@@ -1,9 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 
 import 'package:flutter/material.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
-  const NavigationDrawerWidget({super.key});
+  // ignore: prefer_typing_uninitialized_variables
+  var args;
+
+  NavigationDrawerWidget({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +60,11 @@ class NavigationDrawerWidget extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                     'Historique'),
                 onTap: () {
-                  // Update the state of the app.
-                  // ...
+                  Navigator.pushNamed(
+                    context,
+                    "historique",
+                    arguments: args,
+                  );
                 },
               ),
             ),
@@ -71,11 +81,11 @@ class NavigationDrawerWidget extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                     'Stock'),
                 onTap: () {
-                  // Navigator.pushNamed(
-                  //     context,
-                  //     "stock",
-                  //     arguments: args,
-                  //   );
+                  Navigator.pushNamed(
+                    context,
+                    "stock",
+                    arguments: args,
+                  );
                 },
               ),
             ),
