@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
+import 'package:front/widgets/detail_list.dart';
 import 'package:intl/intl.dart';
 import '../widgets/my_app_bar.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
@@ -294,7 +295,59 @@ class _DemontageState extends State<Demontage> {
                   demontageJson = json;
                   int statusCode = await SendDemontage();
                   if (statusCode == 200) {
-                    Navigator.pushNamed(context, "accueil", arguments: args);
+                    showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return Center(
+                          child: Container(
+                            width: 400,
+                            height: 400,
+                            decoration: BoxDecoration(color: Colors.white),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                DefaultTextStyle(
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    child: Text("Résumé d'activité :")),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                Divider(
+                                  color: Colors.indigo,
+                                  thickness: 10,
+                                ),
+                                DetailList(
+                                    is_dem: true,
+                                    is_rec: false,
+                                    res: currentList.reversed.toList()),
+                                Divider(
+                                  color: Colors.indigo,
+                                  thickness: 10,
+                                ),
+                                TextButton(
+                                  onPressed: (() {
+                                    Navigator.pushNamed(context, "accueil",
+                                        arguments: args);
+                                  }),
+                                  child: Text(
+                                      style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      "OK"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    );
                   } else {
                     showDialog(
                       context: context,

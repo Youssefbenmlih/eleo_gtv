@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:front/widgets/detail_list.dart';
 import '../widgets/my_app_bar.dart';
 import 'package:intl/intl.dart';
 import '../models/reception_model.dart';
@@ -238,7 +239,59 @@ class _ReceptionState extends State<Reception> {
                   receptionJson = json;
                   int statusCode = await SendReception();
                   if (statusCode == 200) {
-                    Navigator.pushNamed(context, "accueil", arguments: args);
+                    showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return Center(
+                          child: Container(
+                            width: 400,
+                            height: 400,
+                            decoration: BoxDecoration(color: Colors.white),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                DefaultTextStyle(
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    child: Text("Résumé d'activité :")),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                Divider(
+                                  color: Colors.indigo,
+                                  thickness: 10,
+                                ),
+                                DetailList(
+                                    is_dem: false,
+                                    is_rec: true,
+                                    res: currentList.reversed.toList()),
+                                Divider(
+                                  color: Colors.indigo,
+                                  thickness: 10,
+                                ),
+                                TextButton(
+                                  onPressed: (() {
+                                    Navigator.pushNamed(context, "accueil",
+                                        arguments: args);
+                                  }),
+                                  child: Text(
+                                      style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      "OK"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    );
                   } else {
                     showDialog(
                       context: context,
