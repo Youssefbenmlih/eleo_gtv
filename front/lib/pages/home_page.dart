@@ -170,7 +170,6 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: MyElevatedButton(
@@ -205,10 +204,6 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-
-              // SizedBox(
-              //   height: 15,
-              // ),
               // Padding(
               //   padding: const EdgeInsets.all(12.0),
               //   child: MyElevatedButton(
