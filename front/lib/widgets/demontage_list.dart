@@ -7,11 +7,13 @@ class DemontageList extends StatelessWidget {
   final List<DemontageListElement> elements;
 
   final Function deleteTx;
+  bool delete;
 
-  const DemontageList({
+  DemontageList({
     super.key,
     required this.elements,
     required this.deleteTx,
+    this.delete = true,
   });
 
   @override
@@ -60,13 +62,15 @@ class DemontageList extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        color: Theme.of(context).errorColor,
-                        onPressed: () {
-                          deleteTx(index);
-                        },
-                      ),
+                      delete
+                          ? IconButton(
+                              icon: Icon(Icons.delete),
+                              color: Theme.of(context).errorColor,
+                              onPressed: () {
+                                deleteTx(index);
+                              },
+                            )
+                          : Container()
                     ],
                   ),
                 );

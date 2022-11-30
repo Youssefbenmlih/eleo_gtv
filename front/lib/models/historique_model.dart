@@ -5,26 +5,23 @@ import 'package:front/models/demontage_model.dart';
 import 'package:front/models/reception_model.dart';
 
 class HistoriqueModel {
-  late int user_id;
-  late String date;
+  late String user_name;
+  late DateTime date;
   late List<HistoriqueListElement> list;
-  late int activity_name;
+  late String activity_name;
+  late String activity_id;
+  late int? tare;
+  late int id;
 
   HistoriqueModel({
-    required this.user_id,
+    required this.user_name,
     required this.date,
     required this.list,
     required this.activity_name,
+    required this.activity_id,
+    required this.id,
+    this.tare,
   });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'user_id': user_id,
-      'date': date,
-      'list': list,
-      'activity_name': activity_name,
-    };
-  }
 }
 
 class HistoriqueListElement {
