@@ -399,7 +399,7 @@ class _ChargementState extends State<Chargement> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        "OK"),
+                                        "TERMINER"),
                                   ),
                                 ],
                               ),

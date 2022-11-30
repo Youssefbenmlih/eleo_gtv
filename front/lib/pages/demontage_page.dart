@@ -394,7 +394,7 @@ class _DemontageState extends State<Demontage> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        "OK"),
+                                        "TERMINER"),
                                   ),
                                 ],
                               ),

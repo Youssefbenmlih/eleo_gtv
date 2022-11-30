@@ -334,7 +334,7 @@ class _ReceptionState extends State<Reception> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        "OK"),
+                                        "TERMINER"),
                                   ),
                                 ],
                               ),
