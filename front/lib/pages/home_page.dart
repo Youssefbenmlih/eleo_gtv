@@ -208,24 +208,40 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(12.0),
-                //   child: MyElevatedButton(
-                //     height: 80,
-                //     width: 350,
-                //     onPressed: () {
-                //       Navigator.pushNamed(
-                //         context,
-                //         "inventaire",
-                //         arguments: perma_args,
-                //       );
-                //     },
-                //     borderRadius: BorderRadius.circular(40),
-                //     child: Text(
-                //         style: Theme.of(context).textTheme.titleLarge,
-                //         'Inventaire'),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MyElevatedButton(
+                    height: 80,
+                    width: 350,
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "inventaire",
+                        arguments: perma_args,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.table_view_sharp,
+                          size: 40,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          style: Theme.of(context).textTheme.titleLarge,
+                          'Inventaire',
+                        ),
+                        SizedBox(
+                          width: 70,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

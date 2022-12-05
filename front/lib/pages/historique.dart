@@ -176,12 +176,18 @@ class _HistoriqueState extends State<Historique> {
                           Colors.cyan.shade100,
                           Colors.indigo.shade100
                         ]),
+                  width: 120,
                   onPressed: () {
                     setState(() {
                       display_dem = !display_dem;
                     });
                   },
-                  child: Text(style: TextStyle(fontSize: 18), "Démontage"),
+                  child: Text(
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      "Démontage"),
                 ),
                 MyElevatedButton(
                   borderRadius: BorderRadius.circular(30),
@@ -198,7 +204,13 @@ class _HistoriqueState extends State<Historique> {
                       display_rec = !display_rec;
                     });
                   },
-                  child: Text(style: TextStyle(fontSize: 18), "Réception"),
+                  width: 120,
+                  child: Text(
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      "Réception"),
                 ),
                 MyElevatedButton(
                   borderRadius: BorderRadius.circular(30),
@@ -215,9 +227,21 @@ class _HistoriqueState extends State<Historique> {
                       display_cha = !display_cha;
                     });
                   },
-                  child: Text(style: TextStyle(fontSize: 18), "Chargement"),
+                  width: 120,
+                  child: Text(
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      "Chargement"),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(
+              thickness: 4,
             ),
             HistoriqueList(
               elements: getList(),

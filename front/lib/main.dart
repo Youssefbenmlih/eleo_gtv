@@ -45,6 +45,18 @@ class MyApp extends StatelessWidget {
               labelMedium: TextStyle(
                 color: Colors.white,
               ),
+              labelLarge: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                color: Colors.lightBlue.shade800,
+                fontWeight: FontWeight.bold,
+              ),
+              headlineLarge: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
               headlineMedium: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 18,
@@ -81,6 +93,7 @@ class MyApp extends StatelessWidget {
         "demontage": ((context) => Demontage()),
         "reception": ((context) => Reception()),
         "chargement": ((context) => Chargement()),
+        "inventaire": ((context) => Inventaire()),
         "stock": ((context) => Stock()),
         "historique": ((context) => Historique()),
       },
