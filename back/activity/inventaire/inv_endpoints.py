@@ -13,6 +13,8 @@ inventaire = Blueprint('inventaire', __name__, template_folder='templates')
   "nb_demonte_cercle" : "15"
 }
 """
+
+
 @inventaire.route('/api/activity/inventaire', methods=['POST'])
 def inventaire_activity_store():
     request_data = request.get_json()
@@ -39,12 +41,12 @@ def inventaire_activity_store():
     ,'{}'
     ,'{}')\n
     """.format(
-    user_id,
-    date,
-    nb_monte_cercle,
-    nb_demonte_cercle,
-    nb_monte_non_cercle,
-    nb_demonte_non_cercle
+        user_id,
+        date,
+        nb_monte_cercle,
+        nb_demonte_cercle,
+        nb_monte_non_cercle,
+        nb_demonte_non_cercle
     )
 
     try:

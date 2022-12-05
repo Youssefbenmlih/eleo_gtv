@@ -9,7 +9,7 @@ import '../models/Historique_model.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import '../models/demontage_model.dart';
 
 class HistoriqueList extends StatefulWidget {
@@ -28,8 +28,12 @@ class _HistoriqueListState extends State<HistoriqueList> {
   var formatter = DateFormat('dd/MM/yyyy hh:mm:ss');
 
   Future<List> fetchActivityDetail(activity, id) async {
+    String url_h = "10.0.2.2";
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:5000/api/historique/det_$activity'),
+      Uri.parse('http://$url_h:5000/api/historique/det_$activity'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -66,7 +70,7 @@ class _HistoriqueListState extends State<HistoriqueList> {
         : Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
-              height: 580,
+              height: 600,
               child: ListView.builder(
                 itemCount: widget.elements.length,
                 itemBuilder: (context, index) {
@@ -132,11 +136,16 @@ class _HistoriqueListState extends State<HistoriqueList> {
                                 } else if (acid == "rec") {
                                   rec = true;
                                   res = detail_list
-                                      .map((el) => ReceptionListElement(
+                                      .map(
+                                        (el) => ReceptionListElement(
                                           touret_type: el['touret_type'],
                                           numero_de_lot: el['numero_de_lot'],
                                           cercle: el['cercle'],
-                                          ingelec: el['ingelec']))
+                                          ingelec: el['ingelec'],
+                                          quantite_tourets:
+                                              el['quantite_tourets'],
+                                        ),
+                                      )
                                       .toList();
                                 } else {
                                   res = detail_list

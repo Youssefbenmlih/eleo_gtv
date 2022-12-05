@@ -63,15 +63,25 @@ class receptionList extends StatelessWidget {
                           0,
                           10,
                         ),
-                        child: Text(
-                          "Lot ${elements.length - index} : ${elements[index].numero_de_lot}",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                        child: elements[index].ingelec == "o"
+                            ? Text(
+                                "${elements.length - index} : ${elements[index].numero_de_lot}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              )
+                            : Text(
+                                "  ${elements.length - index} : Tourets  ${elements[index].touret_type} ${elements[index].cercle == "o" ? "Cerclé(s)" : "Non Cerclé(s)"} : ${elements[index].quantite_tourets}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                       ),
                       delete
                           ? IconButton(

@@ -1,13 +1,16 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:front/widgets/activity_summary.dart';
 import 'package:front/widgets/detail_list.dart';
 import '../widgets/my_app_bar.dart';
 import 'package:intl/intl.dart';
 import '../models/reception_model.dart';
 import '../widgets/reception_list.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
 
 class Reception extends StatefulWidget {
   const Reception({super.key});
@@ -29,9 +32,10 @@ class _ReceptionState extends State<Reception> {
   }
 
   void reset_after_add() {
+    numberTouretsText.text = "0";
+    dropdownValue = "Non Renseigné";
     numeroLotText.text = "";
     isSwitchedCercle = false;
-    isSwitchedIngelec = false;
   }
 
   List<ReceptionListElement> currentList = [];
@@ -41,14 +45,24 @@ class _ReceptionState extends State<Reception> {
   late int statusCode;
   int nb_lot = 0;
 
+  List<String> l = <String>['Non Renseigné', 'I', 'G', 'H'];
+
+  String dropdownValue = "Non Renseigné";
+
+  final numberTouretsText = TextEditingController();
+
   bool isSwitchedCercle = false;
-  bool isSwitchedIngelec = false;
+  bool isSwitchedIngelec = true;
 
   late String receptionJson;
 
   Future<int> SendReception() async {
+    String url_h = "10.0.2.2";
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final resp = await http.post(
-      Uri.parse('http://10.0.2.2:5000/api/activity/reception'),
+      Uri.parse('http://$url_h:5000/api/activity/reception'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -78,22 +92,6 @@ class _ReceptionState extends State<Reception> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  "Numéro de lot:"),
-            ),
-            Container(
-              width: 350,
-              height: 70,
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              alignment: Alignment.center,
-              child: TextField(
-                controller: numeroLotText,
-              ),
-            ),
             SizedBox(
               height: 10,
             ),
@@ -114,7 +112,7 @@ class _ReceptionState extends State<Reception> {
                         flex: 2,
                       ),
                       Transform.scale(
-                        scale: 2.0,
+                        scale: 1.5,
                         child: Switch(
                           value: isSwitchedCercle,
                           onChanged: (value) {
@@ -140,7 +138,7 @@ class _ReceptionState extends State<Reception> {
                         flex: 1,
                       ),
                       Transform.scale(
-                        scale: 2.0,
+                        scale: 1.5,
                         child: Switch(
                           value: isSwitchedIngelec,
                           onChanged: (value) {
@@ -158,23 +156,126 @@ class _ReceptionState extends State<Reception> {
                 ]),
               ],
             ),
+            isSwitchedIngelec
+                ? (Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            "Numéro de lot:"),
+                      ),
+                      Container(
+                        width: 350,
+                        height: 70,
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        alignment: Alignment.center,
+                        child: TextField(
+                          controller: numeroLotText,
+                        ),
+                      )
+                    ],
+                  ))
+                : (Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            "Type Touret:"),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          underline: Container(
+                            height: 2,
+                            color: Colors.blue,
+                          ),
+                          value: dropdownValue,
+                          onChanged: (value) {
+                            setState(() {
+                              dropdownValue = value!;
+                            });
+                          },
+                          items: l.map<DropdownMenuItem<String>>(
+                            (String value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            "Nombre de Tourets:"),
+                      ),
+                      Container(
+                        width: 350,
+                        height: 70,
+                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        alignment: Alignment.center,
+                        child: NumberInputPrefabbed.squaredButtons(
+                          style: TextStyle(
+                              fontFamily: 'OpenSans',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                          controller: numberTouretsText,
+                          incDecBgColor: Colors.blueAccent,
+                          min: 0,
+                          max: 2000,
+                        ),
+                      ),
+                    ],
+                  )),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
               onPressed: () {
-                if (numeroLotText.text.length == 10 &&
-                    list.contains(numeroLotText.text[0])) {
-                  var el = ReceptionListElement(
-                      touret_type: numeroLotText.text[0],
-                      numero_de_lot: numeroLotText.text,
+                int qt = 1;
+                if ((isSwitchedIngelec &&
+                        numeroLotText.text.length == 10 &&
+                        list.contains(numeroLotText.text[0].toUpperCase())) ||
+                    (!isSwitchedIngelec &&
+                        dropdownValue != "Non Renseigné" &&
+                        numberTouretsText.text != "0")) {
+                  late ReceptionListElement el;
+                  if (isSwitchedIngelec) {
+                    el = ReceptionListElement(
+                      touret_type: numeroLotText.text[0].toUpperCase(),
+                      numero_de_lot: numeroLotText.text.toUpperCase(),
                       cercle: isSwitchedCercle ? "o" : "n",
-                      ingelec: isSwitchedIngelec ? "o" : "n");
+                      ingelec: isSwitchedIngelec ? "o" : "n",
+                      quantite_tourets: 1,
+                    );
+                  } else {
+                    el = ReceptionListElement(
+                      touret_type: dropdownValue,
+                      numero_de_lot: "",
+                      cercle: isSwitchedCercle ? "o" : "n",
+                      ingelec: isSwitchedIngelec ? "o" : "n",
+                      quantite_tourets: int.parse(numberTouretsText.text),
+                    );
+                    qt = int.parse(numberTouretsText.text);
+                  }
+
                   setState(() {
+                    setState(() {
+                      nb_lot += qt;
+                    });
                     currentList.add(el);
                     reset_after_add();
-                    nb_lot += 1;
                   });
                 } else {
                   showDialog(
@@ -183,9 +284,14 @@ class _ReceptionState extends State<Reception> {
                       alignment: Alignment.center,
                       icon: Icon(color: Colors.red.shade800, Icons.warning),
                       title: Text(
-                          style: TextStyle(color: Colors.black), "Attention"),
-                      content:
-                          Text("""Le numéro de lot saisi est incorrect."""),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.black),
+                          "Attention"),
+                      content: Text(
+                          textAlign: TextAlign.center,
+                          isSwitchedIngelec
+                              ? "Le numéro de lot saisi est incorrect."
+                              : "Veuillez remplir toutes les informations"),
                       actions: [
                         TextButton(
                             onPressed: () => Navigator.pop(context, "OK"),
@@ -257,7 +363,7 @@ class _ReceptionState extends State<Reception> {
                                 color: Colors.indigo,
                                 thickness: 10,
                               ),
-                              DetailList(
+                              ActivitySummary(
                                   is_dem: false,
                                   is_rec: true,
                                   res: currentList.reversed.toList()),

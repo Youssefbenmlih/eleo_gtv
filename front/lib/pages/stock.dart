@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:front/widgets/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 class Stock extends StatefulWidget {
   const Stock({super.key});
@@ -14,8 +15,12 @@ class Stock extends StatefulWidget {
 
 class _StockState extends State<Stock> {
   Future<Map> fetchStock() async {
+    String url_h = "10.0.2.2";
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:5000/api/stock/get'));
+        await http.get(Uri.parse('http://$url_h:5000/api/stock/get'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -89,189 +94,193 @@ class _StockState extends State<Stock> {
         ),
       ),
       appBar: MyAppBar(() {}, "STOCK", args, false),
-      body: Column(
-        children: [
-          SizedBox(height: 40),
-          Text(
-            style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                color: Colors.blueGrey.shade700,
-                fontWeight: FontWeight.w600),
-            "Tourets Vides Montés :",
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 40),
+              Text(
+                style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    color: Colors.blueGrey.shade700,
+                    fontWeight: FontWeight.w600),
+                "Tourets Vides Montés :",
+              ),
+              SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 10, 10, 10),
+                child: DataTable(
+                  columns: <DataColumn>[
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          '',
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Cerclé',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Non Cerclé',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ),
+                    ),
+                  ],
+                  rows: <DataRow>[
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            'G',
+                          ),
+                        ),
+                        DataCell(Center(
+                            child: Text(
+                                data['G']['stock_monte_cercle'].toString()))),
+                        DataCell(Center(
+                            child: Text(data['G']['stock_monte_non_cercle']
+                                .toString()))),
+                      ],
+                    ),
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            'H',
+                          ),
+                        ),
+                        DataCell(Center(
+                            child: Text(
+                                data['H']['stock_monte_cercle'].toString()))),
+                        DataCell(Center(
+                            child: Text(data['H']['stock_monte_non_cercle']
+                                .toString()))),
+                      ],
+                    ),
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            ' I',
+                          ),
+                        ),
+                        DataCell(Center(
+                            child: Text(
+                                data['I']['stock_monte_cercle'].toString()))),
+                        DataCell(Center(
+                            child: Text(data['I']['stock_monte_non_cercle']
+                                .toString()))),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Text(
+                style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    color: Colors.blueGrey.shade700,
+                    fontWeight: FontWeight.w600),
+                "Tourets Vides Démontés :",
+              ),
+              SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.fromLTRB(25.0, 10, 10, 10),
+                child: DataTable(
+                  columns: <DataColumn>[
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          '',
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Cerclé',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Non Cerclé',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ),
+                    ),
+                  ],
+                  rows: <DataRow>[
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            'G',
+                          ),
+                        ),
+                        DataCell(Center(
+                            child: Text(
+                                data['G']['stock_demonte_cercle'].toString()))),
+                        DataCell(Center(
+                            child: Text(data['G']['stock_demonte_non_cercle']
+                                .toString()))),
+                      ],
+                    ),
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            'H',
+                          ),
+                        ),
+                        DataCell(Center(
+                            child: Text(
+                                data['H']['stock_demonte_cercle'].toString()))),
+                        DataCell(Center(
+                            child: Text(data['H']['stock_demonte_non_cercle']
+                                .toString()))),
+                      ],
+                    ),
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(
+                          Text(
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            ' I',
+                          ),
+                        ),
+                        DataCell(Center(
+                            child: Text(
+                                data['I']['stock_demonte_cercle'].toString()))),
+                        DataCell(Center(
+                            child: Text(data['I']['stock_demonte_non_cercle']
+                                .toString()))),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 10),
-          Container(
-            padding: EdgeInsets.fromLTRB(25.0, 10, 10, 10),
-            child: DataTable(
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      '',
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Cerclé',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Non Cerclé',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                ),
-              ],
-              rows: <DataRow>[
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        'G',
-                      ),
-                    ),
-                    DataCell(Center(
-                        child:
-                            Text(data['G']['stock_monte_cercle'].toString()))),
-                    DataCell(Center(
-                        child: Text(
-                            data['G']['stock_monte_non_cercle'].toString()))),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        'H',
-                      ),
-                    ),
-                    DataCell(Center(
-                        child:
-                            Text(data['H']['stock_monte_cercle'].toString()))),
-                    DataCell(Center(
-                        child: Text(
-                            data['H']['stock_monte_non_cercle'].toString()))),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        ' I',
-                      ),
-                    ),
-                    DataCell(Center(
-                        child:
-                            Text(data['I']['stock_monte_cercle'].toString()))),
-                    DataCell(Center(
-                        child: Text(
-                            data['I']['stock_monte_non_cercle'].toString()))),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 30),
-          Text(
-            style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                color: Colors.blueGrey.shade700,
-                fontWeight: FontWeight.w600),
-            "Tourets Vides Démontés :",
-          ),
-          SizedBox(height: 10),
-          Container(
-            padding: EdgeInsets.fromLTRB(25.0, 10, 10, 10),
-            child: DataTable(
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      '',
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Cerclé',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Non Cerclé',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                ),
-              ],
-              rows: <DataRow>[
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        'G',
-                      ),
-                    ),
-                    DataCell(Center(
-                        child: Text(
-                            data['G']['stock_demonte_cercle'].toString()))),
-                    DataCell(Center(
-                        child: Text(
-                            data['G']['stock_demonte_non_cercle'].toString()))),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        'H',
-                      ),
-                    ),
-                    DataCell(Center(
-                        child: Text(
-                            data['H']['stock_demonte_cercle'].toString()))),
-                    DataCell(Center(
-                        child: Text(
-                            data['H']['stock_demonte_non_cercle'].toString()))),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        ' I',
-                      ),
-                    ),
-                    DataCell(Center(
-                        child: Text(
-                            data['I']['stock_demonte_cercle'].toString()))),
-                    DataCell(Center(
-                        child: Text(
-                            data['I']['stock_demonte_non_cercle'].toString()))),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

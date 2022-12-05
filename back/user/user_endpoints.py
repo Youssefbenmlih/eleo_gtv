@@ -13,6 +13,7 @@ def get_users():
     req = 'SELECT * FROM dbo.users'
     return jsonify(pd.read_sql_query(req, engine).to_dict('records'))
 
+
 """
 Json Content:
 {
@@ -22,6 +23,8 @@ Json Content:
   "admin" : "n"
 }
 """
+
+
 @user.route('/api/users/add', methods=['POST'])
 def add_user():
     request_data = request.get_json()
@@ -32,8 +35,9 @@ def add_user():
     except Exception as e:
         print(e)
         return "user could not be added", 500
-    
+
     return "user added!", 200
+
 
 """
 JSON content
@@ -42,10 +46,11 @@ JSON content
   "mot_de_passe" : "mdp"
 }
 """
+
+
 @user.route('/api/users/connect', methods=['POST'])
 def connect_req():
     request_data = request.get_json()
-    print(request_data)
     res = check_connection(request_data, engine)
     print(res[1])
     if (res[1] == True):

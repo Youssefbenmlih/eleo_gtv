@@ -8,7 +8,7 @@ import 'package:front/widgets/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'dart:developer';
+import 'dart:io' show Platform;
 
 class Historique extends StatefulWidget {
   const Historique({super.key});
@@ -20,9 +20,14 @@ class Historique extends StatefulWidget {
 class _HistoriqueState extends State<Historique> {
   bool b = false;
 
+  String url_h = "10.0.2.2";
+
   Future<Map> fetchHistorique() async {
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:5000/api/historique/list'));
+        await http.get(Uri.parse('http://$url_h:5000/api/historique/list'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -36,8 +41,11 @@ class _HistoriqueState extends State<Historique> {
   }
 
   Future<List> fetchUsername() async {
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:5000/api/users/list'));
+        await http.get(Uri.parse('http://$url_h:5000/api/users/list'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -88,12 +96,12 @@ class _HistoriqueState extends State<Historique> {
   }
 
   void create_all_list(data) {
-    List d =
-        map_activity_list(data, 'demontage', false, 'Démontage de Tourets', "dem");
-    List r =
-        map_activity_list(data, 'reception', false, 'Réception Tourets Vides', "rec");
-    List c =
-        map_activity_list(data, 'chargement', true, 'Chargement Tourets Vides', "cha");
+    List d = map_activity_list(
+        data, 'demontage', false, 'Démontage de Tourets', "dem");
+    List r = map_activity_list(
+        data, 'reception', false, 'Réception Tourets Vides', "rec");
+    List c = map_activity_list(
+        data, 'chargement', true, 'Chargement Tourets Vides', "cha");
     dem = d;
     rec = r;
     cha = c;
@@ -151,63 +159,71 @@ class _HistoriqueState extends State<Historique> {
         ),
       ),
       appBar: MyAppBar(() {}, "HISTORIQUE", args, false),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              MyElevatedButton(
-                borderRadius: BorderRadius.circular(30),
-                gradient: display_dem
-                    ? const LinearGradient(
-                        colors: [Colors.cyan, Colors.indigo],
-                      )
-                    : LinearGradient(
-                        colors: [Colors.cyan.shade100, Colors.indigo.shade100]),
-                onPressed: () {
-                  setState(() {
-                    display_dem = !display_dem;
-                  });
-                },
-                child: Text(style: TextStyle(fontSize: 18), "Démontage"),
-              ),
-              MyElevatedButton(
-                borderRadius: BorderRadius.circular(30),
-                gradient: display_rec
-                    ? const LinearGradient(
-                        colors: [Colors.cyan, Colors.indigo],
-                      )
-                    : LinearGradient(
-                        colors: [Colors.cyan.shade100, Colors.indigo.shade100]),
-                onPressed: () {
-                  setState(() {
-                    display_rec = !display_rec;
-                  });
-                },
-                child: Text(style: TextStyle(fontSize: 18), "Réception"),
-              ),
-              MyElevatedButton(
-                borderRadius: BorderRadius.circular(30),
-                gradient: display_cha
-                    ? const LinearGradient(
-                        colors: [Colors.cyan, Colors.indigo],
-                      )
-                    : LinearGradient(
-                        colors: [Colors.cyan.shade100, Colors.indigo.shade100]),
-                onPressed: () {
-                  setState(() {
-                    display_cha = !display_cha;
-                  });
-                },
-                child: Text(style: TextStyle(fontSize: 18), "Chargement"),
-              ),
-            ],
-          ),
-          HistoriqueList(
-            elements: getList(),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                MyElevatedButton(
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: display_dem
+                      ? const LinearGradient(
+                          colors: [Colors.cyan, Colors.indigo],
+                        )
+                      : LinearGradient(colors: [
+                          Colors.cyan.shade100,
+                          Colors.indigo.shade100
+                        ]),
+                  onPressed: () {
+                    setState(() {
+                      display_dem = !display_dem;
+                    });
+                  },
+                  child: Text(style: TextStyle(fontSize: 18), "Démontage"),
+                ),
+                MyElevatedButton(
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: display_rec
+                      ? const LinearGradient(
+                          colors: [Colors.cyan, Colors.indigo],
+                        )
+                      : LinearGradient(colors: [
+                          Colors.cyan.shade100,
+                          Colors.indigo.shade100
+                        ]),
+                  onPressed: () {
+                    setState(() {
+                      display_rec = !display_rec;
+                    });
+                  },
+                  child: Text(style: TextStyle(fontSize: 18), "Réception"),
+                ),
+                MyElevatedButton(
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: display_cha
+                      ? const LinearGradient(
+                          colors: [Colors.cyan, Colors.indigo],
+                        )
+                      : LinearGradient(colors: [
+                          Colors.cyan.shade100,
+                          Colors.indigo.shade100
+                        ]),
+                  onPressed: () {
+                    setState(() {
+                      display_cha = !display_cha;
+                    });
+                  },
+                  child: Text(style: TextStyle(fontSize: 18), "Chargement"),
+                ),
+              ],
+            ),
+            HistoriqueList(
+              elements: getList(),
+            ),
+          ],
+        ),
       ),
     );
   }

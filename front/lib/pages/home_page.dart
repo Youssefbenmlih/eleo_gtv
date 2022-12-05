@@ -72,157 +72,162 @@ class HomePage extends StatelessWidget {
       ],
     );
 
-    return Scaffold(
-      drawer: NavigationDrawerWidget(
-        args: args,
-      ),
-      appBar: appbar,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
-                child: SizedBox(
-                    height: 150,
+    return WillPopScope(
+      onWillPop: () async {
+        return !Navigator.of(context).userGestureInProgress;
+      },
+      child: Scaffold(
+        drawer: NavigationDrawerWidget(
+          args: args,
+        ),
+        appBar: appbar,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
+                  child: SizedBox(
+                      height: 150,
+                      width: 350,
+                      child: Image.asset(
+                        "assets/images/logo_eleo.png",
+                        fit: BoxFit.contain,
+                      )),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  style: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w600),
+                  "Choisissez votre activité :",
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MyElevatedButton(
+                    height: 80,
                     width: 350,
-                    child: Image.asset(
-                      "assets/images/logo_eleo.png",
-                      fit: BoxFit.contain,
-                    )),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w600),
-                "Choisissez votre activité :",
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MyElevatedButton(
-                  height: 80,
-                  width: 350,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "reception",
-                      arguments: perma_args,
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.document_scanner_outlined,
-                        size: 40,
-                      ),
-                      Text(
-                        style: Theme.of(context).textTheme.titleLarge,
-                        'Réception Tourets Vides',
-                      ),
-                    ],
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "reception",
+                        arguments: perma_args,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.document_scanner_outlined,
+                          size: 40,
+                        ),
+                        Text(
+                          style: Theme.of(context).textTheme.titleLarge,
+                          'Réception Tourets Vides',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MyElevatedButton(
-                  height: 80,
-                  width: 350,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "demontage",
-                      arguments: perma_args,
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.handyman_outlined,
-                        size: 40,
-                      ),
-                      Text(
-                        style: Theme.of(context).textTheme.titleLarge,
-                        'Démontage Tourets',
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MyElevatedButton(
+                    height: 80,
+                    width: 350,
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "demontage",
+                        arguments: perma_args,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.handyman_outlined,
+                          size: 40,
+                        ),
+                        Text(
+                          style: Theme.of(context).textTheme.titleLarge,
+                          'Démontage Tourets',
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MyElevatedButton(
-                  height: 80,
-                  width: 350,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "chargement",
-                      arguments: perma_args,
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.fire_truck,
-                        size: 40,
-                      ),
-                      Text(
-                        style: Theme.of(context).textTheme.titleLarge,
-                        'Chargement Joues',
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MyElevatedButton(
+                    height: 80,
+                    width: 350,
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "chargement",
+                        arguments: perma_args,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.fire_truck,
+                          size: 40,
+                        ),
+                        Text(
+                          style: Theme.of(context).textTheme.titleLarge,
+                          'Chargement Joues',
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.all(12.0),
-              //   child: MyElevatedButton(
-              //     height: 80,
-              //     width: 350,
-              //     onPressed: () {
-              //       Navigator.pushNamed(
-              //         context,
-              //         "inventaire",
-              //         arguments: perma_args,
-              //       );
-              //     },
-              //     borderRadius: BorderRadius.circular(40),
-              //     child: Text(
-              //         style: Theme.of(context).textTheme.titleLarge,
-              //         'Inventaire'),
-              //   ),
-              // ),
-            ],
+                SizedBox(
+                  height: 15,
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(12.0),
+                //   child: MyElevatedButton(
+                //     height: 80,
+                //     width: 350,
+                //     onPressed: () {
+                //       Navigator.pushNamed(
+                //         context,
+                //         "inventaire",
+                //         arguments: perma_args,
+                //       );
+                //     },
+                //     borderRadius: BorderRadius.circular(40),
+                //     child: Text(
+                //         style: Theme.of(context).textTheme.titleLarge,
+                //         'Inventaire'),
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
       ),

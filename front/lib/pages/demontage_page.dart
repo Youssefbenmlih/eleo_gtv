@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
+import 'package:front/widgets/activity_summary.dart';
 import 'package:front/widgets/detail_list.dart';
 import 'package:intl/intl.dart';
 import '../widgets/my_app_bar.dart';
@@ -10,6 +11,7 @@ import '../models/demontage_model.dart';
 import '../widgets/demontage_list.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
 
 class Demontage extends StatefulWidget {
   const Demontage({super.key});
@@ -55,8 +57,12 @@ class _DemontageState extends State<Demontage> {
   late String demontageJson;
 
   Future<int> SendDemontage() async {
+    String url_h = "10.0.2.2";
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final resp = await http.post(
-      Uri.parse('http://10.0.2.2:5000/api/activity/demontage'),
+      Uri.parse('http://$url_h:5000/api/activity/demontage'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -169,7 +175,7 @@ class _DemontageState extends State<Demontage> {
                         flex: 2,
                       ),
                       Transform.scale(
-                        scale: 2.0,
+                        scale: 1.5,
                         child: Switch(
                           value: isSwitchedCercle,
                           onChanged: (value) {
@@ -195,7 +201,7 @@ class _DemontageState extends State<Demontage> {
                         flex: 1,
                       ),
                       Transform.scale(
-                        scale: 2.0,
+                        scale: 1.5,
                         child: Switch(
                           value: isSwitchedIngelec,
                           onChanged: (value) {
@@ -313,7 +319,7 @@ class _DemontageState extends State<Demontage> {
                                 color: Colors.indigo,
                                 thickness: 10,
                               ),
-                              DetailList(
+                              ActivitySummary(
                                   is_dem: true,
                                   is_rec: false,
                                   res: currentList.reversed.toList()),

@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                alignment: Alignment.topLeft,
+                alignment: Alignment.topRight,
                 icon: Icon(Icons.info),
                 title: Text(style: TextStyle(color: Colors.black), "Aide"),
                 content: Text("""Veuillez entrer les identifiants qui 
@@ -135,11 +135,16 @@ vous ont été fournis, en cas de problème, contactez la logistique."""),
         )
       ],
     );
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: appbar,
-        body: Connection_page(),
+    return WillPopScope(
+      onWillPop: () async {
+        return !Navigator.of(context).userGestureInProgress;
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: appbar,
+          body: Connection_page(),
+        ),
       ),
     );
   }

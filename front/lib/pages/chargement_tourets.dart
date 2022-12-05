@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:front/widgets/activity_summary.dart';
 import 'package:front/widgets/detail_list.dart';
 import '../widgets/my_app_bar.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,7 @@ import '../widgets/chargement_list.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:core';
+import 'dart:io' show Platform;
 
 class Chargement extends StatefulWidget {
   const Chargement({super.key});
@@ -62,8 +64,12 @@ class _ChargementState extends State<Chargement> {
   late String chargementJson;
 
   Future<int> sendChargement() async {
+    String url_h = "10.0.2.2";
+    if (!Platform.isAndroid) {
+      url_h = "127.0.0.1";
+    }
     final resp = await http.post(
-      Uri.parse('http://10.0.2.2:5000/api/activity/chargement'),
+      Uri.parse('http://$url_h:5000/api/activity/chargement'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -167,7 +173,7 @@ class _ChargementState extends State<Chargement> {
                         flex: 2,
                       ),
                       Transform.scale(
-                        scale: 2.0,
+                        scale: 1.5,
                         child: Switch(
                           value: isSwitchedCercle,
                           onChanged: (value) {
@@ -193,7 +199,7 @@ class _ChargementState extends State<Chargement> {
                         flex: 1,
                       ),
                       Transform.scale(
-                        scale: 2.0,
+                        scale: 1.5,
                         child: Switch(
                           value: isSwitchedIngelec,
                           onChanged: (value) {
@@ -318,7 +324,7 @@ class _ChargementState extends State<Chargement> {
                                 color: Colors.indigo,
                                 thickness: 10,
                               ),
-                              DetailList(
+                              ActivitySummary(
                                   is_dem: false,
                                   is_rec: false,
                                   res: currentList.reversed.toList()),

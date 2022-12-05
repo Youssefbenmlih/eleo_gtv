@@ -25,12 +25,14 @@ class ReceptionListElement {
   late String cercle;
   late String ingelec;
   late String numero_de_lot;
+  late int quantite_tourets;
 
   ReceptionListElement({
     required this.touret_type,
     required this.numero_de_lot,
     required this.cercle,
     required this.ingelec,
+    required this.quantite_tourets,
   });
 
   Map<String, dynamic> toJson() {
@@ -39,6 +41,7 @@ class ReceptionListElement {
       'numero_de_lot': numero_de_lot,
       'cercle': cercle,
       'ingelec': ingelec,
+      'quantite_tourets': quantite_tourets,
     };
   }
 }

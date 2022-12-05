@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
 
 class Connection_page extends StatefulWidget {
   const Connection_page({super.key});
@@ -39,8 +40,12 @@ class _Connection_page extends State<Connection_page> {
     }
 
     Future<int> VerifyUser(String email, String password) async {
+      String url_h = "10.0.2.2";
+      if (!Platform.isAndroid) {
+        url_h = "127.0.0.1";
+      }
       final resp = await http.post(
-        Uri.parse('http://10.0.2.2:5000/api/users/connect'),
+        Uri.parse('http://$url_h:5000/api/users/connect'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

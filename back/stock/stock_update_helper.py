@@ -1,9 +1,10 @@
+from db_connection import con, engine
 import sys
 import pandas as pd
 sys.path.append('../')
-from db_connection import con, engine
 
-#Helper functions to recover stock amounts from JSON request raw data
+# Helper functions to recover stock amounts from JSON request raw data
+
 
 def parse_request_list_dem(request_list):
     get_all_types = "SELECT name FROM dbo.type_touret"
@@ -12,13 +13,14 @@ def parse_request_list_dem(request_list):
     tab = {}
     for type in types:
         tab[type] = [0, 0]
-    
+
     for el in request_list:
         if el['cercle'] == "o":
             tab[el['touret_type']][0] += int(el['quantite_tourets'])
         else:
             tab[el['touret_type']][1] += int(el['quantite_tourets'])
     return tab
+
 
 def parse_request_list_rec(request_list):
     get_all_types = "SELECT name FROM dbo.type_touret"
@@ -29,10 +31,11 @@ def parse_request_list_rec(request_list):
         tab[type] = [0, 0]
     for el in request_list:
         if el['cercle'] == "o":
-            tab[el['touret_type']][0] += 1
+            tab[el['touret_type']][0] += el['quantite_tourets']
         else:
-            tab[el['touret_type']][1] += 1
+            tab[el['touret_type']][1] += el['quantite_tourets']
     return tab
+
 
 def parse_request_list_chargement(request_list):
     get_all_types = "SELECT name FROM dbo.type_touret"
@@ -52,7 +55,6 @@ def parse_request_list_chargement(request_list):
 """--------------INSERT UPDATED VALUES FOR STOCK---------------"""
 
 
-
 def update_stock_demontage(request_list):
     tab = parse_request_list_dem(request_list)
 
@@ -64,16 +66,20 @@ def update_stock_demontage(request_list):
         req_select = """SELECT stock_demonte_cercle, stock_demonte_non_cercle\nFROM dbo.type_touret
         WHERE name = '{}'""".format(type_t)
 
-        curr_numbers = pd.read_sql_query(req_select, engine).to_dict('records')[0]
+        curr_numbers = pd.read_sql_query(
+            req_select, engine).to_dict('records')[0]
 
-        #START OF ERROR HANDLING
+        # START OF ERROR HANDLING
         req_select_monte = """SELECT stock_monte_cercle, stock_monte_non_cercle\nFROM dbo.type_touret
         WHERE name = '{}'""".format(type_t)
-        tour_mont =  pd.read_sql_query(req_select_monte, engine).to_dict('records')[0]
-        newd, newdn = tour_mont['stock_monte_cercle'] - nb_tour_dem_cercle, tour_mont['stock_monte_non_cercle'] - nb_tour_dem_n_cercle
+        tour_mont = pd.read_sql_query(
+            req_select_monte, engine).to_dict('records')[0]
+        newd, newdn = tour_mont['stock_monte_cercle'] - \
+            nb_tour_dem_cercle, tour_mont['stock_monte_non_cercle'] - \
+            nb_tour_dem_n_cercle
         if newd < 0 or newdn < 0:
             return "405"
-        
+
         req_update_mont = """UPDATE dbo.type_touret\nSET stock_monte_cercle = '{}',
         stock_monte_non_cercle = '{}'\nWHERE name = '{}'""".format(newd, newdn, type_t)
 
@@ -83,9 +89,11 @@ def update_stock_demontage(request_list):
         except Exception as e:
             print(e)
             return "400"
-        #END
+        # END
 
-        ndc, ndnc = curr_numbers['stock_demonte_cercle'] + nb_tour_dem_cercle, curr_numbers['stock_demonte_non_cercle'] + nb_tour_dem_n_cercle
+        ndc, ndnc = curr_numbers['stock_demonte_cercle'] + \
+            nb_tour_dem_cercle, curr_numbers['stock_demonte_non_cercle'] + \
+            nb_tour_dem_n_cercle
 
         req_update = """UPDATE dbo.type_touret\nSET stock_demonte_cercle = '{}',
         stock_demonte_non_cercle = '{}'\nWHERE name = '{}'""".format(ndc, ndnc, type_t)
@@ -100,7 +108,7 @@ def update_stock_demontage(request_list):
 
 
 def update_stock_reception(request_list):
-    
+
     tab = parse_request_list_rec(request_list)
 
     for type_t in tab:
@@ -111,9 +119,12 @@ def update_stock_reception(request_list):
         req_select = """SELECT stock_monte_cercle, stock_monte_non_cercle\nFROM dbo.type_touret
         WHERE name = '{}'""".format(type_t)
 
-        curr_numbers = pd.read_sql_query(req_select, engine).to_dict('records')[0]
+        curr_numbers = pd.read_sql_query(
+            req_select, engine).to_dict('records')[0]
 
-        nc, nnc = curr_numbers['stock_monte_cercle'] + nb_tour_cercle, curr_numbers['stock_monte_non_cercle'] + nb_tour_n_cercle
+        nc, nnc = curr_numbers['stock_monte_cercle'] + \
+            nb_tour_cercle, curr_numbers['stock_monte_non_cercle'] + \
+            nb_tour_n_cercle
 
         req_update = """UPDATE dbo.type_touret\nSET stock_monte_cercle = '{}',
         stock_monte_non_cercle = '{}'\nWHERE name = '{}'""".format(nc, nnc, type_t)
@@ -138,14 +149,17 @@ def update_stock_chargement(request_list):
         req_select = """SELECT stock_demonte_cercle, stock_demonte_non_cercle\nFROM dbo.type_touret
         WHERE name = '{}'""".format(type_t)
 
-        curr_numbers = pd.read_sql_query(req_select, engine).to_dict('records')[0]
-        ndc, ndnc = curr_numbers['stock_demonte_cercle'] - nb_tour_dem_cercle, curr_numbers['stock_demonte_non_cercle'] - nb_tour_dem_n_cercle
+        curr_numbers = pd.read_sql_query(
+            req_select, engine).to_dict('records')[0]
+        ndc, ndnc = curr_numbers['stock_demonte_cercle'] - \
+            nb_tour_dem_cercle, curr_numbers['stock_demonte_non_cercle'] - \
+            nb_tour_dem_n_cercle
 
-        #ERROR HANDLING
-        if  ndc < 0 or ndnc < 0:
+        # ERROR HANDLING
+        if ndc < 0 or ndnc < 0:
             return "405"
-        #END OF ERROR HANDLING
-        
+        # END OF ERROR HANDLING
+
         req_update = """UPDATE dbo.type_touret\nSET stock_demonte_cercle = '{}',
         stock_demonte_non_cercle = '{}'\nWHERE name = '{}'""".format(ndc, ndnc, type_t)
 
