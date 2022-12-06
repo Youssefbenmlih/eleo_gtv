@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, camel_case_types, no_leading_underscores_for_local_identifiers, unused_element
-
+import 'package:front/globals.dart';
 import 'package:flutter/material.dart';
 import '../widgets/gradient_elevated.dart';
 import 'package:http/http.dart' as http;
@@ -40,12 +40,9 @@ class _Connection_page extends State<Connection_page> {
     }
 
     Future<int> VerifyUser(String email, String password) async {
-      String url_h = "10.0.2.2";
-      if (!Platform.isAndroid) {
-        url_h = "127.0.0.1";
-      }
+      String url_h = getIp();
       final resp = await http.post(
-        Uri.parse('http://$url_h:5000/api/users/connect'),
+        Uri.parse('$url_h/api/users/connect'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

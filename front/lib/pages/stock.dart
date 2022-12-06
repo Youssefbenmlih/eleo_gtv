@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io' show Platform;
 
+import '../globals.dart';
+
 class Stock extends StatefulWidget {
   const Stock({super.key});
 
@@ -15,12 +17,8 @@ class Stock extends StatefulWidget {
 
 class _StockState extends State<Stock> {
   Future<Map> fetchStock() async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
-    final response =
-        await http.get(Uri.parse('http://$url_h:5000/api/stock/get'));
+    String url_h = getIp();
+    final response = await http.get(Uri.parse('$url_h/api/stock/get'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

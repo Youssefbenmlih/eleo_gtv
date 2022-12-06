@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
+import 'package:front/globals.dart';
 import 'package:front/widgets/activity_summary.dart';
 import 'package:front/widgets/detail_list.dart';
 import 'package:intl/intl.dart';
@@ -57,12 +58,9 @@ class _DemontageState extends State<Demontage> {
   late String demontageJson;
 
   Future<int> SendDemontage() async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
+    String url_h = getIp();
     final resp = await http.post(
-      Uri.parse('http://$url_h:5000/api/activity/demontage'),
+      Uri.parse('$url_h/api/activity/demontage'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:front/models/inventaire_model.dart';
 import 'package:front/widgets/gradient_elevated.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
+import '../globals.dart';
 import '../widgets/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,13 +23,11 @@ class _InventaireState extends State<Inventaire> {
     setState(() {});
   }
 
+  String url_h = getIp();
+
   Future<int> SendInventaire(content) async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
     final resp = await http.post(
-      Uri.parse('http://$url_h:5000/api/activity/inventaire'),
+      Uri.parse('$url_h/api/activity/inventaire'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -46,12 +45,7 @@ class _InventaireState extends State<Inventaire> {
   }
 
   Future<Map> fetchStock() async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
-    final response =
-        await http.get(Uri.parse('http://$url_h:5000/api/stock/get'));
+    final response = await http.get(Uri.parse('$url_h/api/stock/get'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

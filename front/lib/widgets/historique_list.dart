@@ -5,6 +5,7 @@ import 'package:front/models/chargement_model.dart';
 import 'package:front/models/reception_model.dart';
 import 'package:front/widgets/demontage_list.dart';
 import 'package:front/widgets/detail_list.dart';
+import '../globals.dart';
 import '../models/Historique_model.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -28,12 +29,9 @@ class _HistoriqueListState extends State<HistoriqueList> {
   var formatter = DateFormat('dd/MM/yyyy hh:mm:ss');
 
   Future<List> fetchActivityDetail(activity, id) async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
+    String url_h = getIp();
     final response = await http.post(
-      Uri.parse('http://$url_h:5000/api/historique/det_$activity'),
+      Uri.parse('$url_h/api/historique/det_$activity'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:front/globals.dart';
 import 'package:front/widgets/activity_summary.dart';
 import 'package:front/widgets/detail_list.dart';
 import '../widgets/my_app_bar.dart';
@@ -64,12 +65,9 @@ class _ChargementState extends State<Chargement> {
   late String chargementJson;
 
   Future<int> sendChargement() async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
+    String url_h = getIp();
     final resp = await http.post(
-      Uri.parse('http://$url_h:5000/api/activity/chargement'),
+      Uri.parse('$url_h/api/activity/chargement'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

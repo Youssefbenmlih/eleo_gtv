@@ -10,6 +10,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'dart:io' show Platform;
 
+import '../globals.dart';
+
 class Historique extends StatefulWidget {
   const Historique({super.key});
 
@@ -19,15 +21,10 @@ class Historique extends StatefulWidget {
 
 class _HistoriqueState extends State<Historique> {
   bool b = false;
-
-  String url_h = "10.0.2.2";
+  String url_h = getIp();
 
   Future<Map> fetchHistorique() async {
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
-    final response =
-        await http.get(Uri.parse('http://$url_h:5000/api/historique/list'));
+    final response = await http.get(Uri.parse('$url_h/api/historique/list'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -41,11 +38,7 @@ class _HistoriqueState extends State<Historique> {
   }
 
   Future<List> fetchUsername() async {
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
-    final response =
-        await http.get(Uri.parse('http://$url_h:5000/api/users/list'));
+    final response = await http.get(Uri.parse('$url_h/api/users/list'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
