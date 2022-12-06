@@ -23,4 +23,4 @@ def home():
     return "welcome to the eleo_gtv api"
 
 
-app.run()
+app.run(host='0.0.0.0', port=5002, debug = False)
