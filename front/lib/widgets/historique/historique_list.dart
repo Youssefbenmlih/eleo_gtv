@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:front/models/chargement_model.dart';
 import 'package:front/models/reception_model.dart';
-import 'package:front/widgets/demontage/demontage_list.dart';
 import 'package:front/widgets/general/detail_list.dart';
 import '../../globals.dart';
 import '../../models/Historique_model.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io' show Platform;
 import '../../models/demontage_model.dart';
 
 class HistoriqueList extends StatefulWidget {

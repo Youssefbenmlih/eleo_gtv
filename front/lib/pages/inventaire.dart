@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:front/models/inventaire_model.dart';
 import 'package:front/widgets/general/cercle_ingelec.dart';
 import 'package:front/widgets/general/gradient_elevated.dart';
 import 'package:front/widgets/inventaire/inventaire_fb.dart';
@@ -10,8 +9,6 @@ import '../globals.dart';
 import '../widgets/general/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:intl/intl.dart';
-import 'dart:io' show Platform;
 
 class Inventaire extends StatefulWidget {
   const Inventaire({super.key});

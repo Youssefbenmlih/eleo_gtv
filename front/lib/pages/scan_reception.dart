@@ -100,12 +100,14 @@ class _ReceptionState extends State<Reception> {
             SizedBox(
               height: 10,
             ),
+            //SWITCHES
             CercIngBool(
               isSwitchedCercle: isSwitchedCercle,
               isSwitchedIngelec: isSwitchedIngelec,
               changeC: changeSwitchCercle,
               changeI: changeSwitchIngelec,
             ),
+            //LOT NUMBER INPUT OR NORMAL TOURETS INPUT
             isSwitchedIngelec
                 ? (Column(
                     children: [
@@ -190,6 +192,7 @@ class _ReceptionState extends State<Reception> {
             SizedBox(
               height: 10,
             ),
+            //PLUS BUTTON TO ADD TO LIST
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
               onPressed: () {
@@ -273,6 +276,7 @@ class _ReceptionState extends State<Reception> {
               color: Colors.indigo,
               thickness: 10,
             ),
+            //LIST OF ADDED ELEMENTS
             receptionList(
               elements: currentList.reversed.toList(),
               deleteTx: _deleteElement,
@@ -284,6 +288,7 @@ class _ReceptionState extends State<Reception> {
             SizedBox(
               height: 40,
             ),
+            //CONFIRM BUTTON
             RecepFloatButton(
               currentList: currentList,
               SendReception: SendReception,

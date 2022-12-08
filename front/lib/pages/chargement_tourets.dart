@@ -2,19 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:front/globals.dart';
-import 'package:front/widgets/general/activity_summary.dart';
 import 'package:front/widgets/general/cercle_ingelec.dart';
 import 'package:front/widgets/chargement/chargement_fb.dart';
-import 'package:front/widgets/general/detail_list.dart';
 import '../widgets/general/my_app_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import '../models/chargement_model.dart';
 import '../widgets/chargement/chargement_list.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:core';
-import 'dart:io' show Platform;
 
 class Chargement extends StatefulWidget {
   const Chargement({super.key});
@@ -114,6 +109,7 @@ class _ChargementState extends State<Chargement> {
                   style: Theme.of(context).textTheme.headlineMedium,
                   "Type Joues:"),
             ),
+            //DROPDOWN MENU FOR TYPE
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
@@ -147,6 +143,7 @@ class _ChargementState extends State<Chargement> {
                   style: Theme.of(context).textTheme.headlineMedium,
                   "Nombre de Joues:"),
             ),
+            //INPUT FOR NB OF JOUES
             Container(
               width: 350,
               height: 70,
@@ -166,6 +163,7 @@ class _ChargementState extends State<Chargement> {
             SizedBox(
               height: 20,
             ),
+            //SWITCHES
             CercIngBool(
               isSwitchedCercle: isSwitchedCercle,
               isSwitchedIngelec: isSwitchedIngelec,
@@ -175,6 +173,7 @@ class _ChargementState extends State<Chargement> {
             SizedBox(
               height: 20,
             ),
+            //ADD ELEMENT TO LIST BUTTON
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
               onPressed: () {
@@ -239,6 +238,7 @@ class _ChargementState extends State<Chargement> {
               color: Colors.indigo,
               thickness: 10,
             ),
+            //LIST OF ADDED ELEMENTS
             chargementList(
               elements: currentList.reversed.toList(),
               deleteTx: _deleteElement,

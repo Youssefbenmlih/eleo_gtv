@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:draggable_fab/draggable_fab.dart';
 import 'package:front/globals.dart';
-import 'package:front/widgets/general/activity_summary.dart';
 import 'package:front/widgets/general/cercle_ingelec.dart';
 import 'package:front/widgets/demontage/demontage_fb.dart';
 import 'package:front/widgets/general/detail_list.dart';
@@ -14,7 +13,6 @@ import '../models/demontage_model.dart';
 import '../widgets/demontage/demontage_list.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 class Demontage extends StatefulWidget {
   const Demontage({super.key});

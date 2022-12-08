@@ -8,7 +8,6 @@ import 'package:front/widgets/general/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'dart:io' show Platform;
 
 import '../globals.dart';
 

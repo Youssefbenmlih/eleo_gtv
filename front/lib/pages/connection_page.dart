@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'dart:io' show Platform;
 
 class Connection_page extends StatefulWidget {
   const Connection_page({super.key});
