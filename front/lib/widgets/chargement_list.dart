@@ -36,9 +36,10 @@ class chargementList extends StatelessWidget {
                 return Card(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 220,
+                        width: 234,
                         padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
@@ -71,7 +72,9 @@ class chargementList extends StatelessWidget {
                                 deleteTx(index);
                               },
                             )
-                          : Container(),
+                          : Container(
+                              width: 40,
+                            ),
                     ],
                   ),
                 );

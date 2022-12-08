@@ -134,9 +134,7 @@ class HomePage extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleLarge,
                           'Réception Tourets V.',
                         ),
-                        SizedBox(
-                          width: 10,
-                        )
+                        Spacer(),
                       ],
                     ),
                   ),
@@ -169,9 +167,7 @@ class HomePage extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleLarge,
                           'Démontage Tourets',
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        Spacer(),
                       ],
                     ),
                   ),
@@ -204,7 +200,7 @@ class HomePage extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleLarge,
                           'Chargement Joues',
                         ),
-                        SizedBox(width: 25),
+                        Spacer()
                       ],
                     ),
                   ),
@@ -230,18 +226,14 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.table_view_sharp,
-                          size: 40,
+                          size: 35,
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
-                          'Inventaire',
+                          'Inventaire Tourets V.',
                         ),
-                        SizedBox(
-                          width: 70,
-                        ),
+                        Spacer(),
                       ],
                     ),
                   ),
