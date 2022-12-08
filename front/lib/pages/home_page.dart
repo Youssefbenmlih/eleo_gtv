@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
+                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
                   child: SizedBox(
                       height: 150,
                       width: 350,
@@ -107,7 +107,7 @@ class HomePage extends StatelessWidget {
                   "Choisissez votre activité :",
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -127,18 +127,22 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.document_scanner_outlined,
-                          size: 40,
+                          size: 35,
                         ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
-                          'Réception Tourets Vides',
+                          'Réception Tourets V.',
                         ),
+                        SizedBox(
+                          width: 10,
+                        )
                       ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -158,8 +162,9 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.handyman_outlined,
-                          size: 40,
+                          size: 35,
                         ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
                           'Démontage Tourets',
@@ -172,7 +177,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -192,21 +197,20 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.fire_truck,
-                          size: 40,
+                          size: 35,
                         ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
                           'Chargement Joues',
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        SizedBox(width: 25),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),

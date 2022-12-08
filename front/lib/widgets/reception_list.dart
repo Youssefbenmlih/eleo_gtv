@@ -23,7 +23,7 @@ class receptionList extends StatelessWidget {
         ? Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                 child: Text("Aucune Réception n'est renseignée !",
                     style: Theme.of(context).textTheme.headlineMedium),
               ),
@@ -39,9 +39,10 @@ class receptionList extends StatelessWidget {
               ) {
                 return Card(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: 300,
+                        width: 220,
                         padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),

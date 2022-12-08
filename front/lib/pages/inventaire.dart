@@ -271,9 +271,12 @@ class _InventaireState extends State<Inventaire> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 60),
-                      Text(
-                        style: Theme.of(context).textTheme.labelLarge,
-                        currentSelectedTouret,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          style: Theme.of(context).textTheme.labelLarge,
+                          currentSelectedTouret,
+                        ),
                       ),
                       SizedBox(height: 50),
                       Align(
@@ -290,7 +293,7 @@ class _InventaireState extends State<Inventaire> {
                       Container(
                         width: 350,
                         height: 70,
-                        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
                         alignment: Alignment.center,
                         child: NumberInputPrefabbed.squaredButtons(
                           style: TextStyle(
@@ -452,6 +455,9 @@ class _InventaireState extends State<Inventaire> {
                           "Confirmer",
                         ),
                       ),
+                      SizedBox(
+                        height: 30,
+                      )
                     ],
                   )
                 : Container()

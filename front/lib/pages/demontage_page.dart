@@ -140,7 +140,7 @@ class _DemontageState extends State<Demontage> {
             Container(
               width: 350,
               height: 70,
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
               alignment: Alignment.center,
               child: NumberInputPrefabbed.squaredButtons(
                 style: TextStyle(

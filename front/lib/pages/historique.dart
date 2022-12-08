@@ -169,7 +169,7 @@ class _HistoriqueState extends State<Historique> {
                           Colors.cyan.shade100,
                           Colors.indigo.shade100
                         ]),
-                  width: 120,
+                  width: 100,
                   onPressed: () {
                     setState(() {
                       display_dem = !display_dem;
@@ -180,7 +180,7 @@ class _HistoriqueState extends State<Historique> {
                         fontSize: 15,
                         fontWeight: FontWeight.normal,
                       ),
-                      "Démontage"),
+                      "Démont."),
                 ),
                 MyElevatedButton(
                   borderRadius: BorderRadius.circular(30),
@@ -197,13 +197,13 @@ class _HistoriqueState extends State<Historique> {
                       display_rec = !display_rec;
                     });
                   },
-                  width: 120,
+                  width: 100,
                   child: Text(
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.normal,
                       ),
-                      "Réception"),
+                      "Récep."),
                 ),
                 MyElevatedButton(
                   borderRadius: BorderRadius.circular(30),
@@ -220,13 +220,13 @@ class _HistoriqueState extends State<Historique> {
                       display_cha = !display_cha;
                     });
                   },
-                  width: 120,
+                  width: 100,
                   child: Text(
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.normal,
                       ),
-                      "Chargement"),
+                      "Charg."),
                 ),
               ],
             ),

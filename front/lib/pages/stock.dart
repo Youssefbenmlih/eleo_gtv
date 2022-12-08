@@ -128,7 +128,7 @@ class _StockState extends State<Stock> {
                     DataColumn(
                       label: Expanded(
                         child: Text(
-                          'Non Cerclé',
+                          'Non\nCerclé',
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
@@ -218,7 +218,7 @@ class _StockState extends State<Stock> {
                     DataColumn(
                       label: Expanded(
                         child: Text(
-                          'Non Cerclé',
+                          'Non\nCerclé',
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
@@ -276,6 +276,9 @@ class _StockState extends State<Stock> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 100,
+              )
             ],
           ),
         ),
