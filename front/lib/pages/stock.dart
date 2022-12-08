@@ -1,7 +1,7 @@
 // ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:front/widgets/my_app_bar.dart';
+import 'package:front/widgets/general/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io' show Platform;

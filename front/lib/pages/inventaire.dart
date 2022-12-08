@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:front/models/inventaire_model.dart';
-import 'package:front/widgets/cercle_ingelec.dart';
-import 'package:front/widgets/gradient_elevated.dart';
-import 'package:front/widgets/inventaire_fb.dart';
+import 'package:front/widgets/general/cercle_ingelec.dart';
+import 'package:front/widgets/general/gradient_elevated.dart';
+import 'package:front/widgets/inventaire/inventaire_fb.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import '../globals.dart';
-import '../widgets/my_app_bar.dart';
+import '../widgets/general/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';

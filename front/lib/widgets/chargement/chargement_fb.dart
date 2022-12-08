@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, must_be_immutable, use_build_context_synchronously
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import '../models/chargement_model.dart';
-import 'activity_summary.dart';
+import '../../models/chargement_model.dart';
+import '../general/activity_summary.dart';
 import 'package:flutter/material.dart';
 
 class ChargFloatButton extends StatelessWidget {

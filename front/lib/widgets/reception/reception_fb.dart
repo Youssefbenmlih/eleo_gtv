@@ -1,20 +1,21 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, must_be_immutable, use_build_context_synchronously
 import 'dart:convert';
-
-import 'package:front/models/demontage_model.dart';
 import 'package:intl/intl.dart';
-import 'activity_summary.dart';
+import '../../models/reception_model.dart';
+import '../general/activity_summary.dart';
 import 'package:flutter/material.dart';
 
-class DemoFloatButton extends StatelessWidget {
-  List<DemontageListElement> currentList;
-  Function SendDemontage;
+class RecepFloatButton extends StatelessWidget {
+  List<ReceptionListElement> currentList;
+
+  Function SendReception;
   int id;
   Object? args;
-  DemoFloatButton({
+
+  RecepFloatButton({
     super.key,
     required this.currentList,
-    required this.SendDemontage,
+    required this.SendReception,
     required this.id,
     required this.args,
   });
@@ -22,7 +23,7 @@ class DemoFloatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      onPressed: (() async {
+      onPressed: (() {
         if (currentList.isNotEmpty) {
           showDialog(
             context: context,
@@ -51,8 +52,8 @@ class DemoFloatButton extends StatelessWidget {
                         thickness: 10,
                       ),
                       ActivitySummary(
-                          is_dem: true,
-                          is_rec: false,
+                          is_dem: false,
+                          is_rec: true,
                           res: currentList.reversed.toList()),
                       Divider(
                         color: Colors.indigo,
@@ -62,9 +63,7 @@ class DemoFloatButton extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           TextButton(
-                            onPressed: (() {
-                              Navigator.pop(context);
-                            }),
+                            onPressed: (() => Navigator.pop(context)),
                             child: Text(
                                 style: TextStyle(
                                   fontFamily: 'OpenSans',
@@ -79,10 +78,10 @@ class DemoFloatButton extends StatelessWidget {
                               DateTime now = DateTime.now();
                               String date =
                                   DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
-                              var mod = DemontageModel(
+                              var mod = ReceptionModel(
                                   user_id: id, date: date, list: currentList);
                               String json = jsonEncode(mod);
-                              int statusCode = await SendDemontage(json);
+                              int statusCode = await SendReception(json);
                               if (statusCode == 200) {
                                 Navigator.pushNamed(context, "accueil",
                                     arguments: args);
@@ -92,23 +91,21 @@ class DemoFloatButton extends StatelessWidget {
                                   builder: (context) => AlertDialog(
                                     alignment: Alignment.center,
                                     icon: Icon(
-                                      color: Colors.red.shade800,
-                                      Icons.warning,
-                                    ),
+                                        color: Colors.red.shade800,
+                                        Icons.warning),
                                     title: Text(
-                                      style: TextStyle(color: Colors.black),
-                                      "Attention",
-                                    ),
+                                        style: TextStyle(color: Colors.black),
+                                        "Attention"),
                                     content: Text(
                                         textAlign: TextAlign.center,
-                                        """Une erreur est survenu vérifiez que votre liste de démontage est correcte."""),
+                                        """Une erreur est survenu vérifiez que votre liste de réception est correcte."""),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text(
-                                            style: TextStyle(fontSize: 20),
-                                            "OK"),
-                                      ),
+                                          onPressed: () =>
+                                              Navigator.pop(context, "OK"),
+                                          child: const Text(
+                                              style: TextStyle(fontSize: 20),
+                                              "OK")),
                                     ],
                                     actionsAlignment: MainAxisAlignment.center,
                                     iconColor: Colors.blue,
@@ -139,7 +136,9 @@ class DemoFloatButton extends StatelessWidget {
               alignment: Alignment.center,
               icon: Icon(color: Colors.red.shade800, Icons.warning),
               title: Text(style: TextStyle(color: Colors.black), "Attention"),
-              content: Text("""Aucun démontage n'a été renseigné."""),
+              content: Text(
+                  textAlign: TextAlign.center,
+                  """Aucune réception n'a été renseignée."""),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context, "OK"),

@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/material.dart';
-import '../widgets/gradient_elevated.dart';
-import '../widgets/navigation_drawer.dart';
+import '../widgets/general/gradient_elevated.dart';
+import '../widgets/general/navigation_drawer.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 

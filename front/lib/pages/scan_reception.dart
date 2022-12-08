@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:front/widgets/cercle_ingelec.dart';
-import 'package:front/widgets/reception_fb.dart';
+import 'package:front/widgets/general/cercle_ingelec.dart';
+import 'package:front/widgets/reception/reception_fb.dart';
 import '../globals.dart';
-import '../widgets/my_app_bar.dart';
+import '../widgets/general/my_app_bar.dart';
 import '../models/reception_model.dart';
-import '../widgets/reception_list.dart';
+import '../widgets/reception/reception_list.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:http/http.dart' as http;
 

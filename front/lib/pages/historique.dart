@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:front/models/Historique_model.dart';
-import 'package:front/widgets/gradient_elevated.dart';
-import 'package:front/widgets/historique_list.dart';
-import 'package:front/widgets/my_app_bar.dart';
+import 'package:front/widgets/general/gradient_elevated.dart';
+import 'package:front/widgets/historique/historique_list.dart';
+import 'package:front/widgets/general/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';

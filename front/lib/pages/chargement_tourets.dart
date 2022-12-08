@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:front/globals.dart';
-import 'package:front/widgets/activity_summary.dart';
-import 'package:front/widgets/cercle_ingelec.dart';
-import 'package:front/widgets/chargement_fb.dart';
-import 'package:front/widgets/detail_list.dart';
-import '../widgets/my_app_bar.dart';
+import 'package:front/widgets/general/activity_summary.dart';
+import 'package:front/widgets/general/cercle_ingelec.dart';
+import 'package:front/widgets/chargement/chargement_fb.dart';
+import 'package:front/widgets/general/detail_list.dart';
+import '../widgets/general/my_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import '../models/chargement_model.dart';
-import '../widgets/chargement_list.dart';
+import '../widgets/chargement/chargement_list.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:core';

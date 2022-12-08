@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:front/models/inventaire_model.dart';
-import 'gradient_elevated.dart';
+import '../general/gradient_elevated.dart';
 
 class InventFloatButton extends StatefulWidget {
   Function SendInventaire;
