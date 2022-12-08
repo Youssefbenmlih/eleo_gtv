@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:front/models/inventaire_model.dart';
+import 'package:front/widgets/cercle_ingelec.dart';
 import 'package:front/widgets/gradient_elevated.dart';
+import 'package:front/widgets/inventaire_fb.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import '../globals.dart';
 import '../widgets/my_app_bar.dart';
@@ -161,68 +163,20 @@ class _InventaireState extends State<Inventaire> {
             SizedBox(
               height: 30,
             ),
-            Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                TableRow(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                          style: Theme.of(context).textTheme.headlineMedium,
-                          "Cerclé : "),
-                      Spacer(
-                        flex: 2,
-                      ),
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Switch(
-                          value: isSwitchedCercle,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitchedCercle = value;
-                              isValide = false;
-                            });
-                          },
-                        ),
-                      ),
-                      Spacer(
-                        flex: 5,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        "Démonté : ",
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Switch(
-                          value: isSwitchedDemonte,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitchedDemonte = value;
-                              isValide = false;
-                            });
-                          },
-                        ),
-                      ),
-                      Spacer(
-                        flex: 3,
-                      ),
-                    ],
-                  ),
-                ]),
-              ],
+            CercIngBool(
+              isIng: false,
+              isSwitchedCercle: isSwitchedCercle,
+              isSwitchedIngelec: isSwitchedDemonte,
+              changeC: () {
+                setState(() {
+                  isSwitchedCercle = !isSwitchedCercle;
+                });
+              },
+              changeI: () {
+                setState(() {
+                  isSwitchedDemonte = !isSwitchedDemonte;
+                });
+              },
             ),
             SizedBox(
               height: 50,
@@ -310,150 +264,16 @@ class _InventaireState extends State<Inventaire> {
                       SizedBox(
                         height: 40,
                       ),
-                      MyElevatedButton(
-                        onPressed: (() {
-                          setState(
-                            () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  alignment: Alignment.center,
-                                  icon: Icon(Icons.warning),
-                                  title: Text(
-                                      style: TextStyle(color: Colors.black),
-                                      "Envoi d'inventaire"),
-                                  content: Text(
-                                      textAlign: TextAlign.center,
-                                      """Êtes-vous sûr de vos modifications ?"""),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, "ANNULER"),
-                                      child: const Text(
-                                          style: TextStyle(fontSize: 20),
-                                          "ANNULER"),
-                                    ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor:
-                                            Colors.red.shade800, // Text Color
-                                      ),
-                                      onPressed: () async {
-                                        DateTime now = DateTime.now();
-                                        String date =
-                                            DateFormat('dd/MM/yyyy HH:mm:ss')
-                                                .format(now);
-                                        var inventaire = InventaireModel(
-                                          user_id: id,
-                                          date: date,
-                                          type_touret: dropdownValue,
-                                          nb_monte_cercle: isSwitchedCercle &&
-                                                  !isSwitchedDemonte
-                                              ? (int.parse(numberTouretsText
-                                                          .text) -
-                                                      data[dropdownValue][
-                                                          "stock_monte_cercle"])
-                                                  .toInt()
-                                              : 0,
-                                          nb_demonte_cercle: isSwitchedCercle &&
-                                                  isSwitchedDemonte
-                                              ? (int.parse(numberTouretsText
-                                                          .text) -
-                                                      data[dropdownValue][
-                                                          "stock_demonte_cercle"])
-                                                  .toInt()
-                                              : 0,
-                                          nb_monte_non_cercle: !isSwitchedCercle &&
-                                                  !isSwitchedDemonte
-                                              ? (int.parse(numberTouretsText
-                                                          .text) -
-                                                      data[dropdownValue][
-                                                          "stock_monte_non_cercle"])
-                                                  .toInt()
-                                              : 0,
-                                          nb_demonte_non_cercle:
-                                              !isSwitchedCercle &&
-                                                      isSwitchedDemonte
-                                                  ? (int.parse(numberTouretsText
-                                                              .text) -
-                                                          data[dropdownValue][
-                                                              "stock_demonte_non_cercle"])
-                                                      .toInt()
-                                                  : 0,
-                                          stock_avant: current_stock_value,
-                                          stock_apres:
-                                              int.parse(numberTouretsText.text),
-                                        );
-                                        String json = jsonEncode(inventaire);
-                                        int statusCode =
-                                            await SendInventaire(json);
-                                        if (statusCode == 200) {
-                                          Navigator.pushNamed(
-                                              context, "accueil",
-                                              arguments: args);
-                                        } else {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              alignment: Alignment.center,
-                                              icon: Icon(
-                                                color: Colors.red.shade800,
-                                                Icons.warning,
-                                              ),
-                                              title: Text(
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                                "Attention",
-                                              ),
-                                              content: Text(
-                                                  textAlign: TextAlign.center,
-                                                  """Une erreur est survenu"""),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: const Text(
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                      "OK"),
-                                                ),
-                                              ],
-                                              actionsAlignment:
-                                                  MainAxisAlignment.center,
-                                              iconColor: Colors.blue,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: const Text(
-                                          style: TextStyle(fontSize: 20),
-                                          "OUI"),
-                                    ),
-                                  ],
-                                  actionsAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  iconColor: Colors.red.shade800,
-                                ),
-                              );
-                            },
-                          );
-                        }),
-                        height: 70,
-                        borderRadius: BorderRadius.circular(30),
-                        width: 300,
-                        gradient: LinearGradient(colors: [
-                          Color.fromARGB(255, 97, 191, 102),
-                          Colors.green,
-                          Color.fromARGB(255, 97, 191, 102),
-                        ]),
-                        child: Text(
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          "Confirmer",
-                        ),
+                      InventFloatButton(
+                        numberTouretsText: numberTouretsText,
+                        dropdownValue: dropdownValue,
+                        data: data,
+                        SendInventaire: SendInventaire,
+                        id: id,
+                        args: args,
+                        isSwitchedCercle: isSwitchedCercle,
+                        isSwitchedDemonte: isSwitchedDemonte,
+                        current_stock_value: current_stock_value,
                       ),
                       SizedBox(
                         height: 30,

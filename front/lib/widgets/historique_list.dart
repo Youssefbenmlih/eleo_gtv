@@ -69,7 +69,7 @@ class _HistoriqueListState extends State<HistoriqueList> {
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
               height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).size.height * 0.38,
+                  MediaQuery.of(context).size.height * 0.40,
               child: ListView.builder(
                 itemCount: widget.elements.length,
                 itemBuilder: (context, index) {
