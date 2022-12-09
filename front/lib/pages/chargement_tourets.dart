@@ -1,17 +1,15 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:front/widgets/activity_summary.dart';
-import 'package:front/widgets/detail_list.dart';
-import '../widgets/my_app_bar.dart';
-import 'package:intl/intl.dart';
+import 'package:front/globals.dart';
+import 'package:front/widgets/general/cercle_ingelec.dart';
+import 'package:front/widgets/chargement/chargement_fb.dart';
+import '../widgets/general/my_app_bar.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import '../models/chargement_model.dart';
-import '../widgets/chargement_list.dart';
-import 'dart:convert';
+import '../widgets/chargement/chargement_list.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
-import 'dart:io' show Platform;
 
 class Chargement extends StatefulWidget {
   const Chargement({super.key});
@@ -37,6 +35,21 @@ class _ChargementState extends State<Chargement> {
     });
   }
 
+  bool isSwitchedCercle = false;
+  bool isSwitchedIngelec = false;
+
+  void changeSwitchCercle() {
+    setState(() {
+      isSwitchedCercle = !isSwitchedCercle;
+    });
+  }
+
+  void changeSwitchIngelec() {
+    setState(() {
+      isSwitchedIngelec = !isSwitchedIngelec;
+    });
+  }
+
   void reset_after_add() {
     dropdownValue = list[0];
     numberTouretsText.text = "0";
@@ -58,22 +71,14 @@ class _ChargementState extends State<Chargement> {
 
   int tare = 0;
 
-  bool isSwitchedCercle = false;
-  bool isSwitchedIngelec = false;
-
-  late String chargementJson;
-
-  Future<int> sendChargement() async {
-    String url_h = "10.0.2.2";
-    if (!Platform.isAndroid) {
-      url_h = "127.0.0.1";
-    }
+  Future<int> sendChargement(json) async {
+    String url_h = getIp();
     final resp = await http.post(
-      Uri.parse('http://$url_h:5000/api/activity/chargement'),
+      Uri.parse('$url_h/api/activity/chargement'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
-      body: chargementJson,
+      body: json,
     );
 
     if (resp.statusCode == 200) {
@@ -104,6 +109,7 @@ class _ChargementState extends State<Chargement> {
                   style: Theme.of(context).textTheme.headlineMedium,
                   "Type Joues:"),
             ),
+            //DROPDOWN MENU FOR TYPE
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
@@ -137,10 +143,11 @@ class _ChargementState extends State<Chargement> {
                   style: Theme.of(context).textTheme.headlineMedium,
                   "Nombre de Joues:"),
             ),
+            //INPUT FOR NB OF JOUES
             Container(
               width: 350,
               height: 70,
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
               alignment: Alignment.center,
               child: NumberInputPrefabbed.squaredButtons(
                 style: TextStyle(
@@ -156,70 +163,17 @@ class _ChargementState extends State<Chargement> {
             SizedBox(
               height: 20,
             ),
-            Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                TableRow(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                          style: Theme.of(context).textTheme.headlineMedium,
-                          "Cerclé : "),
-                      Spacer(
-                        flex: 2,
-                      ),
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Switch(
-                          value: isSwitchedCercle,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitchedCercle = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Spacer(
-                        flex: 5,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        "Ingelec : ",
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Switch(
-                          value: isSwitchedIngelec,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitchedIngelec = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Spacer(
-                        flex: 3,
-                      ),
-                    ],
-                  ),
-                ]),
-              ],
+            //SWITCHES
+            CercIngBool(
+              isSwitchedCercle: isSwitchedCercle,
+              isSwitchedIngelec: isSwitchedIngelec,
+              changeC: changeSwitchCercle,
+              changeI: changeSwitchIngelec,
             ),
             SizedBox(
               height: 20,
             ),
+            //ADD ELEMENT TO LIST BUTTON
             IconButton(
               highlightColor: Color.fromARGB(160, 63, 81, 181),
               onPressed: () {
@@ -284,6 +238,7 @@ class _ChargementState extends State<Chargement> {
               color: Colors.indigo,
               thickness: 10,
             ),
+            //LIST OF ADDED ELEMENTS
             chargementList(
               elements: currentList.reversed.toList(),
               deleteTx: _deleteElement,
@@ -293,158 +248,18 @@ class _ChargementState extends State<Chargement> {
               thickness: 10,
             ),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
-            FloatingActionButton.extended(
-              onPressed: (() async {
-                if (currentList.isNotEmpty) {
-                  showDialog(
-                    context: context,
-                    builder: ((context) {
-                      return Center(
-                        child: Container(
-                          width: 400,
-                          height: 400,
-                          decoration: BoxDecoration(color: Colors.white),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              DefaultTextStyle(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  child: Text("Résumé d'activité :")),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Divider(
-                                color: Colors.indigo,
-                                thickness: 10,
-                              ),
-                              ActivitySummary(
-                                  is_dem: false,
-                                  is_rec: false,
-                                  res: currentList.reversed.toList()),
-                              Divider(
-                                color: Colors.indigo,
-                                thickness: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  TextButton(
-                                    onPressed: (() {
-                                      Navigator.pop(context);
-                                    }),
-                                    child: Text(
-                                        style: TextStyle(
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 20,
-                                          color: Colors.red.shade900,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        "REVENIR"),
-                                  ),
-                                  TextButton(
-                                    onPressed: (() async {
-                                      DateTime now = DateTime.now();
-                                      String date =
-                                          DateFormat('dd/MM/yyyy HH:mm:ss')
-                                              .format(now);
-                                      var mod = ChargementModel(
-                                        user_id: id,
-                                        date: date,
-                                        list: currentList,
-                                        tare_total: tare,
-                                      );
-                                      String json = jsonEncode(mod);
-                                      chargementJson = json;
-                                      int statusCode = await sendChargement();
-                                      if (statusCode == 200) {
-                                        Navigator.pushNamed(context, "accueil",
-                                            arguments: args);
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            alignment: Alignment.center,
-                                            icon: Icon(
-                                                color: Colors.red.shade800,
-                                                Icons.warning),
-                                            title: Text(
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                                "Attention"),
-                                            content: Text(
-                                                textAlign: TextAlign.center,
-                                                """Une erreur est survenu vérifiez que votre liste de démontage est correcte."""),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          context, "OK"),
-                                                  child: const Text(
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                      "OK")),
-                                            ],
-                                            actionsAlignment:
-                                                MainAxisAlignment.center,
-                                            iconColor: Colors.blue,
-                                          ),
-                                        );
-                                      }
-                                    }),
-                                    child: Text(
-                                        style: TextStyle(
-                                          fontFamily: 'OpenSans',
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        "TERMINER"),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      alignment: Alignment.center,
-                      icon: Icon(color: Colors.red.shade800, Icons.warning),
-                      title: Text(
-                          style: TextStyle(color: Colors.black), "Attention"),
-                      content: Text("""Aucun démontage n'a été renseigné."""),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, "OK"),
-                            child: const Text(
-                                style: TextStyle(fontSize: 20), "OK")),
-                      ],
-                      actionsAlignment: MainAxisAlignment.center,
-                      iconColor: Colors.blue,
-                    ),
-                  );
-                }
-              }),
-              label: Text(
-                style: Theme.of(context).textTheme.titleLarge,
-                "Confirmer",
-              ),
-              icon: Icon(Icons.arrow_circle_right),
-              backgroundColor: Colors.green,
+            //CONFIRM BUTTON
+            ChargFloatButton(
+              currentList: currentList,
+              sendChargement: sendChargement,
+              id: id,
+              args: args,
+              tare: tare,
             ),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
           ],
         ),

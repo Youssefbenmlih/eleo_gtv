@@ -52,25 +52,38 @@ class ActivitySummary extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
-              child: Text(
-                style: Theme.of(context).textTheme.headlineMedium,
-                "Nombre de ${(is_dem || is_rec) ? t : j} :",
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+              child: Center(
+                child: Text(
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  "Nombre de ${(is_dem || is_rec) ? t : j} :",
+                ),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      "Cerclé",
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 107, 77, 218),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        "Cerclé",
+                      ),
                     ),
                     Text(
                       style: const TextStyle(
                         fontFamily: 'OpenSans',
-                        fontSize: 35,
+                        fontSize: 25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -81,15 +94,25 @@ I : ${nbt['I'][0]}""",
                   ],
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      "Non Cerclé",
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 161, 79, 25),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        "Non Cerclé",
+                      ),
                     ),
                     Text(
                       style: const TextStyle(
                         fontFamily: 'OpenSans',
-                        fontSize: 35,
+                        fontSize: 25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:front/models/chargement_model.dart';
 import 'package:front/models/demontage_model.dart';
 import 'package:front/models/reception_model.dart';
-import 'package:front/widgets/chargement_list.dart';
-import 'package:front/widgets/reception_list.dart';
+import 'package:front/widgets/chargement/chargement_list.dart';
+import 'package:front/widgets/reception/reception_list.dart';
 
-import 'demontage_list.dart';
+import '../demontage/demontage_list.dart';
 
 class DetailList extends StatelessWidget {
   bool is_dem;

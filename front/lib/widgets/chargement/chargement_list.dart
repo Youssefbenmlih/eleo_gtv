@@ -1,15 +1,15 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types
 
 import 'package:flutter/material.dart';
-import '../models/demontage_model.dart';
+import 'package:front/models/chargement_model.dart';
 
-class DemontageList extends StatelessWidget {
-  final List<DemontageListElement> elements;
+class chargementList extends StatelessWidget {
+  final List<ChargementListElement> elements;
 
   final Function deleteTx;
   bool delete;
 
-  DemontageList({
+  chargementList({
     super.key,
     required this.elements,
     required this.deleteTx,
@@ -22,8 +22,8 @@ class DemontageList extends StatelessWidget {
         ? Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Text("Aucun Démontage n'est renseigné !",
+                padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                child: Text("Aucun chargement n'est renseigné !",
                     style: Theme.of(context).textTheme.headlineMedium),
               ),
             ],
@@ -35,9 +35,11 @@ class DemontageList extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Card(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 300,
+                        width: 234,
                         padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(40),
@@ -53,7 +55,7 @@ class DemontageList extends StatelessWidget {
                         ),
                         margin: EdgeInsets.fromLTRB(30, 10, 0, 10),
                         child: Text(
-                          "    Tourets  ${elements[index].touret_type} ${elements[index].cercle == "o" ? "Cerclé(s)" : "Non Cerclé(s)"} : ${elements[index].quantite_tourets}",
+                          "    Joues Touret ${elements[index].touret_type} ${elements[index].cercle == "o" ? "Cerclé(s)" : "Non Cerclé(s)"} : ${elements[index].quantite_joues}",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -70,7 +72,9 @@ class DemontageList extends StatelessWidget {
                                 deleteTx(index);
                               },
                             )
-                          : Container()
+                          : Container(
+                              width: 40,
+                            ),
                     ],
                   ),
                 );

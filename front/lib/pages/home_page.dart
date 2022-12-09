@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/material.dart';
-import '../widgets/gradient_elevated.dart';
-import '../widgets/navigation_drawer.dart';
+import '../widgets/general/gradient_elevated.dart';
+import '../widgets/general/navigation_drawer.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 
@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
+                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
                   child: SizedBox(
                       height: 150,
                       width: 350,
@@ -107,7 +107,7 @@ class HomePage extends StatelessWidget {
                   "Choisissez votre activité :",
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -127,18 +127,20 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.document_scanner_outlined,
-                          size: 40,
+                          size: 35,
                         ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
-                          'Réception Tourets Vides',
+                          'Réception Tourets V.',
                         ),
+                        Spacer(),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -158,21 +160,20 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.handyman_outlined,
-                          size: 40,
+                          size: 35,
                         ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
                           'Démontage Tourets',
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        Spacer(),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -192,21 +193,20 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.fire_truck,
-                          size: 40,
+                          size: 35,
                         ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
                           'Chargement Joues',
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        Spacer()
                       ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -226,18 +226,14 @@ class HomePage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.table_view_sharp,
-                          size: 40,
+                          size: 35,
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        Spacer(),
                         Text(
                           style: Theme.of(context).textTheme.titleLarge,
-                          'Inventaire',
+                          'Inventaire Tourets V.',
                         ),
-                        SizedBox(
-                          width: 70,
-                        ),
+                        Spacer(),
                       ],
                     ),
                   ),

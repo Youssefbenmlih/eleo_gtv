@@ -11,7 +11,7 @@ import 'package:front/pages/scan_reception.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'pages/connection_page.dart';
 import 'package:front/pages/stock.dart';
-// import 'dart:developer';
+import 'dart:developer';
 
 void main() {
   runApp(MyApp());

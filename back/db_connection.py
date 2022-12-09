@@ -1,15 +1,14 @@
 import urllib
 import sqlalchemy as sa
 import keyring
-keyring.set_password('db', 'sa', 'Dragon2001..')
 
 
 def connect_to_db():
     params = urllib.parse.quote_plus("DRIVER={SQL Server};"
-                                     "SERVER=localhost\SQLEXPRESS;"
+                                     "SERVER=prod2srv;"
                                      "DATABASE=eleo_gtv;"
-                                     "UID=sa;"
-                                     "PWD=" + keyring.get_password("db", "sa") + ";")
+                                     "UID=yassines;"
+                                     "PWD=" + keyring.get_password("db", "yassines") + ";")
 
     engine = sa.create_engine(
         "mssql+pyodbc:///?odbc_connect={}".format(params))
