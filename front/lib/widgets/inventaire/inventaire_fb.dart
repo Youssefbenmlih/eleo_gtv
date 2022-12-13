@@ -57,9 +57,10 @@ class _InventFloatButtonState extends State<InventFloatButton> {
                     child:
                         const Text(style: TextStyle(fontSize: 20), "ANNULER"),
                   ),
-                  TextButton(
+                  ElevatedButton(
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.red.shade800, // Text Color
+                      elevation: 10,
+                      backgroundColor: Colors.green.shade400, // Text Color
                     ),
                     onPressed: () async {
                       DateTime now = DateTime.now();
@@ -134,7 +135,9 @@ class _InventFloatButtonState extends State<InventFloatButton> {
                         );
                       }
                     },
-                    child: const Text(style: TextStyle(fontSize: 20), "OUI"),
+                    child: Text(
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        "OUI"),
                   ),
                 ],
                 actionsAlignment: MainAxisAlignment.spaceBetween,

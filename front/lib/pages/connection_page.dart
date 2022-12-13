@@ -40,6 +40,7 @@ class _Connection_page extends State<Connection_page> {
 
     Future<int> VerifyUser(String email, String password) async {
       String url_h = getIp();
+      print(url_h);
       final resp = await http.post(
         Uri.parse('$url_h/api/users/connect'),
         headers: <String, String>{
@@ -80,162 +81,163 @@ class _Connection_page extends State<Connection_page> {
     }
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
-            child: SizedBox(
-                height: 150,
-                width: 100,
-                child: Image.asset(
-                  "assets/images/logo_eleo.png",
-                  fit: BoxFit.contain,
-                )),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 6),
-            child: Text(
-              "Email - Nom d'utilisateur:",
-              style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+      child: SizedBox(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 2, 18, 0),
+              child: SizedBox(
+                  height: 120,
+                  width: 100,
+                  child: Image.asset(
+                    "assets/images/logo_eleo.png",
+                    fit: BoxFit.contain,
+                  )),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Colors.blue,
-                ),
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              child: TextField(
-                focusNode: null,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 6),
+              child: Text(
+                "Email - Nom d'utilisateur:",
                 style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 16,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                controller: EmailController,
-                onSubmitted: (_) {
-                  if (PasswordController.text.isEmpty) {
-                    myFocusNode.requestFocus();
-                  } else {
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.blue,
+                  ),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: TextField(
+                  focusNode: null,
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                  ),
+                  controller: EmailController,
+                  onSubmitted: (_) {
+                    if (PasswordController.text.isEmpty) {
+                      myFocusNode.requestFocus();
+                    } else {
+                      submit_data();
+                      SystemChannels.textInput.invokeMethod('TextInput.hide');
+                    }
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 10),
+                    hintText: "nom@email.com ou nom.prenom",
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 32,
+              child: loginfail
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 2, 0, 0),
+                      child: Text(
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 158, 45, 37)),
+                        'Email ou mot de passe erroné, veuillez ressaisir.',
+                      ),
+                    )
+                  : null,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 6),
+              child: Text(
+                "Mot de passe:",
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.blue,
+                  ),
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: TextField(
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 16,
+                  ),
+                  focusNode: myFocusNode,
+                  obscureText: !_passwordVisible,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  controller: PasswordController,
+                  onSubmitted: (_) {
                     submit_data();
                     SystemChannels.textInput.invokeMethod('TextInput.hide');
-                  }
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 10),
-                  hintText: "nom@email.com ou nom.prenom",
+                  },
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.fromLTRB(10, 13, 0, 0),
+                      hintText: "mot de passe",
+                      suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toogle the state of passwordVisible variable
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          })),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-            child: loginfail
-                ? Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 2, 0, 0),
-                    child: Text(
-                      style: TextStyle(color: Color.fromARGB(255, 158, 45, 37)),
-                      'Email ou mot de passe erroné, veuillez ressaisir.',
-                    ),
-                  )
-                : null,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
-            child: Text(
-              "Mot de passe:",
-              style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            SizedBox(
+              height: 40,
+              child: loginfail
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 2, 0, 0),
+                      child: Text(
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 158, 45, 37)),
+                        'Email ou mot de passe erroné, veuillez ressaisir.',
+                      ),
+                    )
+                  : null,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
-            child: Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Colors.blue,
-                ),
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              child: TextField(
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 16,
-                ),
-                focusNode: myFocusNode,
-                obscureText: !_passwordVisible,
-                enableSuggestions: false,
-                autocorrect: false,
-                controller: PasswordController,
-                onSubmitted: (_) {
+            Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+              child: MyElevatedButton(
+                height: 60,
+                onPressed: () {
                   submit_data();
-                  SystemChannels.textInput.invokeMethod('TextInput.hide');
                 },
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.fromLTRB(10, 13, 0, 0),
-                    hintText: "mot de passe",
-                    suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        })),
+                borderRadius: BorderRadius.circular(40),
+                child: Text(
+                    style: Theme.of(context).textTheme.titleLarge, 'CONNEXION'),
               ),
             ),
-          ),
-          SizedBox(
-            height: 60,
-            child: loginfail
-                ? Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 2, 0, 0),
-                    child: Text(
-                      style: TextStyle(color: Color.fromARGB(255, 158, 45, 37)),
-                      'Email ou mot de passe erroné, veuillez ressaisir.',
-                    ),
-                  )
-                : null,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: MyElevatedButton(
-              height: 100,
-              onPressed: () {
-                submit_data();
-              },
-              borderRadius: BorderRadius.circular(40),
-              child: Text(
-                  style: Theme.of(context).textTheme.titleLarge, 'CONNEXION'),
-            ),
-          ),
-          SizedBox(
-            height: 60,
-          )
-        ],
+            SizedBox(
+              height: 29,
+            )
+          ],
+        ),
       ),
     );
   }

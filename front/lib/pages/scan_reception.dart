@@ -93,6 +93,14 @@ class _ReceptionState extends State<Reception> {
     var userName = mapArgs['name'];
     var id = mapArgs['id'];
     return Scaffold(
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // resizeToAvoidBottomInset: false,
+      // floatingActionButton: RecepFloatButton(
+      //   currentList: currentList,
+      //   SendReception: SendReception,
+      //   id: id,
+      //   args: args,
+      // ),
       appBar: MyAppBar(wipeClean, "Réception", args, true),
       body: SingleChildScrollView(
         child: Column(
@@ -288,7 +296,6 @@ class _ReceptionState extends State<Reception> {
             SizedBox(
               height: 40,
             ),
-            //CONFIRM BUTTON
             RecepFloatButton(
               currentList: currentList,
               SendReception: SendReception,

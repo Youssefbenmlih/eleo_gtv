@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       title: Text(
           style: Theme.of(context).textTheme.titleLarge,
-          "Gestion de tourets vides"),
+          "Gestion tourets vides"),
       actions: [
         IconButton(
           onPressed: () {
@@ -131,8 +131,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.topRight,
                 icon: Icon(Icons.info),
                 title: Text(style: TextStyle(color: Colors.black), "Aide"),
-                content: Text("""Veuillez entrer les identifiants qui 
-vous ont été fournis, en cas de problème, contactez la logistique."""),
+                content: Text(
+                  textAlign: TextAlign.center,
+                  """Veuillez entrer les identifiants qui vous ont été fournis, en cas de problème, contactez la logistique.""",
+                ),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context, "OK"),
@@ -155,7 +157,10 @@ vous ont été fournis, en cas de problème, contactez la logistique."""),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          appBar: appbar,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(40),
+            child: appbar,
+          ),
           body: Connection_page(),
         ),
       ),

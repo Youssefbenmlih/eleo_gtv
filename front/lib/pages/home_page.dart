@@ -85,16 +85,16 @@ class HomePage extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
-                  child: SizedBox(
-                      height: 150,
-                      width: 350,
-                      child: Image.asset(
-                        "assets/images/logo_eleo.png",
-                        fit: BoxFit.contain,
-                      )),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
+                //   child: SizedBox(
+                //       height: 150,
+                //       width: 350,
+                //       child: Image.asset(
+                //         "assets/images/logo_eleo.png",
+                //         fit: BoxFit.contain,
+                //       )),
+                // ),
                 SizedBox(
                   height: 20,
                 ),
