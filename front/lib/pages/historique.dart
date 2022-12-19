@@ -136,18 +136,20 @@ class _HistoriqueState extends State<Historique> {
     }
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.transparent,
         onPressed: () {
           fetchall();
         },
         child: Container(
-          width: 60,
-          height: 60,
+          width: 50,
+          height: 50,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
           ),
-          child: Icon(size: 45, Icons.refresh),
+          child: Icon(size: 35, Icons.refresh),
         ),
       ),
       appBar: MyAppBar(() {}, "HISTORIQUE", args, false),

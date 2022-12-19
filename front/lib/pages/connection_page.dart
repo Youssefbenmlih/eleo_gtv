@@ -86,9 +86,9 @@ class _Connection_page extends State<Connection_page> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(18, 2, 18, 0),
+              padding: const EdgeInsets.fromLTRB(18, 20, 18, 40),
               child: SizedBox(
-                  height: 120,
+                  height: 140,
                   width: 100,
                   child: Image.asset(
                     "assets/images/logo_eleo.png",
