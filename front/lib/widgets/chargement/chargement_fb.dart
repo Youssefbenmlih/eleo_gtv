@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, must_be_immutable, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, must_be_immutable, use_build_context_synchronously, prefer_const_declarations, unused_local_variable
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import '../../models/chargement_model.dart';
 import '../general/activity_summary.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,33 @@ class ChargFloatButton extends StatelessWidget {
     required this.args,
     required this.tare,
   });
+
+  Future sendEmail({
+    required String tare,
+    required String resume_joues,
+    required String date,
+  }) async {
+    final serviceId = 'service_yao7rvc';
+    final templateId = 'template_iqfyzoe';
+    final publicKey = 'rbU3sx4543Co0rMQp';
+
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(url,
+        headers: {
+          'origin': 'http://localhost',
+          'Content-type': 'application/json'
+        },
+        body: jsonEncode({
+          'service_id': serviceId,
+          'template_id': templateId,
+          'user_id': publicKey,
+          'template_params': {
+            'date': date,
+            'resume_joues': resume_joues,
+            'tare': tare,
+          }
+        }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +105,9 @@ class ChargFloatButton extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: (() async {
-                              DateTime now = DateTime.now();
+                              var now = DateTime.now();
                               String date =
-                                  DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
+                                  DateFormat('dd-MM-yyyy HH:mm:ss').format(now);
                               var mod = ChargementModel(
                                 user_id: id,
                                 date: date,
@@ -118,6 +146,16 @@ class ChargFloatButton extends StatelessWidget {
                                   ),
                                 );
                               }
+                              // - SEND EMAIL TO GAETAN
+                              var mail = await sendEmail(
+                                tare: tare.toString(),
+                                resume_joues: currentList
+                                    .map((e) =>
+                                        """\n${e.quantite_joues} joues de type ${e.touret_type.toUpperCase()} ${e.cercle == 'o' ? 'Cercle' : 'Non cerclé'}\n""")
+                                    .toString(),
+                                date: date.toString(),
+                              );
+                              //
                             }),
                             child: Text(
                                 style: TextStyle(
