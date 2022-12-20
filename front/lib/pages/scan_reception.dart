@@ -61,7 +61,7 @@ class _ReceptionState extends State<Reception> {
 
   final numberTouretsText = TextEditingController();
 
-  bool isSwitchedCercle = false;
+  bool isSwitchedCercle = true;
   bool isSwitchedIngelec = true;
 
   Future<int> SendReception(json) async {

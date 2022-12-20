@@ -1,4 +1,4 @@
-package com.example.front
+package eleo.gestion.tourets_vides
 
 import io.flutter.embedding.android.FlutterActivity
 
