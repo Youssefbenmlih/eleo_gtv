@@ -117,168 +117,171 @@ class _InventaireState extends State<Inventaire> {
 
     return Scaffold(
       appBar: MyAppBar(wipeClean, "Inventaire", args, true),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  "Type Touret:"),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: DropdownButton<String>(
-                isExpanded: true,
-                underline: Container(
-                  height: 2,
-                  color: Colors.blue,
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    "Type Touret:"),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  underline: Container(
+                    height: 2,
+                    color: Colors.blue,
+                  ),
+                  value: dropdownValue,
+                  onChanged: (value) {
+                    setState(() {
+                      dropdownValue = value!;
+                      isValide = false;
+                    });
+                  },
+                  items: list.map<DropdownMenuItem<String>>(
+                    (String value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(value),
+                      );
+                    },
+                  ).toList(),
                 ),
-                value: dropdownValue,
-                onChanged: (value) {
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              CercIngBool(
+                isIng: false,
+                isSwitchedCercle: isSwitchedCercle,
+                isSwitchedIngelec: isSwitchedDemonte,
+                changeC: () {
                   setState(() {
-                    dropdownValue = value!;
-                    isValide = false;
+                    isSwitchedCercle = !isSwitchedCercle;
                   });
                 },
-                items: list.map<DropdownMenuItem<String>>(
-                  (String value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  },
-                ).toList(),
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            CercIngBool(
-              isIng: false,
-              isSwitchedCercle: isSwitchedCercle,
-              isSwitchedIngelec: isSwitchedDemonte,
-              changeC: () {
-                setState(() {
-                  isSwitchedCercle = !isSwitchedCercle;
-                });
-              },
-              changeI: () {
-                setState(() {
-                  isSwitchedDemonte = !isSwitchedDemonte;
-                });
-              },
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            MyElevatedButton(
-              onPressed: (() {
-                if (dropdownValue.length == 1) {
+                changeI: () {
                   setState(() {
-                    isValide = true;
+                    isSwitchedDemonte = !isSwitchedDemonte;
                   });
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      alignment: Alignment.topLeft,
-                      icon: Icon(Icons.warning),
-                      title: Text(
-                          style: TextStyle(color: Colors.black), "Attention"),
-                      content: Text(
-                          textAlign: TextAlign.center,
-                          """Veuillez saisir un type de touret"""),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, "OK"),
-                            child: const Text(
-                                style: TextStyle(fontSize: 20), "OK")),
-                      ],
-                      actionsAlignment: MainAxisAlignment.center,
-                      iconColor: Colors.red.shade800,
-                    ),
-                  );
-                }
-              }),
-              width: 200,
-              borderRadius: BorderRadius.circular(30),
-              child: Text(
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  "Valider"),
-            ),
-            isValide
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 60),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          style: Theme.of(context).textTheme.labelLarge,
-                          currentSelectedTouret,
-                        ),
+                },
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              MyElevatedButton(
+                onPressed: (() {
+                  if (dropdownValue.length == 1) {
+                    setState(() {
+                      isValide = true;
+                    });
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        alignment: Alignment.topLeft,
+                        icon: Icon(Icons.warning),
+                        title: Text(
+                            style: TextStyle(color: Colors.black), "Attention"),
+                        content: Text(
+                            textAlign: TextAlign.center,
+                            """Veuillez saisir un type de touret"""),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(context, "OK"),
+                              child: const Text(
+                                  style: TextStyle(fontSize: 20), "OK")),
+                        ],
+                        actionsAlignment: MainAxisAlignment.center,
+                        iconColor: Colors.red.shade800,
                       ),
-                      SizedBox(height: 50),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 24.0),
+                    );
+                  }
+                }),
+                width: 200,
+                borderRadius: BorderRadius.circular(30),
+                child: Text(
+                    style: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    "Valider"),
+              ),
+              isValide
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 60),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.headlineLarge,
-                            "Entrez la nouvelle valeur de stock : ",
+                            style: Theme.of(context).textTheme.labelLarge,
+                            currentSelectedTouret,
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 350,
-                        height: 70,
-                        margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                        alignment: Alignment.center,
-                        child: NumberInputPrefabbed.squaredButtons(
-                          style: TextStyle(
-                              fontFamily: 'OpenSans',
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                          controller: numberTouretsText,
-                          incDecBgColor: Colors.blueAccent,
-                          min: 0,
-                          max: 2000,
-                          initialValue: current_stock_value,
+                        SizedBox(height: 50),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 24.0),
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.headlineLarge,
+                              "Entrez la nouvelle valeur de stock : ",
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      InventFloatButton(
-                        numberTouretsText: numberTouretsText,
-                        dropdownValue: dropdownValue,
-                        data: data,
-                        SendInventaire: SendInventaire,
-                        id: id,
-                        args: args,
-                        isSwitchedCercle: isSwitchedCercle,
-                        isSwitchedDemonte: isSwitchedDemonte,
-                        current_stock_value: current_stock_value,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      )
-                    ],
-                  )
-                : Container()
-          ],
+                        Container(
+                          width: 350,
+                          height: 70,
+                          margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                          alignment: Alignment.center,
+                          child: NumberInputPrefabbed.squaredButtons(
+                            style: TextStyle(
+                                fontFamily: 'OpenSans',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                            controller: numberTouretsText,
+                            incDecBgColor: Colors.blueAccent,
+                            min: 0,
+                            max: 2000,
+                            initialValue: current_stock_value,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        InventFloatButton(
+                          numberTouretsText: numberTouretsText,
+                          dropdownValue: dropdownValue,
+                          data: data,
+                          SendInventaire: SendInventaire,
+                          id: id,
+                          args: args,
+                          isSwitchedCercle: isSwitchedCercle,
+                          isSwitchedDemonte: isSwitchedDemonte,
+                          current_stock_value: current_stock_value,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        )
+                      ],
+                    )
+                  : Container()
+            ],
+          ),
         ),
       ),
     );

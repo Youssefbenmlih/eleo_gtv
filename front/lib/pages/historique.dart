@@ -68,6 +68,7 @@ class _HistoriqueState extends State<Historique> {
         },
       );
     });
+    b = true;
   }
 
   List map_activity_list(data, type, tare, name, id) {
@@ -132,7 +133,6 @@ class _HistoriqueState extends State<Historique> {
 
     if (!b) {
       fetchall();
-      b = true;
     }
 
     return Scaffold(

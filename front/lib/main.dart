@@ -156,12 +156,15 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(40),
-            child: appbar,
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(40),
+              child: appbar,
+            ),
+            body: Connection_page(),
           ),
-          body: Connection_page(),
         ),
       ),
     );

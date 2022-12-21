@@ -97,171 +97,174 @@ class _ChargementState extends State<Chargement> {
     final mapArgs = args as Map;
     var id = mapArgs['id'];
 
-    return Scaffold(
-      appBar: MyAppBar(wipeClean, "Chargement", args, true),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  "Type Joues:"),
-            ),
-            //DROPDOWN MENU FOR TYPE
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: DropdownButton<String>(
-                isExpanded: true,
-                underline: Container(
-                  height: 2,
-                  color: Colors.blue,
-                ),
-                value: dropdownValue,
-                onChanged: (value) {
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                },
-                items: list.map<DropdownMenuItem<String>>(
-                  (String value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: MyAppBar(wipeClean, "Chargement", args, true),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    "Type Joues:"),
+              ),
+              //DROPDOWN MENU FOR TYPE
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  underline: Container(
+                    height: 2,
+                    color: Colors.blue,
+                  ),
+                  value: dropdownValue,
+                  onChanged: (value) {
+                    setState(() {
+                      dropdownValue = value!;
+                    });
                   },
-                ).toList(),
+                  items: list.map<DropdownMenuItem<String>>(
+                    (String value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(value),
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
-              alignment: Alignment.centerLeft,
-              child: Text(
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    "Nombre de Joues:"),
+              ),
+              //INPUT FOR NB OF JOUES
+              Container(
+                width: 350,
+                height: 70,
+                margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                alignment: Alignment.center,
+                child: NumberInputPrefabbed.squaredButtons(
+                  style: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                  controller: numberTouretsText,
+                  incDecBgColor: Colors.blueAccent,
+                  min: 0,
+                  max: 2000,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              //SWITCHES
+              CercIngBool(
+                isSwitchedCercle: isSwitchedCercle,
+                isSwitchedIngelec: isSwitchedIngelec,
+                changeC: changeSwitchCercle,
+                changeI: changeSwitchIngelec,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              //ADD ELEMENT TO LIST BUTTON
+              IconButton(
+                highlightColor: Color.fromARGB(160, 63, 81, 181),
+                onPressed: () {
+                  if (dropdownValue.length == 1 &&
+                      numberTouretsText.text != "0" &&
+                      int.parse(numberTouretsText.text) % 2 == 0) {
+                    var t = (double.parse(numberTouretsText.text) / 2) *
+                        type_poids[dropdownValue]!;
+                    setState(() {
+                      tare += t.toInt();
+                    });
+                    var el = ChargementListElement(
+                      touret_type: dropdownValue,
+                      quantite_joues: int.parse(numberTouretsText.text),
+                      cercle: isSwitchedCercle ? "o" : "n",
+                      ingelec: isSwitchedIngelec ? "o" : "n",
+                      Tare: 0,
+                    );
+                    setState(() {
+                      currentList.add(el);
+                      reset_after_add();
+                    });
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        alignment: Alignment.center,
+                        icon: Icon(color: Colors.red.shade800, Icons.warning),
+                        title: Text(
+                            style: TextStyle(color: Colors.black), "Attention"),
+                        content: Text(
+                            textAlign: TextAlign.center,
+                            """Veuillez bien remplir tous les champs avant d'ajouter l'élément. (Vérifiez que le nombre de joues entré est pair)"""),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(context, "OK"),
+                              child: const Text(
+                                  style: TextStyle(fontSize: 20), "OK")),
+                        ],
+                        actionsAlignment: MainAxisAlignment.center,
+                        iconColor: Colors.blue,
+                      ),
+                    );
+                  }
+                },
+                iconSize: 80.0,
+                icon: Icon(
+                  color: Colors.blueAccent,
+                  Icons.add_box,
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
+                child: Text(
+                  textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.headlineMedium,
-                  "Nombre de Joues:"),
-            ),
-            //INPUT FOR NB OF JOUES
-            Container(
-              width: 350,
-              height: 70,
-              margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-              alignment: Alignment.center,
-              child: NumberInputPrefabbed.squaredButtons(
-                style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                controller: numberTouretsText,
-                incDecBgColor: Colors.blueAccent,
-                min: 0,
-                max: 2000,
+                  "Tare totale: $tare",
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            //SWITCHES
-            CercIngBool(
-              isSwitchedCercle: isSwitchedCercle,
-              isSwitchedIngelec: isSwitchedIngelec,
-              changeC: changeSwitchCercle,
-              changeI: changeSwitchIngelec,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            //ADD ELEMENT TO LIST BUTTON
-            IconButton(
-              highlightColor: Color.fromARGB(160, 63, 81, 181),
-              onPressed: () {
-                if (dropdownValue.length == 1 &&
-                    numberTouretsText.text != "0" &&
-                    int.parse(numberTouretsText.text) % 2 == 0) {
-                  var t = (double.parse(numberTouretsText.text) / 2) *
-                      type_poids[dropdownValue]!;
-                  setState(() {
-                    tare += t.toInt();
-                  });
-                  var el = ChargementListElement(
-                    touret_type: dropdownValue,
-                    quantite_joues: int.parse(numberTouretsText.text),
-                    cercle: isSwitchedCercle ? "o" : "n",
-                    ingelec: isSwitchedIngelec ? "o" : "n",
-                    Tare: 0,
-                  );
-                  setState(() {
-                    currentList.add(el);
-                    reset_after_add();
-                  });
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      alignment: Alignment.center,
-                      icon: Icon(color: Colors.red.shade800, Icons.warning),
-                      title: Text(
-                          style: TextStyle(color: Colors.black), "Attention"),
-                      content: Text(
-                          textAlign: TextAlign.center,
-                          """Veuillez bien remplir tous les champs avant d'ajouter l'élément. (Vérifiez que le nombre de joues entré est pair)"""),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, "OK"),
-                            child: const Text(
-                                style: TextStyle(fontSize: 20), "OK")),
-                      ],
-                      actionsAlignment: MainAxisAlignment.center,
-                      iconColor: Colors.blue,
-                    ),
-                  );
-                }
-              },
-              iconSize: 80.0,
-              icon: Icon(
-                color: Colors.blueAccent,
-                Icons.add_box,
+              Divider(
+                color: Colors.indigo,
+                thickness: 10,
               ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
-              child: Text(
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.headlineMedium,
-                "Tare totale: $tare",
+              //LIST OF ADDED ELEMENTS
+              chargementList(
+                elements: currentList.reversed.toList(),
+                deleteTx: _deleteElement,
               ),
-            ),
-            Divider(
-              color: Colors.indigo,
-              thickness: 10,
-            ),
-            //LIST OF ADDED ELEMENTS
-            chargementList(
-              elements: currentList.reversed.toList(),
-              deleteTx: _deleteElement,
-            ),
-            Divider(
-              color: Colors.indigo,
-              thickness: 10,
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            //CONFIRM BUTTON
-            ChargFloatButton(
-              currentList: currentList,
-              sendChargement: sendChargement,
-              id: id,
-              args: args,
-              tare: tare,
-            ),
-            SizedBox(
-              height: 40,
-            ),
-          ],
+              Divider(
+                color: Colors.indigo,
+                thickness: 10,
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              //CONFIRM BUTTON
+              ChargFloatButton(
+                currentList: currentList,
+                sendChargement: sendChargement,
+                id: id,
+                args: args,
+                tare: tare,
+              ),
+              SizedBox(
+                height: 40,
+              ),
+            ],
+          ),
         ),
       ),
     );
