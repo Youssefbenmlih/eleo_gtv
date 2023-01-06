@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/pages/chargement_tourets.dart';
 import 'package:front/pages/demontage_page.dart';
+import 'package:front/pages/enedis.dart';
 import 'package:front/pages/historique.dart';
 import 'package:front/pages/home_page.dart';
 import 'package:front/pages/inventaire.dart';
@@ -96,6 +97,7 @@ class MyApp extends StatelessWidget {
         "inventaire": ((context) => Inventaire()),
         "stock": ((context) => Stock()),
         "historique": ((context) => Historique()),
+        "Enedis": ((context) => Enedis()),
       },
     );
   }
