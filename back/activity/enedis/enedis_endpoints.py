@@ -38,7 +38,6 @@ def edit_placement(lot, place, numero):
     FROM [dbo].[enedis] where lot = '{}'""".format(lot)
 
     element = pd.read_sql_query(get_lot, engine).to_dict('list')
-    print(element)
 
     if (len(element['lot']) != 0):
         req_update = """UPDATE dbo.enedis\nSET place = '{}',
@@ -67,4 +66,26 @@ def edit_placement(lot, place, numero):
         except Exception as e:
             print(e)
             return "400"
+    return "200"
+
+
+@enedis.route('/api/enedis/delete/<lot>', methods=['DELETE'])
+def delete_placement(lot):
+    get_lot = """
+    SELECT [lot]
+    ,[place]
+    ,[numero]
+    FROM [dbo].[enedis] where lot = '{}'""".format(lot)
+
+    element = pd.read_sql_query(get_lot, engine).to_dict('list')
+    if (len(element['lot']) == 0):
+        return "200"
+
+    req_delete = """DELETE FROM dbo.enedis WHERE lot = '{}'""".format(lot)
+    try:
+        with con.begin():
+            con.execute(req_delete)
+    except Exception as e:
+        print(e)
+        return "400"
     return "200"
