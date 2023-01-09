@@ -169,12 +169,14 @@ class _EnedisState extends State<Enedis> {
                     child: SimpleAutoCompleteTextField(
                       key: key,
                       suggestions: suggestions,
+                      submitOnSuggestionTap: false,
                       textChanged: (str) {
                         setState(() {
                           isValide = false;
                         });
                       },
                       autofocus: false,
+                      clearOnSubmit: false,
                       controller: ref_touret,
                       decoration: InputDecoration(
                         hintText: "Ex : HBM1234567",
