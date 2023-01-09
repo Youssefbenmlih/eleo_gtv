@@ -7,7 +7,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:front/widgets/general/gradient_elevated.dart';
 import 'package:front/widgets/general/my_app_bar.dart';
-
+//  liste déroulantes, boutton supprimer à coté de terminer, confirmer suppression ou validation, les menus.
 import '../globals.dart';
 
 class Enedis extends StatefulWidget {
@@ -18,6 +18,59 @@ class Enedis extends StatefulWidget {
 }
 
 class _EnedisState extends State<Enedis> {
+  void showDialogMultiple(title, msg) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              alignment: Alignment.topLeft,
+              icon: Icon(Icons.warning),
+              title: Text(style: TextStyle(color: Colors.black), "$title"),
+              content: Text(textAlign: TextAlign.center, """$msg"""),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context, "OK"),
+                    child: const Text(style: TextStyle(fontSize: 20), "OK")),
+              ],
+              actionsAlignment: MainAxisAlignment.center,
+              iconColor: Colors.red.shade800,
+            ));
+  }
+
+  void showDialogCertain(title, msg, args, delete) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        alignment: Alignment.topLeft,
+        icon: Icon(Icons.warning),
+        title: Text(style: TextStyle(color: Colors.black), "$title"),
+        content: Text(textAlign: TextAlign.center, """$msg"""),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, "REVENIR"),
+              child: const Text(
+                  style: TextStyle(fontSize: 20, color: Colors.deepOrange),
+                  "REVENIR")),
+          TextButton(
+            onPressed: () async {
+              int resp = await SendEnedisPlacement(delete);
+              if (resp == 200) {
+                setState(() {
+                  Navigator.pushNamed(context, "accueil", arguments: args);
+                });
+              } else {
+                showDialogMultiple(
+                    "Erreur", "Erreur lors de l'envoi de l'information");
+              }
+            },
+            child: const Text(style: TextStyle(fontSize: 20), "OUI"),
+          ),
+        ],
+        actionsAlignment: MainAxisAlignment.center,
+        iconColor: Colors.red.shade800,
+      ),
+    );
+  }
+
   void wipeClean() {
     setState(() {});
   }
@@ -47,11 +100,18 @@ class _EnedisState extends State<Enedis> {
     }
   }
 
-  Future<int> SendEnedisPlacement() async {
-    final resp = await http.post(
-      Uri.parse(
-          '$url_h/api/enedis/edit/${ref_touret.text}/${num_controller.text}/${emplacement_controller.text}'),
-    );
+  Future<int> SendEnedisPlacement(delete) async {
+    late http.Response resp;
+    if (!delete) {
+      resp = await http.post(
+        Uri.parse(
+            '$url_h/api/enedis/edit/${ref_touret.text}/${num_controller.text}/${emplacement_controller.text}'),
+      );
+    } else {
+      resp = await http.delete(
+        Uri.parse('$url_h/api/enedis/delete/${ref_touret.text}'),
+      );
+    }
 
     if (resp.statusCode == 200) {
       setState(() {});
@@ -98,78 +158,64 @@ class _EnedisState extends State<Enedis> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                width: 240,
-                height: 70,
-                margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                alignment: Alignment.center,
-                child: SimpleAutoCompleteTextField(
-                  key: key,
-                  suggestions: suggestions,
-                  textChanged: (str) {
-                    setState(() {
-                      isValide = false;
-                    });
-                  },
-                  autofocus: false,
-                  controller: ref_touret,
-                  decoration: InputDecoration(
-                    hintText: "Ex : HBM1234567",
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: 140,
+                    height: 70,
+                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    alignment: Alignment.center,
+                    child: SimpleAutoCompleteTextField(
+                      key: key,
+                      suggestions: suggestions,
+                      textChanged: (str) {
+                        setState(() {
+                          isValide = false;
+                        });
+                      },
+                      autofocus: false,
+                      controller: ref_touret,
+                      decoration: InputDecoration(
+                        hintText: "Ex : HBM1234567",
+                      ),
+                    ),
                   ),
-                ),
+                  MyElevatedButton(
+                    onPressed: (() {
+                      if (ref_touret.text.length == 10) {
+                        setState(() {
+                          isValide = true;
+                          num_controller.text =
+                              suggestions.contains(ref_touret.text)
+                                  ? enedis_stock[ref_touret.text]['numero']
+                                  : "";
+                          emplacement_controller.text =
+                              suggestions.contains(ref_touret.text)
+                                  ? enedis_stock[ref_touret.text]['place']
+                                  : "";
+                        });
+                      } else {
+                        showDialogMultiple("Attention",
+                            "Veuillez saisir un numéro de lot valide.");
+                      }
+                    }),
+                    width: 80,
+                    height: 60,
+                    borderRadius: BorderRadius.circular(30),
+                    child: Text(
+                        style: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        "OK"),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 40,
               ),
-              MyElevatedButton(
-                onPressed: (() {
-                  if (ref_touret.text.length == 10) {
-                    setState(() {
-                      isValide = true;
-                      num_controller.text =
-                          suggestions.contains(ref_touret.text)
-                              ? enedis_stock[ref_touret.text]['numero']
-                              : "";
-                      emplacement_controller.text =
-                          suggestions.contains(ref_touret.text)
-                              ? enedis_stock[ref_touret.text]['place']
-                              : "";
-                    });
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        alignment: Alignment.topLeft,
-                        icon: Icon(Icons.warning),
-                        title: Text(
-                            style: TextStyle(color: Colors.black), "Attention"),
-                        content: Text(
-                            textAlign: TextAlign.center,
-                            """Veuillez saisir un Numéro de Lot valide"""),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Navigator.pop(context, "OK"),
-                              child: const Text(
-                                  style: TextStyle(fontSize: 20), "OK")),
-                        ],
-                        actionsAlignment: MainAxisAlignment.center,
-                        iconColor: Colors.red.shade800,
-                      ),
-                    );
-                  }
-                }),
-                width: 180,
-                height: 60,
-                borderRadius: BorderRadius.circular(30),
-                child: Text(
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    "Valider Lot"),
-              ),
-              SizedBox(height: 60),
               isValide
                   ? Column(
                       children: [
@@ -227,77 +273,60 @@ class _EnedisState extends State<Enedis> {
                         SizedBox(
                           height: 60,
                         ),
-                        MyElevatedButton(
-                          onPressed: (() async {
-                            if (num_controller.text.isNotEmpty &&
-                                emplacement_controller.text.isNotEmpty) {
-                              int resp = await SendEnedisPlacement();
-                              if (resp == 200) {
-                                setState(() {
-                                  Navigator.pushNamed(context, "accueil",
-                                      arguments: args);
-                                });
-                              } else {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    alignment: Alignment.topLeft,
-                                    icon: Icon(Icons.warning),
-                                    title: Text(
-                                        style: TextStyle(color: Colors.black),
-                                        "Erreur"),
-                                    content: Text(
-                                        textAlign: TextAlign.center,
-                                        """Erreur lors de l'envoi d'informations"""),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, "OK"),
-                                          child: const Text(
-                                              style: TextStyle(fontSize: 20),
-                                              "OK")),
-                                    ],
-                                    actionsAlignment: MainAxisAlignment.center,
-                                    iconColor: Colors.red.shade800,
-                                  ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            MyElevatedButton(
+                              onPressed: (() async {
+                                showDialogCertain(
+                                  "Confirmation",
+                                  "Êtes-vous sûr des données renseignés ?",
+                                  args,
+                                  true,
                                 );
-                              }
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  alignment: Alignment.topLeft,
-                                  icon: Icon(Icons.warning),
-                                  title: Text(
-                                      style: TextStyle(color: Colors.black),
-                                      "Attention"),
-                                  content: Text(
-                                      textAlign: TextAlign.center,
-                                      """Veuillez remplir les infos emplacement et numéro"""),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, "OK"),
-                                        child: const Text(
-                                            style: TextStyle(fontSize: 20),
-                                            "OK")),
-                                  ],
-                                  actionsAlignment: MainAxisAlignment.center,
-                                  iconColor: Colors.red.shade800,
-                                ),
-                              );
-                            }
-                          }),
-                          width: 280,
-                          height: 70,
-                          borderRadius: BorderRadius.circular(50),
-                          child: Text(
-                              style: TextStyle(
-                                fontFamily: 'OpenSans',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              "Terminer"),
+                              }),
+                              gradient: LinearGradient(colors: [
+                                Colors.deepOrange.shade400,
+                                Colors.red.shade900
+                              ]),
+                              width: 140,
+                              height: 70,
+                              borderRadius: BorderRadius.circular(50),
+                              child: Text(
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  "Supprimer"),
+                            ),
+                            MyElevatedButton(
+                              onPressed: (() async {
+                                if (num_controller.text.isNotEmpty &&
+                                    emplacement_controller.text.isNotEmpty) {
+                                  showDialogCertain(
+                                    "Confirmation",
+                                    "Êtes-vous sûr des données renseignés ?",
+                                    args,
+                                    false,
+                                  );
+                                } else {
+                                  showDialogMultiple("Attention",
+                                      "Veuillez remplir toutes les informations");
+                                }
+                              }),
+                              width: 140,
+                              height: 70,
+                              borderRadius: BorderRadius.circular(50),
+                              child: Text(
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  "Terminer"),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 60,
