@@ -10,7 +10,7 @@ String testAndroidIp = "http://10.0.2.2:5002";
 
 String testOtherIp = "http://127.0.0.1:5002";
 
-bool test = false;
+bool test = true;
 
 void ChangeTest() {
   test = !test;

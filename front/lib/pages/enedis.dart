@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, non_constant_identifier_names
 
+import 'dart:convert';
+import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:front/widgets/general/gradient_elevated.dart';
 import 'package:front/widgets/general/my_app_bar.dart';
+
+import '../globals.dart';
 
 class Enedis extends StatefulWidget {
   const Enedis({super.key});
@@ -18,11 +22,59 @@ class _EnedisState extends State<Enedis> {
     setState(() {});
   }
 
-  bool isValide = false;
+  String url_h = getIp();
 
+  bool isValide = false;
+  late Map enedis_stock;
+  List<String> suggestions = [];
   TextEditingController ref_touret = TextEditingController();
   TextEditingController num_controller = TextEditingController();
   TextEditingController emplacement_controller = TextEditingController();
+
+  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
+
+  Future<Map> fetchStock() async {
+    final response = await http.get(Uri.parse('$url_h/api/enedis/list'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then return
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to get stock');
+    }
+  }
+
+  Future<int> SendEnedisPlacement() async {
+    final resp = await http.post(
+      Uri.parse(
+          '$url_h/api/enedis/edit/${ref_touret.text}/${num_controller.text}/${emplacement_controller.text}'),
+    );
+
+    if (resp.statusCode == 200) {
+      setState(() {});
+    } else {
+      setState(() {});
+    }
+    return resp.statusCode;
+  }
+
+  void get_stock_enedis() async {
+    await fetchStock().then((value) {
+      setState(() {
+        enedis_stock = value;
+        enedis_stock.forEach((key, value) => suggestions.add(key));
+      });
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    get_stock_enedis();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +99,14 @@ class _EnedisState extends State<Enedis> {
                 height: 20,
               ),
               Container(
-                width: 350,
+                width: 240,
                 height: 70,
-                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
                 alignment: Alignment.center,
-                child: TextField(
-                  onChanged: (str) {
+                child: SimpleAutoCompleteTextField(
+                  key: key,
+                  suggestions: suggestions,
+                  textChanged: (str) {
                     setState(() {
                       isValide = false;
                     });
@@ -72,6 +126,14 @@ class _EnedisState extends State<Enedis> {
                   if (ref_touret.text.length == 10) {
                     setState(() {
                       isValide = true;
+                      num_controller.text =
+                          suggestions.contains(ref_touret.text)
+                              ? enedis_stock[ref_touret.text]['numero']
+                              : "";
+                      emplacement_controller.text =
+                          suggestions.contains(ref_touret.text)
+                              ? enedis_stock[ref_touret.text]['place']
+                              : "";
                     });
                   } else {
                     showDialog(
@@ -123,12 +185,15 @@ class _EnedisState extends State<Enedis> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineMedium,
-                                      "Numéro:"),
+                                      "Numéro Ligne:"),
                                 ),
                                 SizedBox(
                                   width: 80,
                                   height: 20,
                                   child: TextField(
+                                    decoration: InputDecoration(
+                                      hintText: "Ex : B-A",
+                                    ),
                                     controller: num_controller,
                                   ),
                                 ),
@@ -149,6 +214,9 @@ class _EnedisState extends State<Enedis> {
                                   width: 80,
                                   height: 20,
                                   child: TextField(
+                                    decoration: InputDecoration(
+                                      hintText: "Ex : 12",
+                                    ),
                                     controller: emplacement_controller,
                                   ),
                                 ),
@@ -157,16 +225,43 @@ class _EnedisState extends State<Enedis> {
                           ],
                         ),
                         SizedBox(
-                          height: 100,
+                          height: 60,
                         ),
                         MyElevatedButton(
-                          onPressed: (() {
+                          onPressed: (() async {
                             if (num_controller.text.isNotEmpty &&
                                 emplacement_controller.text.isNotEmpty) {
-                              setState(() {
-                                Navigator.pushNamed(context, "accueil",
-                                    arguments: args);
-                              });
+                              int resp = await SendEnedisPlacement();
+                              if (resp == 200) {
+                                setState(() {
+                                  Navigator.pushNamed(context, "accueil",
+                                      arguments: args);
+                                });
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    alignment: Alignment.topLeft,
+                                    icon: Icon(Icons.warning),
+                                    title: Text(
+                                        style: TextStyle(color: Colors.black),
+                                        "Erreur"),
+                                    content: Text(
+                                        textAlign: TextAlign.center,
+                                        """Erreur lors de l'envoi d'informations"""),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, "OK"),
+                                          child: const Text(
+                                              style: TextStyle(fontSize: 20),
+                                              "OK")),
+                                    ],
+                                    actionsAlignment: MainAxisAlignment.center,
+                                    iconColor: Colors.red.shade800,
+                                  ),
+                                );
+                              }
                             } else {
                               showDialog(
                                 context: context,
@@ -203,6 +298,9 @@ class _EnedisState extends State<Enedis> {
                                 fontWeight: FontWeight.w600,
                               ),
                               "Terminer"),
+                        ),
+                        SizedBox(
+                          height: 60,
                         ),
                       ],
                     )
