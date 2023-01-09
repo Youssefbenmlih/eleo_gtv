@@ -5,6 +5,7 @@ from activity.inventaire.inv_endpoints import inventaire
 from activity.chargement.cha_endpoints import chargement
 from activity.reception.rec_endpoints import reception
 from activity.demontage.dem_endpoints import demontage
+from activity.enedis.enedis_endpoints import enedis
 from flask import Flask
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.register_blueprint(chargement)
 app.register_blueprint(inventaire)
 app.register_blueprint(historique)
 app.register_blueprint(stock)
+app.register_blueprint(enedis)
 
 
 @app.route('/', methods=['GET'])
@@ -23,4 +25,4 @@ def home():
     return "welcome to the eleo_gtv api"
 
 
-app.run(host='0.0.0.0', port=5002, debug = False)
+app.run(host='0.0.0.0', port=5002, debug=False)
