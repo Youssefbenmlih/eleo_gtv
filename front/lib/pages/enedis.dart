@@ -1,13 +1,12 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:front/widgets/general/gradient_elevated.dart';
 import 'package:front/widgets/general/my_app_bar.dart';
-//  liste déroulantes, boutton supprimer à coté de terminer, confirmer suppression ou validation, les menus.
+//  liste déroulantes.
 import '../globals.dart';
 
 class Enedis extends StatefulWidget {
@@ -105,7 +104,7 @@ class _EnedisState extends State<Enedis> {
     if (!delete) {
       resp = await http.post(
         Uri.parse(
-            '$url_h/api/enedis/edit/${ref_touret.text}/${num_controller.text}/${emplacement_controller.text}'),
+            '$url_h/api/enedis/edit/${ref_touret.text.toUpperCase()}/${num_controller.text.toUpperCase()}/${emplacement_controller.text}'),
       );
     } else {
       resp = await http.delete(

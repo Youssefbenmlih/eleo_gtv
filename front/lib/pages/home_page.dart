@@ -6,9 +6,22 @@ import '../widgets/general/navigation_drawer.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
-  HomePage();
+  const HomePage();
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   late Object perma_args;
 
@@ -77,6 +90,35 @@ class HomePage extends StatelessWidget {
         return !Navigator.of(context).userGestureInProgress;
       },
       child: Scaffold(
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Color.fromARGB(255, 139, 139, 139),
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.document_scanner_sharp),
+                label: 'Gestion Tourets Vides',
+                backgroundColor: Colors.red,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.place_rounded),
+                label: 'Placements Enedis',
+                backgroundColor: Colors.red,
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue,
+            onTap: _onItemTapped,
+          ),
+        ),
         drawer: NavigationDrawerWidget(
           args: args,
         ),
@@ -101,168 +143,179 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: MyElevatedButton(
-                      height: 80,
-                      width: 350,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "reception",
-                          arguments: perma_args,
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.document_scanner_outlined,
-                            size: 35,
+                  _selectedIndex == 0
+                      ? Column(children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: MyElevatedButton(
+                              height: 80,
+                              width: 350,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "reception",
+                                  arguments: perma_args,
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(40),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.document_scanner_outlined,
+                                    size: 35,
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                    'Réception Tourets V.',
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                            ),
                           ),
-                          Spacer(),
-                          Text(
-                            style: Theme.of(context).textTheme.titleLarge,
-                            'Réception Tourets V.',
+                          SizedBox(
+                            height: 10,
                           ),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: MyElevatedButton(
-                      height: 80,
-                      width: 350,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "demontage",
-                          arguments: perma_args,
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.handyman_outlined,
-                            size: 35,
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: MyElevatedButton(
+                              height: 80,
+                              width: 350,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "demontage",
+                                  arguments: perma_args,
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(40),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.handyman_outlined,
+                                    size: 35,
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                    'Démontage Tourets',
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                            ),
                           ),
-                          Spacer(),
-                          Text(
-                            style: Theme.of(context).textTheme.titleLarge,
-                            'Démontage Tourets',
+                          SizedBox(
+                            height: 10,
                           ),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: MyElevatedButton(
-                      height: 80,
-                      width: 350,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "chargement",
-                          arguments: perma_args,
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.fire_truck,
-                            size: 35,
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: MyElevatedButton(
+                              height: 80,
+                              width: 350,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "chargement",
+                                  arguments: perma_args,
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(40),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.fire_truck,
+                                    size: 35,
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                    'Chargement Joues',
+                                  ),
+                                  Spacer()
+                                ],
+                              ),
+                            ),
                           ),
-                          Spacer(),
-                          Text(
-                            style: Theme.of(context).textTheme.titleLarge,
-                            'Chargement Joues',
+                          SizedBox(
+                            height: 10,
                           ),
-                          Spacer()
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: MyElevatedButton(
-                      height: 80,
-                      width: 350,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "Enedis",
-                          arguments: perma_args,
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.place,
-                            size: 35,
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: MyElevatedButton(
+                              height: 80,
+                              width: 350,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "inventaire",
+                                  arguments: perma_args,
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(40),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.table_view_sharp,
+                                    size: 35,
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                    'Inventaire Tourets V.',
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                            ),
                           ),
-                          Spacer(),
-                          Text(
-                            style: Theme.of(context).textTheme.titleLarge,
-                            'Emplacement Enedis',
+                          SizedBox(
+                            height: 10,
                           ),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: MyElevatedButton(
-                      height: 80,
-                      width: 350,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          "inventaire",
-                          arguments: perma_args,
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.table_view_sharp,
-                            size: 35,
+                        ])
+                      : Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: MyElevatedButton(
+                            height: 80,
+                            width: 350,
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                "Enedis",
+                                arguments: perma_args,
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(40),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                  Icons.place,
+                                  size: 35,
+                                ),
+                                Spacer(),
+                                Text(
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                  'Emplacement Enedis',
+                                ),
+                                Spacer(),
+                              ],
+                            ),
                           ),
-                          Spacer(),
-                          Text(
-                            style: Theme.of(context).textTheme.titleLarge,
-                            'Inventaire Tourets V.',
-                          ),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
                 ],
               ),
             ),
