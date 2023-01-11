@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:front/widgets/general/gradient_elevated.dart';
 import 'package:front/widgets/general/my_app_bar.dart';
 //  liste déroulantes.
 import '../globals.dart';
+import 'package:http/http.dart' as http;
 
 class Enedis extends StatefulWidget {
   const Enedis({super.key});
@@ -15,24 +15,26 @@ class Enedis extends StatefulWidget {
   @override
   State<Enedis> createState() => _EnedisState();
 }
+//logistique@eleofrance.com
 
 class _EnedisState extends State<Enedis> {
   void showDialogMultiple(title, msg) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              alignment: Alignment.topLeft,
-              icon: Icon(Icons.warning),
-              title: Text(style: TextStyle(color: Colors.black), "$title"),
-              content: Text(textAlign: TextAlign.center, """$msg"""),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context, "OK"),
-                    child: const Text(style: TextStyle(fontSize: 20), "OK")),
-              ],
-              actionsAlignment: MainAxisAlignment.center,
-              iconColor: Colors.red.shade800,
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+        alignment: Alignment.topLeft,
+        icon: Icon(Icons.warning),
+        title: Text(style: TextStyle(color: Colors.black), "$title"),
+        content: Text(textAlign: TextAlign.center, """$msg"""),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, "OK"),
+              child: const Text(style: TextStyle(fontSize: 20), "OK")),
+        ],
+        actionsAlignment: MainAxisAlignment.center,
+        iconColor: Colors.red.shade800,
+      ),
+    );
   }
 
   void showDialogCertain(title, msg, args, delete) {
@@ -52,14 +54,15 @@ class _EnedisState extends State<Enedis> {
           TextButton(
             onPressed: () async {
               int resp = await SendEnedisPlacement(delete);
-              if (resp == 200) {
+              if (resp == 200 && isDouble == false) {
                 setState(() {
                   Navigator.pushNamed(context, "accueil", arguments: args);
                 });
-              } else {
+              } else if (isDouble == false && resp != 200) {
                 showDialogMultiple(
                     "Erreur", "Erreur lors de l'envoi de l'information");
               }
+              isDouble = false;
             },
             child: const Text(style: TextStyle(fontSize: 20), "OUI"),
           ),
@@ -77,6 +80,7 @@ class _EnedisState extends State<Enedis> {
   String url_h = getIp();
 
   bool isValide = false;
+  bool isDouble = false;
   late Map enedis_stock;
   List<String> suggestions = [];
   TextEditingController ref_touret = TextEditingController();
@@ -100,24 +104,36 @@ class _EnedisState extends State<Enedis> {
   }
 
   Future<int> SendEnedisPlacement(delete) async {
+    for (var key in enedis_stock.keys) {
+      if (key.toString() != ref_touret.text &&
+          enedis_stock[key]['numero'] == num_controller.text &&
+          enedis_stock[key]['place'] == emplacement_controller.text &&
+          !delete) {
+        Navigator.pop(context, "REVENIR");
+        showDialogMultiple("Impossible",
+            "Cette place est déjà prise par le touret ${key.toString()}");
+        isDouble = true;
+        continue;
+      }
+    }
     late http.Response resp;
-    if (!delete) {
+    if (!delete && !isDouble) {
       resp = await http.post(
         Uri.parse(
             '$url_h/api/enedis/edit/${ref_touret.text.toUpperCase()}/${num_controller.text.toUpperCase()}/${emplacement_controller.text}'),
       );
-    } else {
+    } else if (delete && !isDouble) {
       resp = await http.delete(
         Uri.parse('$url_h/api/enedis/delete/${ref_touret.text}'),
       );
     }
 
-    if (resp.statusCode == 200) {
+    if (!isDouble && resp.statusCode == 200) {
       setState(() {});
     } else {
       setState(() {});
     }
-    return resp.statusCode;
+    return isDouble ? 400 : resp.statusCode;
   }
 
   void get_stock_enedis() async {
@@ -184,6 +200,7 @@ class _EnedisState extends State<Enedis> {
                   ),
                   MyElevatedButton(
                     onPressed: (() {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       if (ref_touret.text.length == 10) {
                         setState(() {
                           isValide = true;
@@ -235,7 +252,7 @@ class _EnedisState extends State<Enedis> {
                                       "Numéro Ligne:"),
                                 ),
                                 SizedBox(
-                                  width: 80,
+                                  width: 100,
                                   height: 20,
                                   child: TextField(
                                     decoration: InputDecoration(
@@ -258,7 +275,7 @@ class _EnedisState extends State<Enedis> {
                                       "Emplacement:"),
                                 ),
                                 SizedBox(
-                                  width: 80,
+                                  width: 100,
                                   height: 20,
                                   child: TextField(
                                     decoration: InputDecoration(
