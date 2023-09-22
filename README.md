@@ -1,5 +1,5 @@
 # eleo_gtv
-Application de gestion des tourets vides, scans et stock.
+Application de gestion des tourets vides, scans et stock, faites en flutter et flask.
 
 Back_end en python avec flask, sqlalchemy pyodbc, pandas.
 
